@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fcd98d;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .container {
+            width: 800px;
+            margin: 100px auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+        }
+
+        input {
+            width: 380px;
+            padding: 14px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            background: rgb(238, 226, 203);
+            border-radius: 7px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #000;
+            font-size: 20px;
+        }
+
+        a:hover {
+            text-decoration: underline black;
+            font: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="../../src/logo.png" alt="Logo" />
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Sewa Mobil</a></li>
+            </ul>
+            <button class="login-btn" id="btnUser">Hi,User !</button>
+        </nav>
+    </header>
+    <div class="container">
+        <h2 class="tgl-rental">Tanggal Rental</h2>
+        <p class="info-tgl">Pilih tanggal rental anda.</p>
+        <p class="step">Step 2 of 4</p>
+        <div class="input-tanggalcl">
+            <input type="radio" class="input-tanggal" checked="checked" name="input-tanggal" value="input-tanggal" />
+            <label class="input-tanggal">Input Tanggal</label>
+            <div class="isi-tanggal">
+                <h3 class="tanggal-txt">Tanggal</h3>
+                <input type="isi-tgl" placeholder="isi Tanggal">
+                <div class="next2">
+                    <button class="next-btn2">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

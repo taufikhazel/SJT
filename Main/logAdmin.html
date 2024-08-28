@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="with=device-width" , initial-scale="1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #fcd98d;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    input {
+      width: 380px;
+      padding: 14px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      background: rgb(238, 226, 203);
+      border-radius: 7px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #000;
+      font-size: 20px;
+    }
+
+    a:hover {
+      text-decoration: underline black;
+      font: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <div class="logo">
+        <img src="../src/logo.png" alt="Logo" />
+      </div>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Sewa Mobil</a></li>
+      </ul>
+      <button class="login-btn" id="btn-login">Login</button>
+    </nav>
+  </header>
+  <div class="cardLogin">
+    <div class="login">
+      <div class="login-header">
+        <h1>Login Admin</h1>
+      </div>
+      <div class="login-form">
+        <h3>Username:</h3>
+        <input type="text" placeholder="Username" /><br />
+        <h3>Password:</h3>
+        <input type="password" placeholder="Password" />
+        <br />
+        <input type="button" value="Enter" class="Enter-button" />
+        <br />
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>

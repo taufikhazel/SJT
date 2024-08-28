@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #fcd98d;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .container {
+        width: 840px;
+        margin: 50px auto;
+        border: 1px solid #ccc;
+        padding: 20px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+      }
+
+      .card-text-right {
+        background: none;
+        margin-left: 420px;
+        margin-top: -183px;
+      }
+
+      .next {
+        background: white;
+        padding-bottom: 25px;
+        padding-top: 20px;
+      }
+
+      input {
+        width: 380px;
+        padding: 14px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        background: rgb(238, 226, 203);
+        border-radius: 7px;
+      }
+
+      a {
+        text-decoration: none;
+        color: #000;
+        font-size: 20px;
+      }
+
+      a:hover {
+        text-decoration: underline black;
+        font: bold;
+      }
+
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+      }
+
+      .dropdown-content button {
+        background-color: white;
+        border: none;
+        padding: 12px 16px;
+        text-align: left;
+        display: block;
+        width: 100%;
+      }
+
+      .dropdown-content button:hover {
+        background-color: #f1f1f1;
+      }
+
+      .show {
+        display: block;
+      }
+
+      .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        z-index: 1000;
+      }
+
+      #nextBtn:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <div class="logo">
+          <img src="../../src/logo.png" alt="Logo" />
+        </div>
+        <ul class="nav-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Sewa Mobil</a></li>
+        </ul>
+        <div class="dropdown">
+          <button class="login-btn" id="btnUser"></button>
+          <div id="dropdownMenu" class="dropdown-content">
+            <button id="btnLogout">Logout</button>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <div class="container">
+      <h2 class="data-info">Data info</h2>
+      <p class="info">Masukkan Data Anda.</p>
+      <p class="step">Step 1 of 4</p>
+      <div class="card-text">
+        <h3 class="text-input" >Nama</h3>
+        <input type="text" placeholder="Nama" id="nama"/>
+        <h3 class="text-input">Alamat</h3>
+        <input type="text" placeholder="Alamat" id="alamat"/>
+        <div class="card-text-right">
+          <h3 class="text-input">No. HP</h3>
+          <input type="number" placeholder="No. Hp" id="noTelp"/>
+          <h3 class="text-input">Kota</h3>
+          <input type="text" placeholder="Kota" id="kota" />
+        </div>
+        <div class="next">
+          <button class="next-btn" id="nextBtn">Next</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="loaderPopup" class="popup">
+      <p>Mohon tunggu...</p>
+    </div>
+
+    <div id="confirmationPopup" class="popup">
+      <p>Apakah anda yakin ingin logout?</p>
+      <button onclick="confirmLogout(true)">Iya</button>
+      <button onclick="confirmLogout(false)">Tidak</button>
+    </div>
+
+    <script>
+      function updateButtonText() {
+        const btnUser = document.getElementById("btnUser");
+        const user = JSON.parse(sessionStorage.getItem("loggedInUser"));
+
+        if (user && user.username) {
+          btnUser.textContent = "Hi, " + user.username + "!";
+        } else {
+          btnUser.textContent = "Hi, Guest!";
+        }
+      }
+
+      document.getElementById("btnUser").addEventListener("click", function () {
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        dropdownMenu.classList.toggle("show");
+      });
+
+      document
+        .getElementById("btnLogout")
+        .addEventListener("click", function () {
+          document.getElementById("confirmationPopup").style.display = "block";
+        });
+
+      function confirmLogout(confirmed) {
+        if (confirmed) {
+          sessionStorage.removeItem("loggedInUser");
+          sessionStorage.removeItem("transaksiData");
+          window.location.href = "../logUser.html";
+        } else {
+          document.getElementById("confirmationPopup").style.display = "none";
+        }
+      }
+      window.onclick = function (event) {
+        if (!event.target.matches("#btnUser")) {
+          const dropdowns = document.getElementsByClassName("dropdown-content");
+          for (let i = 0; i < dropdowns.length; i++) {
+            const openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains("show")) {
+              openDropdown.classList.remove("show");
+            }
+          }
+        }
+      };
+
+      window.onload = updateButtonText;
+
+      document.getElementById("nextBtn").disabled = true;
+      const inputs = document.querySelectorAll(".card-text input");
+      const nextBtn = document.getElementById("nextBtn");
+
+      inputs.forEach((input) => {
+        input.addEventListener("input", checkFields);
+      });
+
+      function checkFields() {
+        const allFilled = Array.from(inputs).every(
+          (input) => input.value.trim() !== ""
+        );
+        nextBtn.disabled = !allFilled;
+      }
+
+      nextBtn.addEventListener("click", async function () {
+        const idUser = JSON.parse(
+          sessionStorage.getItem("loggedInUser")
+        ).idUser;
+
+        const idTransaksi = await generateIdTransaksi();
+
+        if (idTransaksi) {
+          const transaksiData = {
+            idTransaksi: idTransaksi,
+            user: idUser,
+            nama: document.getElementById("nama").value,
+            noTelp: document.getElementById("noTelp").value,
+            alamat: document.getElementById("alamat").value,
+            kota: document.getElementById("kota").value,
+            harga: "",
+            mobil: "",
+            tanggal: "",
+            status: "Belum Sukses",
+          };
+
+          sessionStorage.setItem(
+            "transaksiData",
+            JSON.stringify(transaksiData)
+          );
+          window.location.href = "user2.html";
+        } else {
+          alert("Gagal menghasilkan ID Transaksi baru. Silakan coba lagi.");
+        }
+      });
+
+      async function generateIdTransaksi() {
+        try {
+          const response = await fetch("../data/transaksi.json");
+          const data = await response.json();
+
+          // Cari idTransaksi terbesar
+          let maxId = data.reduce(
+            (max, item) => Math.max(max, parseInt(item.idTransaksi || "0")),
+            0
+          );
+
+          // Increment idTransaksi
+          const newId = maxId + 1;
+          return newId.toString();
+        } catch (error) {
+          console.error("Error fetching transaksi data:", error);
+          return null;
+        }
+      }
+    </script>
+  </body>
+</html>

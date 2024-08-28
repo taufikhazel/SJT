@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fcd98d;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .container {
+            width: 875px;
+            height: 565px;
+            margin-left: 30px;
+            margin-top: 35px;
+            background-color: rgba(255, 255, 255, 0.63);
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+        }
+
+        .cardRental {
+            background: white;
+        }
+
+        .rekening {
+            background: #fcd98d7e;
+            border-radius: 10px;
+            display: flex;
+            height: 45px;
+            justify-content: space-between;
+        }
+
+        .radiobtn {
+            padding-left: 10px;
+        }
+
+        .contentRekening {
+            display: flex;
+            width: 65%;
+            gap: 35%;
+        }
+
+        label {
+            text-align: center;
+            padding-top: 10px;
+        }
+
+        .salinRekening {
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .noRekening {
+            text-align: center;
+        }
+
+        .uploadCard {
+            background: white;
+            width: 100px;
+            height: 90px;
+            text-align: center;
+            margin-top: 50px;
+            border-radius: 10px;
+            box-shadow: 1px 1px;
+            align-self: center;
+        }
+
+        .uploadIcon {
+            width: 40px;
+            margin-top: 24px;
+        }
+
+        .infoUpload {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .detailPembayaran {
+            background: white;
+            width: 350px;
+            box-shadow: 0px 1px;
+        }
+
+        .detailInfo {
+            font-size: 15px;
+        }
+
+        .detailBtnCard {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        strong {
+            margin-top: 70px;
+        }
+
+        .textHeader {
+            text-decoration: none;
+            color: #000;
+            font-size: 20px;
+        }
+
+        .textHeader:hover {
+            text-decoration: underline black;
+            font: bold;
+        }
+
+        .nextBtn {
+            background: #ffb429;
+            width: 80px;
+            text-align: center;
+            height: 40px;
+            border-radius: 5px;
+            border: none;
+            color: white;
+        }
+
+        .nextBtn:hover {
+            background: #d28900;
+            cursor: pointer;
+        }
+
+        .rentalCard {
+            background: white;
+            width: 515px;
+            height: 500px;
+            border-radius: 10px;
+            margin-right: 30px;
+            margin-top: 25px;
+        }
+
+        .rentalDetail {
+            margin: auto;
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+
+        .rentalInfo {
+            margin-left: 20px;
+            color: rgb(181, 181, 181);
+            font-size: smaller;
+        }
+
+        .wrapContent {
+            display: flex;
+        }
+
+        .carCard {
+            margin-left: 25px;
+            margin-top: 60px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .carImg {
+            background: #000;
+            width: 120px;
+            height: 90px;
+
+        }
+
+        .wrapCar {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .namaMobil {
+            font-size: 20px;
+        }
+
+        .merkMobil {
+            font-size: 13px;
+            color: rgb(181, 181, 181);
+        }
+
+        .subTotal {
+            width: 450px;
+            height: 80px;
+            margin-left: 27px;
+            margin-top: 40px;
+            border-top: solid rgb(181, 181, 181);
+            border-width: 1px;
+        }
+
+        .totalContent {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .total {
+            color: rgb(181, 181, 181);
+        }
+
+        .taxContent {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .totalTax {
+            color: rgb(181, 181, 181);
+        }
+
+        .promoCard {
+            display: flex;
+            width: 90%;
+            background-color: #fcd98da0;
+            margin: 15px auto;
+            padding: 10px;
+            justify-content: space-between;
+            border-radius: 10px;
+        }
+
+        .kodePromo {
+            text-decoration: none;
+            border: none;
+            background: none;
+            padding-left: 5px;
+        }
+
+        .applyButton {
+            text-decoration: none;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: bold;
+            padding-right: 10px;
+        }
+
+        .hargaCard {
+            width: 90%;
+            align-self: center;
+            margin: auto;
+            justify-content: space-between;
+            display: flex;
+        }
+
+        .totalHarga {
+            font-weight: bold;
+        }
+
+        .infoHarga{
+            color: rgb(181, 181, 181);
+            font-size: smaller;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="../../src/logo.png" alt="Logo" />
+            </div>
+            <ul class="nav-links">
+                <li><a class="textHeader" href="#">Home</a></li>
+                <li><a class="textHeader" href="#">About Us</a></li>
+                <li><a class="textHeader" href="#">Sewa Mobil</a></li>
+            </ul>
+            <button class="login-btn" id="btnUser">Hi,User !</button>
+        </nav>
+    </header>
+    <div class="wrapContent">
+        <div class="container">
+            <h2 class="pembayaran">Pembayaran</h2>
+            <p class="infoPembayaran">Upload bukti pembayaran</p>
+            <p class="step">Step 3 of 4</p>
+            <div class="rekening">
+                <div class="radiobtn">
+                    <input type="radio" class="rekening" name="rekening" value="rekening" />
+                </div>
+                <div class="contentRekening">
+                    <label for="rekening">PT. SUKSES JAYA TRANSPORINDO</label>
+                    <img class="logobank" src="../../src/pngwing.com.png" alt="bank">
+                </div>
+            </div>
+            <p class="salinRekening">Salin rekening</p>
+            <p class="noRekening">XXXXXXXXXXXXXX</p>
+            <div class="uploadCard">
+                <img class="uploadIcon" src="../../src/drop icon.png" alt="Upload">
+            </div>
+            <p class="infoUpload">
+                Upload Bukti <br> Pembayaran
+            </p>
+            <strong>Detail Pembayaran</strong>
+            <div class="detailBtnCard">
+                <div class="detailPembayaran">
+                    <p class="detailInfo">
+                        <a>Nama :</a>
+                        <a></a>
+                    </p>
+                    <p class="detailInfo">
+                        <a>Harga :</a>
+                        <a></a>
+                    </p>
+                </div class="btnBox">
+                <button class="nextBtn">Next</button>
+            </div>
+        </div>
+        <div class="rentalCard">
+            <h2 class="rentalDetail">Rental Detail</h2>
+            <p class="rentalInfo">Harga dapat berubah sesuai ketentuan</p>
+            <div class="carCard">
+                <img class="carImg"></img>
+                <div class="wrapCar">
+                    <a class="namaMobil"><b>NAMA MOBIL</b></a>
+                    <a class="merkMobil">MERK MOBIL</a>
+                </div>
+            </div>
+            <div class="subTotal">
+                <div class="totalContent">
+                    <a class="total">SubTotal</a>
+                    <a class="hasilTotal">Rp. 00000</a>
+                </div>
+                <div class="taxContent">
+                    <a class="totalTax">Tax</a>
+                    <a class="hasilTax">0</a>
+                </div>
+            </div>
+            <div class="promoCard">
+                <div class="cardPromo">
+                    <input type="text" class="kodePromo" placeholder="Masukkan Kode Promo">
+                </div>
+                <div class="promoButton">
+                    <button class="applyButton">Apply Now</button>
+                </div>
+            </div>
+            <div class="hargaCard">
+                <div class="hargaContent">
+                    <a class="totalHarga">Total Harga</a>
+                    <p class="infoHarga">Harga sudah termasuk diskon.</p>
+                </div>
+                <a class="harga">000000</a>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+</body>
+
+</html>

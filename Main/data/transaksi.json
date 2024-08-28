@@ -1,0 +1,14 @@
+[
+    {
+        "idTransaksi": "",
+        "user": "",
+        "nama" : "", 
+        "noTelp" : "",
+        "alamat" : "",
+        "kota" : "",
+        "harga": "",
+        "mobil":"",
+        "tanggal": "",
+        "status": ""
+    }
+]
