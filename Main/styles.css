@@ -624,24 +624,45 @@ cursor: pointer;
 }
 
 
+
 @media screen and (max-width: 768px) {
-    .hero {
-        flex-direction: column;
-        text-align: center;
-    }
 
-    .hero-content, .hero-image-container {
-        max-width: 100%;
-    }
+  /*Index.html*/
+  .hero {
+    flex-direction: column;
+    text-align: center;
+  }
 
-    .benefits {
-        grid-template-columns: repeat(2, 1fr);
-    }
+  .hero-content,
+  .hero-image-container {
+    max-width: 100%;
+  }
 
-    .benefit-item {
-        width: 100%;
-        margin-bottom: 20px;
-    }
+  .benefits {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .benefit-item {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .hero-image {
+    max-width: 400px;
+    height: auto;
+    margin-left: 386px;
+    margin-top: -260px;
+  }
+
+
+  .hero-content p {
+    width: 42%;
+    text-align: justify;
+  }
+
+  .cta-btn {
+    margin-right: 405px;
+  }
 }
 
 @media (max-width: 480px) {
