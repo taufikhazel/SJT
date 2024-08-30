@@ -1,15 +1,30 @@
 [
     {
-        "idTransaksi": "",
-        "user": "",
-        "nama" : "", 
-        "noTelp" : "",
-        "bukti" : "",
-        "alamat" : "",
-        "kota" : "",
-        "harga": "",
-        "mobil":"",
-        "tanggal": "",
-        "status": ""
+        "idTransaksi": "1",
+        "user": "asa",
+        "idUser": "1",
+        "nama" : "dada", 
+        "noTelp" : "13",
+        "bukti" : "sad",
+        "alamat" : "ad",
+        "kota" : "ad",
+        "harga": 400000,
+        "mobil":"adsa",
+        "tanggal": "19/08/2024",
+        "status": "Belum Diproses"
+    },
+    {
+        "idTransaksi": "2",
+        "user": "asa",
+        "idUser": "2",
+        "nama" : "dada", 
+        "noTelp" : "13",
+        "bukti" : "sad",
+        "alamat" : "ad",
+        "kota" : "ad",
+        "harga": 400000,
+        "mobil":"adsa",
+        "tanggal": "19/08/2024",
+        "status": "Belum Diproses"
     }
 ]

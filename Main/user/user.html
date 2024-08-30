@@ -76,7 +76,6 @@
                 <h2>Notifikasi</h2>
                 <p style="color: rgb(181, 181, 181);">Notifikasi/Pemberitahuan</p>
                 <br>
-
                 <div class="isiNotifikasi">
                   <div class="radioButton">
                     <input type="radio" class="rbtn">
@@ -86,7 +85,6 @@
                     <a href="#">Tanggal jatuh tempo : </a>
                   </div>
                 </div>
-
               </div>
         </li>
       </ul>
@@ -233,7 +231,7 @@
               harga: mobilData.hargaMobil,
               mobil: mobil,
               tanggal: "",
-              bukti:"",
+              bukti: "",
               status: "",
             };
 
@@ -273,6 +271,73 @@
         console.error("Error fetching transaksi data:", error);
         return null;
       }
+    }
+
+    //Logika Notifikasi
+    // Mengambil idUser dari sessionStorage
+    const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser')); // Pastikan ini adalah cara Anda menyimpan loggedInUser
+    const idUser = loggedInUser.idUser;
+
+    // Fungsi untuk mengambil data dari JSON
+    fetch('../data/transaksi.json')
+      .then(response => response.json())
+      .then(data => {
+        // Filter data berdasarkan idUser
+        const userTransaksi = data.filter(transaksi => transaksi.idUser === idUser);
+
+        // Cek apakah ada data yang ditemukan
+        if (userTransaksi.length > 0) {
+          generateModalContent(userTransaksi);
+        } else {
+          console.log("Tidak ada data yang cocok untuk idUser:", idUser);
+        }
+      })
+      .catch(error => console.error('Error fetching data:', error));
+
+    // Fungsi untuk generate isi modal secara dinamis
+    function generateModalContent(transaksiList) {
+      const isiNotifikasiContainer = document.querySelector('.isiNotifikasi');
+
+      // Kosongkan isi notifikasi sebelum diisi ulang
+      isiNotifikasiContainer.innerHTML = '';
+
+      transaksiList.forEach(transaksi => {
+        // Buat elemen baru untuk setiap transaksi
+        const radioButtonDiv = document.createElement('div');
+        radioButtonDiv.classList.add('radioButton');
+
+        const radioButton = document.createElement('input');
+        radioButton.type = 'radio';
+        radioButton.classList.add('rbtn');
+
+        radioButtonDiv.appendChild(radioButton);
+
+        const textNotifikasiDiv = document.createElement('div');
+        textNotifikasiDiv.classList.add('textNotifikasi');
+
+        const idTransaksiLink = document.createElement('a');
+        idTransaksiLink.href = '#';
+        idTransaksiLink.id = 'idTransaksi';
+        idTransaksiLink.textContent = `Kode Pesanan: ${transaksi.idTransaksi}`;
+
+        const tanggalLink = document.createElement('a');
+        tanggalLink.href = '#';
+        tanggalLink.id = 'tanggal';
+        tanggalLink.textContent = `Tanggal jatuh tempo: ${transaksi.tanggal}`;
+
+        textNotifikasiDiv.appendChild(idTransaksiLink);
+        textNotifikasiDiv.appendChild(document.createElement('br')); // Untuk line break
+        textNotifikasiDiv.appendChild(tanggalLink);
+
+        // Tambahkan elemen ke container isiNotifikasi
+        isiNotifikasiContainer.appendChild(radioButtonDiv);
+        isiNotifikasiContainer.appendChild(textNotifikasiDiv);
+      });
+
+      // Tambahkan scroll jika isi modal terlalu banyak
+      const modalBody = document.querySelector('.modal-body');
+      modalBody.style.overflowY = 'auto'; // Menambahkan scroll
+      modalBody.style.maxHeight = '400px'; // Sesuaikan dengan kebutuhan Anda
     }
   </script>
 </body>
