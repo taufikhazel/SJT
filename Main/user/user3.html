@@ -10,6 +10,9 @@
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="../styles.css" />
     <style>
         body {
             margin: 0;
@@ -252,7 +255,7 @@
             font-weight: bold;
         }
 
-        .infoHarga{
+        .infoHarga {
             color: rgb(181, 181, 181);
             font-size: smaller;
         }
@@ -266,11 +269,30 @@
                 <img src="../../src/logo.png" alt="Logo" />
             </div>
             <ul class="nav-links">
-                <li><a class="textHeader" href="#">Home</a></li>
-                <li><a class="textHeader" href="#">About Us</a></li>
-                <li><a class="textHeader" href="#">Sewa Mobil</a></li>
+                <h2><b>Sukses Jaya Transporindo </b></h2>
+                <li>
+                    <span class="material-symbols-outlined" id="notification">
+                        notifications
+                    </span>
+                    <div id="myModal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <span class="close">&times;</span>
+                            </div>
+                            <div class="modal-body">
+                                <p>Some text in the Modal Body</p>
+                                <p>Some other text...</p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
             </ul>
-            <button class="login-btn" id="btnUser">Hi,User !</button>
+            <div class="dropdown">
+                <button class="login-btn" id="btnUser"></button>
+                <div id="dropdownMenu" class="dropdown-content">
+                    <button id="btnLogout">Logout</button>
+                </div>
+            </div>
         </nav>
     </header>
     <div class="wrapContent">
@@ -287,7 +309,7 @@
                     <img class="logobank" src="../../src/pngwing.com.png" alt="bank">
                 </div>
             </div>
-            <p class="salinRekening">Salin rekening</p>
+            <a class="salinRekening">Salin rekening</a>
             <p class="noRekening">XXXXXXXXXXXXXX</p>
             <div class="uploadCard">
                 <img class="uploadIcon" src="../../src/drop icon.png" alt="Upload">
@@ -307,7 +329,7 @@
                         <a></a>
                     </p>
                 </div class="btnBox">
-                <button class="nextBtn">Next</button>
+                <button class="nextBtn" id="submitBtn">Submit</button>
             </div>
         </div>
         <div class="rentalCard">

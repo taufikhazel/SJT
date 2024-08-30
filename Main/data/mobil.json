@@ -2,7 +2,7 @@
     {
         "idMobil": "1",
         "namaMobil": "user",
-        "hargaMobil": "user",
+        "hargaMobil": 400000,
         "gambar":"url",
         "status":"Tersedia"
     }
