@@ -68,6 +68,11 @@
             text-align: center;
         }
 
+        .uploadContainer {
+            align-self: center;
+            width: 100px;
+        }
+
         .uploadCard {
             background: white;
             width: 100px;
@@ -88,6 +93,12 @@
             text-align: center;
             font-size: 12px;
             margin-top: 10px;
+        }
+
+        .previewImage {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
         }
 
         .detailPembayaran {
@@ -259,6 +270,17 @@
             color: rgb(181, 181, 181);
             font-size: smaller;
         }
+
+        .salinRekening {
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .nextBtn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
@@ -311,10 +333,13 @@
             </div>
             <a class="salinRekening">Salin rekening</a>
             <p class="noRekening">XXXXXXXXXXXXXX</p>
-            <div class="uploadCard">
-                <img class="uploadIcon" src="../../src/drop icon.png" alt="Upload">
+            <div class="uploadContainer">
+                <div class="uploadCard">
+                    <img class="uploadIcon" src="../../src/drop icon.png" alt="Upload">
+                    <input type="file" id="fileInput" accept=".jpg, .jpeg, .png" style="display: none;" />
+                </div>
             </div>
-            <p class="infoUpload">
+            <p class="infoUpload" id="textInfo">
                 Upload Bukti <br> Pembayaran
             </p>
             <strong>Detail Pembayaran</strong>
@@ -322,14 +347,14 @@
                 <div class="detailPembayaran">
                     <p class="detailInfo">
                         <a>Nama :</a>
-                        <a></a>
+                        <a id="nama"></a>
                     </p>
                     <p class="detailInfo">
                         <a>Harga :</a>
-                        <a></a>
+                        <a id="harga"></a>
                     </p>
-                </div class="btnBox">
-                <button class="nextBtn" id="submitBtn">Submit</button>
+                </div>
+                <button class="nextBtn" id="submitBtn" disabled>Submit</button>
             </div>
         </div>
         <div class="rentalCard">
@@ -371,6 +396,187 @@
     </div>
     </div>
     </div>
+    <div id="loaderPopup" class="popup">
+        <p>Mohon tunggu...</p>
+    </div>
+
+    <div id="confirmationPopup" class="popup">
+        <p>Apakah anda yakin ingin logout?</p>
+        <button class="confirmBtn" onclick="confirmLogout(true)">Iya</button>
+        <button class="confirmBtn" onclick="confirmLogout(false)">Tidak</button>
+    </div>
+    <script>
+        // Logika Modal
+        var modal = document.getElementById("myModal");
+        var spanNotif = document.getElementById("notification");
+        var span = document.getElementsByClassName("close")[0];
+
+        const transaksiData = JSON.parse(sessionStorage.getItem("transaksiData"));
+
+        if (transaksiData) {
+            document.getElementById("nama").textContent = transaksiData.nama;
+            document.getElementById("harga").textContent = transaksiData.harga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }); // Format as Rupiah
+        } else {
+            console.log("No transaction data found in sessionStorage.");
+        }
+
+        spanNotif.onclick = function () {
+            modal.style.display = "block";
+        };
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        };
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+
+        //Logika Butoon Hi dan Logout
+
+        function updateButtonText() {
+            const btnUser = document.getElementById("btnUser");
+            const user = JSON.parse(sessionStorage.getItem("loggedInUser"));
+
+            if (user && user.username) {
+                btnUser.textContent = "Hi, " + user.username + "!";
+            } else {
+                btnUser.textContent = "Hi, Guest!";
+            }
+        }
+
+        document.getElementById("btnUser").addEventListener("click", function () {
+            const dropdownMenu = document.getElementById("dropdownMenu");
+            dropdownMenu.classList.toggle("show");
+        });
+
+        document
+            .getElementById("btnLogout")
+            .addEventListener("click", function () {
+                document.getElementById("confirmationPopup").style.display = "block";
+            });
+
+        function confirmLogout(confirmed) {
+            if (confirmed) {
+                sessionStorage.removeItem("loggedInUser");
+                sessionStorage.removeItem("transaksiData");
+                window.location.href = "../logUser.html";
+            } else {
+                document.getElementById("confirmationPopup").style.display = "none";
+            }
+        }
+        window.onclick = function (event) {
+            if (!event.target.matches("#btnUser")) {
+                const dropdowns = document.getElementsByClassName("dropdown-content");
+                for (let i = 0; i < dropdowns.length; i++) {
+                    const openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains("show")) {
+                        openDropdown.classList.remove("show");
+                    }
+                }
+            }
+        };
+
+        window.onload = updateButtonText;
+
+        //Logika Copy Clipboard
+        const copyLink = document.querySelector('.salinRekening');
+        const noRekening = document.querySelector('.noRekening');
+
+        copyLink.addEventListener('click', function () {
+
+            const tempTextarea = document.createElement('textarea');
+            tempTextarea.value = noRekening.textContent;
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextarea);
+
+            alert('Rekening copied to clipboard!');
+        });
+
+        //Bagian Upload Gambar
+
+        const uploadCard = document.querySelector('.uploadCard');
+        const fileInput = document.getElementById('fileInput');
+        const textInfo = document.getElementById('textInfo');
+
+        uploadCard.addEventListener('click', function () {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', function () {
+            const file = this.files[0];
+
+            if (file) {
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+
+                const allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+                if (allowedExtensions.includes(fileExtension)) {
+                    const fileURL = URL.createObjectURL(file);
+                    JSON.parse(sessionStorage.getItem("transaksiData"));
+
+                    transaksiData.bukti = fileURL;
+                    submitBtn.disabled = false;
+                    sessionStorage.setItem(
+                        "transaksiData",
+                        JSON.stringify(transaksiData)
+                    );
+
+                    textInfo.textContent = `${file.name}`;
+
+                    // Bagian image preview
+                    let imgElement = document.querySelector('.uploadCard img');
+                    if (!imgElement) {
+                        imgElement = document.createElement('img');
+                        imgElement.className = 'previewImage';
+                        imgElement.style.width = '250px';
+                        imgElement.style.height = '250px';
+                        uploadCard.appendChild(imgElement);
+                    }
+                    imgElement.src = fileURL;
+                } else {
+                    alert('Hanya file .jpg, .jpeg, and .png yang diperbolehkan');
+                    fileInput.value = '';
+                }
+            }
+        });
+
+        submitBtn.addEventListener('click', function () {
+            let transaksiData = JSON.parse(sessionStorage.getItem('transaksiData'));
+            transaksiData.status = 'Belum Diproses';
+
+            sessionStorage.setItem('transaksiData', JSON.stringify(transaksiData));
+
+            if (transaksiData) {
+                fetch('http://127.0.0.1/Main/user/update_transaksi.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: transaksiData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        sessionStorage.removeItem('transaksiData');
+                        alert('Data anda sedang diproses, harap tunggu konfirmasi dari Perusahaan. Anda akan dikirimkan ke halaman user kembali');
+                        window.location.href = 'user.html';
+                    } else {
+                        throw new Error('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+            }else {
+                alert('Tidak ada data untuk dikirim.');
+            }
+        });
+    </script>
 </body>
 
 </html>
