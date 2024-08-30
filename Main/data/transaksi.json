@@ -4,6 +4,7 @@
         "user": "",
         "nama" : "", 
         "noTelp" : "",
+        "buktiBayar" : "",
         "alamat" : "",
         "kota" : "",
         "harga": "",
