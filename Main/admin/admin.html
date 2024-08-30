@@ -19,37 +19,82 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
-        a {
+        .textHeader {
             text-decoration: none;
             color: #000;
             font-size: 20px;
         }
 
-        a:hover {
+        .textHeader:hover {
             text-decoration: underline black;
             font: bold;
         }
 
         .container {
-            background: aqua;
+            background: none;
+            border: none;
             display: flex;
             margin-top: 10px;
+            width: 384px;
+            height: 597px;
+            margin-left: 100px;
         }
 
-        .leftContent{
-            background: white;
-            width: 100px;
-            height: 550px;
+        .leftContent {
+            background: rgb(0, 21, 123);
+            width: 350px;
+            height: 150px;
+            border-radius: 10px;
+            box-shadow: 3px 2px 4px 0px;
+            display: flex;
         }
 
-        .leftText{
+        .leftText {
             font-size: smaller;
-            border-bottom: solid black 1px;
-            width: 300px;
+            border-bottom: solid #dee2e6 2px;
+            width: 372px;
         }
 
-        .container a{
-            font-size: 20px;
+        .container a {
+            font-size: 15px;
+            color: black;
+            text-decoration: none;
+        }
+
+        .profilePict {
+            background: black;
+            width: 90px;
+            height: 90px;
+            margin: 27px 10px;
+            border-radius: 20px;
+        }
+
+        .isiLeft a {
+            color: rgb(0, 0, 0);
+            font-size: 5px;
+        }
+
+        .isiContentLeft {
+            display: flex;
+            flex-direction: column;
+            margin-top: 29px;
+        }
+
+        .isiContentLeft a {
+            font-size: 14px;
+            color: white;
+        }
+
+        a.leftNama {
+            font-size: 15px;
+        }
+
+        a.leftMobil {
+            font-weight: 900;
+        }
+        a.tanggalBulan {
+            font-size: 14px;
+            font-weight: 800;
         }
     </style>
 </head>
@@ -95,10 +140,19 @@
         <div class="leftText">
             <strong style="width: 200px;">Proses Sewa</strong>
         </div>
-        <br>
         <a href="#" class="tanggalBulan">tanggal/bulan/tahun</a>
         <div class="leftContent">
-
+            <div class="profilePict">
+            </div>
+            <div class="isiContentLeft">
+                <a href="#" class="leftNama">USERNAME</a>
+                <a href="#" class="leftMobil">Jenis Nama Mobil</a>
+                <a href="#" class="leftKode">Kode Pesanan :</a>
+                <a href="#" class="leftStatus">Status :</a>
+            </div>
+            <div class="rightContent">
+                
+            </div>
         </div>
     </div>
 </body>

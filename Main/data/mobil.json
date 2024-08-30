@@ -5,5 +5,12 @@
         "hargaMobil": 400000,
         "gambar":"url",
         "status":"Tersedia"
+    },
+    {
+        "idMobil": "2",
+        "namaMobil": "user1",
+        "hargaMobil": 400000,
+        "gambar":"url",
+        "status":"Tersedia"
     }
 ]

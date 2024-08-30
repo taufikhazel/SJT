@@ -405,6 +405,7 @@
         <button class="confirmBtn" onclick="confirmLogout(true)">Iya</button>
         <button class="confirmBtn" onclick="confirmLogout(false)">Tidak</button>
     </div>
+    <div class="loader" style="display: none;"></div>
     <script>
         // Logika Modal
         var modal = document.getElementById("myModal");
@@ -434,7 +435,7 @@
             }
         };
 
-        //Logika Butoon Hi dan Logout
+        //Logika Button Hi dan Logout
 
         function updateButtonText() {
             const btnUser = document.getElementById("btnUser");
@@ -552,30 +553,36 @@
             sessionStorage.setItem('transaksiData', JSON.stringify(transaksiData));
 
             if (transaksiData) {
-                fetch('http://127.0.0.1/Main/user/update_transaksi.php', {
+                document.getElementById('loader').style.display = 'block';
+
+                fetch('update_transaksi.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: transaksiData,
+                    body: JSON.stringify(transaksiData),
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        sessionStorage.removeItem('transaksiData');
-                        alert('Data anda sedang diproses, harap tunggu konfirmasi dari Perusahaan. Anda akan dikirimkan ke halaman user kembali');
-                        window.location.href = 'user.html';
-                    } else {
-                        throw new Error('Error: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                });
-            }else {
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('loader').style.display = 'none';
+
+                        if (data.status === 'success') {
+                            sessionStorage.removeItem('transaksiData');
+                            alert('Data anda sedang diproses, harap tunggu konfirmasi dari Perusahaan. Anda akan dikirimkan ke halaman user kembali');
+                            window.location.href = 'user.html';
+                        } else {
+                            throw new Error('Error: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        document.getElementById('loader').style.display = 'none';
+                        console.error('There was a problem with the fetch operation:', error);
+                    });
+            } else {
                 alert('Tidak ada data untuk dikirim.');
             }
         });
+
     </script>
 </body>
 
