@@ -11,12 +11,12 @@
         "harga": 400000,
         "mobil":"adsa",
         "tanggal": "19/08/2024",
-        "status": "Belum Diproses"
+        "status": "Sukses"
     },
     {
         "idTransaksi": "2",
         "user": "asa",
-        "idUser": "2",
+        "idUser": "1",
         "nama" : "dada", 
         "noTelp" : "13",
         "bukti" : "sad",

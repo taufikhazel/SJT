@@ -296,14 +296,19 @@
                     <span class="material-symbols-outlined" id="notification">
                         notifications
                     </span>
+                    <span id="notificationImportant" class="material-symbols-outlined" style="display: none;">
+                        notification_important
+                    </span>
                     <div id="myModal" class="modal">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <span class="close">&times;</span>
                             </div>
                             <div class="modal-body">
-                                <p>Some text in the Modal Body</p>
-                                <p>Some other text...</p>
+                                <h2>Notifikasi</h2>
+                                <p style="color: rgb(181, 181, 181);">Notifikasi/Pemberitahuan</p>
+                                <br>
+                                <div class="containerIsiNotifikasi"></div>
                             </div>
                         </div>
                     </div>
@@ -583,6 +588,97 @@
             }
         });
 
+        //Logika Notifikasi
+        // Mengambil idUser dari sessionStorage
+        const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+        const idUser = loggedInUser.idUser;
+        fetch('../data/transaksi.json')
+            .then(response => response.json())
+            .then(data => {
+                const userTransaksi = data.filter(transaksi => transaksi.idUser === idUser);
+
+                if (userTransaksi.length > 0) {
+                    generateModalContent(userTransaksi);
+                } else {
+                    console.log("Tidak ada data yang cocok untuk idUser:", idUser);
+                }
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        function generateModalContent(transaksiList) {
+            const isiNotifikasiContainer = document.querySelector('.containerIsiNotifikasi');
+            isiNotifikasiContainer.innerHTML = '';
+
+            let isBelumDiprosesFound = false;
+
+            transaksiList.forEach(transaksi => {
+
+                if (transaksi.status === "Belum Diproses") {
+                    isBelumDiprosesFound = true;
+                }
+                const newIsiNotifikasiDiv = document.createElement('div');
+                newIsiNotifikasiDiv.classList.add('isiNotifikasi');
+
+                const radioButtonDiv = document.createElement('div');
+                radioButtonDiv.classList.add('radioButton');
+
+                if (transaksi.status === "Belum Diproses") {
+                    const radioButton = document.createElement('input');
+                    radioButton.type = 'radio';
+                    radioButton.classList.add('rbtn');
+                    radioButtonDiv.appendChild(radioButton);
+                } else {
+                    const checkCircleSpan = document.createElement('span');
+                    checkCircleSpan.className = 'material-symbols-outlined';
+                    checkCircleSpan.textContent = 'check_circle';
+                    checkCircleSpan.id = "success";
+                    radioButtonDiv.appendChild(checkCircleSpan);
+                }
+
+                const textNotifikasiDiv = document.createElement('div');
+                textNotifikasiDiv.classList.add('textNotifikasi');
+
+                const idTransaksiLink = document.createElement('a');
+                idTransaksiLink.href = '#';
+                idTransaksiLink.id = 'idTransaksi';
+                idTransaksiLink.textContent = `Kode Pesanan: ${transaksi.idTransaksi}`;
+
+                const tanggalLink = document.createElement('a');
+                tanggalLink.href = '#';
+                tanggalLink.id = 'tanggal';
+                tanggalLink.textContent = `Tanggal jatuh tempo: ${transaksi.tanggal}`;
+
+                textNotifikasiDiv.appendChild(idTransaksiLink);
+                textNotifikasiDiv.appendChild(document.createElement('br'));
+                textNotifikasiDiv.appendChild(tanggalLink);
+
+                if (transaksi.status === "Belum Diproses") {
+                    const unsuccess = document.createElement('span');
+                    unsuccess.className = "material-symbols-outlined";
+                    unsuccess.id = 'unSuccess';
+                    unsuccess.textContent = 'error';
+                    textNotifikasiDiv.appendChild(unsuccess);
+                }
+
+                newIsiNotifikasiDiv.appendChild(radioButtonDiv);
+                newIsiNotifikasiDiv.appendChild(textNotifikasiDiv);
+
+                isiNotifikasiContainer.appendChild(newIsiNotifikasiDiv);
+            });
+
+            const notificationIcon = document.getElementById('notification');
+
+            if (isBelumDiprosesFound) {
+                notificationIcon.textContent = 'notification_important';
+                notificationIcon.style.color = '#EA3323'; 
+            } else {
+                notificationIcon.textContent = 'notifications';
+                notificationIcon.style.color = '#000';
+            }
+
+            const modalBody = document.querySelector('.modal-body');
+            modalBody.style.overflowY = 'auto';
+            modalBody.style.maxHeight = '400px';
+        }
     </script>
 </body>
 

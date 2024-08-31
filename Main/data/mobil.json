@@ -4,6 +4,7 @@
         "namaMobil": "user",
         "hargaMobil": 400000,
         "gambar":"url",
+        "noPol":"",
         "status":"Tersedia"
     },
     {
@@ -11,6 +12,7 @@
         "namaMobil": "user1",
         "hargaMobil": 400000,
         "gambar":"url",
+        "noPol":"",
         "status":"Tersedia"
     }
 ]

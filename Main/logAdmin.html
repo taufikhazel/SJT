@@ -57,16 +57,108 @@
       </div>
       <div class="login-form">
         <h3>Username:</h3>
-        <input type="text" placeholder="Username" /><br />
+        <input type="text" placeholder="Username" id="username"/><br />
         <h3>Password:</h3>
-        <input type="password" placeholder="Password" />
+        <input type="password" placeholder="Password" id="password" />
         <br />
-        <input type="button" value="Enter" class="Enter-button" />
+        <input type="button" value="Enter" class="Enter-button" id="btnSubmit" onclick="validateLogin()" />
         <br />
       </div>
     </div>
   </div>
-  <script src="script.js"></script>
-</body>
+  <div id="loaderPopup" class="popup">
+    <p>Mohon tunggu...</p>
+  </div>
 
+  <div id="errorAlert" class="popup" style="background-color: #f8d7da; border-color: #f5c6cb">
+    <p id="errorMessage">Error message</p>
+    <button onclick="closeAlert('errorAlert')">OK</button>
+  </div>
+
+  <div id="successAlert" class="popup" style="background-color: #d4edda; border-color: #c3e6cb">
+    <p id="successMessage">Success message</p>
+    <button onclick="closeAlert('successAlert')">OK</button>
+  </div>
+
+  <script>
+    async function validateLogin() {
+      console.log("validateLogin called"); // Tambahkan ini untuk debugging
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const loaderPopup = document.getElementById("loaderPopup");
+
+      if (!username || !password) {
+        showAlert("errorAlert", "Harap Isi Semua Field.");
+        return;
+      }
+
+      loaderPopup.style.display = "block";
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      try {
+        const response = await fetch("../Main/data/admin.json");
+        console.log("Fetch response received"); // Tambahkan ini untuk debugging
+        const users = await response.json();
+        const user = users.find(
+          (u) => u.username === username && u.password === password
+        );
+
+        loaderPopup.style.display = "none";
+
+        if (user) {
+          sessionStorage.setItem("loggedInAdmin", JSON.stringify(user));
+          showAlert(
+            "successAlert",
+            "Login Sukses! Anda akan dipindahkan ke halaman User",
+            () => {
+              window.location.href = "../Main/admin/dashboard.html";
+            }
+          );
+        } else {
+          showAlert(
+            "errorAlert",
+            "Username atau Password Anda Salah! Silahkan Isi Lagi."
+          );
+        }
+      } catch (error) {
+        loaderPopup.style.display = "none";
+        showAlert("errorAlert", "Ada error, Harap Hubungi Pemilik!");
+        console.error("Error fetching user data:", error);
+      }
+    }
+
+    function showAlert(alertId, message, callback) {
+      const alert = document.getElementById(alertId);
+      const messageElement = alert.querySelector("p");
+      messageElement.textContent = message;
+      alert.style.display = "block";
+
+      if (callback) {
+        alert.querySelector("button").onclick = () => {
+          closeAlert(alertId);
+          callback();
+        };
+      } else {
+        alert.querySelector("button").onclick = () => closeAlert(alertId);
+      }
+    }
+
+    function closeAlert(alertId) {
+      document.getElementById(alertId).style.display = "none";
+
+      const usernameInput = document.getElementById("username");
+      const passwordInput = document.getElementById("password");
+
+      usernameInput.value = "";
+      passwordInput.value = "";
+    }
+
+    const loginButton = document.getElementById("btn-login");
+
+    loginButton.addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
 </html>
