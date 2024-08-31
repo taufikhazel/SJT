@@ -703,9 +703,9 @@ h3 {
 .textNotifikasi {
   display: flex;
   width: 100%;
-  gap: 42%;
+  gap: 18%;
   margin-top: 12px;
-  margin-left: 90px;
+  margin-left: 55px;
 }
 
 .textNotifikasi a {
