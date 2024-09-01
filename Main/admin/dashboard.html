@@ -1,4 +1,5 @@
-</html><!DOCTYPE html>
+</html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -16,9 +17,9 @@
         body {
             margin: 0;
             padding: 0;
-            width: 100%;
             background: #fcd98d;
             font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
         }
 
         .textHeader {
@@ -91,12 +92,13 @@
                 <img src="../../src/logo.png" alt="Logo" />
             </div>
             <ul class="nav-links">
+
                 <li><a class="textHeader" href="dashboard.html">Dashboard</a></li>
-                <li><a class="textHeader" onclick="openModal()">Buat User</a></li>
-                <div id="registerModal" class="modalUser">
+                <li><a class="textHeader" onclick="openModalUser()">Buat User</a></li>
+                <div id="registerModalUser" class="modalUser">
                     <div class="modal-contentUser">
-                        <span class="closeUser" onclick="closeModal()">&times;</span>
-                        <h2>Register</h2>
+                        <span class="closeUser" onclick="closeModalUser()">&times;</span>
+                        <h2>Register User</h2>
                         <form id="registerForm">
                             <label for="username">Username</label>
                             <input type="text" id="username" name="username" required>
@@ -111,12 +113,45 @@
                                 <option value="guest">Guest</option>
                             </select>
 
-                            <button type="submit">Register</button>
+                            <button type="submit" class="registerBtn">Register</button>
                         </form>
                     </div>
                 </div>
-                <li><a class="textHeader" href="#">Buat Admin</a></li>
-                <li><a class="textHeader" href="#">Edit Pembayaran</a></li>
+
+                <li><a class="textHeader" onclick="openModalAdmin()">Buat Admin</a></li>
+                <div id="registerModalAdmin" class="modalAdmin">
+                    <div class="modal-contentAdmin">
+                        <span class="closeAdmin" onclick="closeModalAdmin()">&times;</span>
+                        <h2>Register Admin</h2>
+                        <form id="registerForm">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" required>
+
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+
+                            <button type="submit" class="registerBtn">Register</button>
+                        </form>
+                    </div>
+                </div>
+
+                <li><a class="textHeader" onclick="openModalPembayaran()">Edit Pembayaran</a></li>
+                <div id="registerModalPembayaran" class="modalPembayaran">
+                    <div class="modal-contentPembayaran">
+                        <span class="closePembayaran" onclick="closeModalPembayaran()">&times;</span>
+                        <h2>Edit Pembayaran</h2>
+                        <form id="registerForm">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" required>
+
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+
+                            <button type="submit" class="registerBtn">Register</button>
+                        </form>
+                    </div>
+                </div>
+
                 <li>
                     <span class="material-symbols-outlined" id="notification">
                         notifications
@@ -133,6 +168,43 @@
                         </div>
                     </div>
                 </li>
+
+                <li>
+                    <span class="material-symbols-outlined" onclick="openModalMobil()" id="mobil">
+                        local_taxi
+                    </span>
+                    <div id="registerModalMobil" class="modalMobil">
+                        <div class="modal-contentMobil">
+                            <span class="closeMobil" onclick="closeModalMobil()">&times;</span>
+                            <h2>Register Mobil</h2>
+                            <form id="registerForm">
+                                <label for="namaMobil">Nama Mobil</label>
+                                <input type="text" id="namaMobil" name="Nama Mobil" placeholder="Nama Mobil" required>
+
+                                <label for="hargaMobil">Harga Mobil</label>
+                                <input type="number" id="hargaMobil" name="Harga Mobil" placeholder="Harga Mobil"
+                                    required>
+
+                                <label for="noPol">Nomor Polisi</label>
+                                <input type="text" id="noPol" name="Nomor Polisi" placeholder="Nomor Polisi" required>
+
+                                <div class="uploadContainer">
+                                    <div class="uploadCard">
+                                        <img class="uploadIcon" src="../../src/drop icon.png" alt="Upload">
+                                        <input type="file" id="fileInput" accept=".jpg, .jpeg, .png"
+                                            style="display: none;" />
+                                    </div>
+                                </div>
+                                <p class="infoUpload" id="textInfo">
+                                    Upload Gambar <br> Mobil
+                                </p>
+
+                                <button type="submit" class="registerBtn">Register</button>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+
             </ul>
             <div class="dropdown">
                 <button class="login-btn" id="btnUser"></button>
@@ -144,10 +216,6 @@
     </header>
 
     <div class="container">
-        <div class="leftText">
-            <strong style="width: 200px;">Tampilan Data User</strong>
-        </div>
-        <br>
         <div class="dashboardBtn">
             <button type="button" class="btn btn-secondary" id="pendingBtn">Pending</button>
             <button type="button" class="btn btn-secondary" id="prosesBtn">Proses</button>
@@ -267,19 +335,69 @@
             }
         };
 
-        function openModal() {
-            document.getElementById('registerModal').style.display = 'block';
+        // Modal User
+        function openModalUser() {
+            document.getElementById('registerModalUser').style.display = 'block';
         }
 
-        function closeModal() {
-            document.getElementById('registerModal').style.display = 'none';
+        function closeModalUser() {
+            document.getElementById('registerModalUser').style.display = 'none';
         }
 
         window.onclick = function (event) {
-            if (event.target == document.getElementById('registerModal')) {
-                closeModal();
+            if (event.target == document.getElementById('registerModalUser')) {
+                closeModalUser();
             }
         }
+
+        // Modal Admin
+
+        function openModalAdmin() {
+            document.getElementById('registerModalAdmin').style.display = 'block';
+        }
+
+        function closeModalAdmin() {
+            document.getElementById('registerModalAdmin').style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            if (event.target == document.getElementById('registerModalAdmin')) {
+                closeModalAdmin();
+            }
+        }
+
+        // Modal Pembayaran
+        function openModalPembayaran() {
+            document.getElementById('registerModalPembayaran').style.display = 'block';
+        }
+
+        function closeModalPembayaran() {
+            document.getElementById('registerModalPembayaran').style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            if (event.target == document.getElementById('registerModalPembayaran')) {
+                closeModalPembayaran();
+            }
+        }
+
+
+        // Modal Mobil
+
+        function openModalMobil() {
+            document.getElementById('registerModalMobil').style.display = 'block';
+        }
+
+        function closeModalMobil() {
+            document.getElementById('registerModalMobil').style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            if (event.target == document.getElementById('registerModalMobil')) {
+                closeModalMobil();
+            }
+        }
+
 
         function updateButtonText() {
             const btnUser = document.getElementById("btnUser");
@@ -324,5 +442,23 @@
         };
     </script>
 </body>
+
+<!-- Site footer -->
+<footer class="site-footer">
+    <div class="containerFooter">
+        <div class="row" style="display: flex;">
+            <div class="company">
+                <h6>Company</h6>
+                <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
+            </div>
+            <hr>
+            <div class="footerContainer">
+                <div class="row">
+                    <div class="col-md-8 col-sm-6 col-xs-12">
+                        <p class="copyright-text">PT. SUKSES JAYA TRANSPORINDO</p>
+                    </div>
+                </div>
+            </div>
+</footer>
 
 </html>

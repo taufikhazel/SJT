@@ -1,105 +1,198 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <title>SJT</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sewa Mobil</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    />
-  </head>
-  <body>
-    <header>
-      <nav>
-        <div class="logo">
-          <img src="../src/logo.png" alt="Logo" />
-        </div>
-        <ul class="nav-links">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Sewa Mobil</a></li>
-        </ul>
-        <button class="login-btn" id="btn-login">Login</button>
-      </nav>
-    </header>
-    <section class="hero">
-      <div class="hero-content">
-        <h1>Sewa Mobil Dan Mulai Perjalanan</h1>
+
+<head>
+  <title>SJT</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sewa Mobil</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+
+<body>
+  <header>
+    <nav>
+      <div class="logo">
+        <img src="../src/logo.png" alt="Logo" />
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#aboutUs">About Us</a></li>
+        <li><a href="#ourProgram">Our Program</a></li>
+      </ul>
+      <button class="login-btn" id="btn-login">Login</button>
+    </nav>
+  </header>
+  <div class="overlay" id="overlay"></div>
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Sewa Mobil Dan Mulai Perjalanan</h1>
+      <p>
+        Mulai petualangan Anda sekarang, pilih mobil impian Anda dan nikmati
+        perjalanan tanpa khawatir. Pengalaman berkendara yang tak terlupakan
+        dimulai di sini.
+      </p>
+      <button class="cta-btn">Sewa Mobil Sekarang</button>
+    </div>
+    <img src="../src/car-image.png" alt="Mobil" class="hero-image" />
+  </section>
+
+  <section class="why-choose-us">
+    <h2>Kenapa Harus Memilih Kami Untuk <span>Sewa Mobil</span>?</h2>
+    <div class="benefits">
+      <div class="benefit-item">
+        <span class="material-symbols-outlined">autorenew</span>
+        <h3>Fleksibilitas dalam Pilihan Kendaraan</h3>
         <p>
-          Mulai petualangan Anda sekarang, pilih mobil impian Anda dan nikmati
-          perjalanan tanpa khawatir. Pengalaman berkendara yang tak terlupakan
-          dimulai di sini.
+          Kami menawarkan beragam jenis mobil mulai dari kendaraan dengan
+          harga terjangkau hingga mobil premium, memastikan Anda untuk memilih
+          sesuai kebutuhan.
         </p>
-        <button class="cta-btn">Sewa Mobil Sekarang</button>
       </div>
-      <img src="../src/car-image.png" alt="Mobil" class="hero-image" />
-    </section>
-
-    <section class="why-choose-us">
-      <h2>Kenapa Harus Memilih Kami Untuk <span>Sewa Mobil</span>?</h2>
-      <div class="benefits">
+      <div class="benefit-item">
+        <span class="material-symbols-outlined">sentiment_very_satisfied</span>
+        <h3>Pelayanan Pelanggan yang Unggul</h3>
+        <p>
+          Kami menawarkan beragam jenis mobil mulai dari kendaraan dengan
+          harga terjangkau hingga mobil premium, memastikan Anda untuk memilih
+          sesuai kebutuhan.
+        </p>
+      </div>
+      <div class="benefit-item">
+        <span class="material-symbols-outlined">account_balance_wallet</span>
+        <h3>Harga yang Kompetitif</h3>
+        <p>
+          Kami menawarkan beragam jenis mobil mulai dari kendaraan dengan
+          harga terjangkau hingga mobil premium, memastikan Anda untuk memilih
+          sesuai kebutuhan.
+        </p>
+      </div>
+      <div class="benefit-row-wrapper">
         <div class="benefit-item">
-          <span class="material-symbols-outlined">autorenew</span>
-          <h3>Fleksibilitas dalam Pilihan Kendaraan</h3>
+          <span class="material-symbols-outlined">trophy</span>
+          <h3>Kendaraan yang Terawat dan Berkualitas</h3>
           <p>
             Kami menawarkan beragam jenis mobil mulai dari kendaraan dengan
-            harga terjangkau hingga mobil premium, memastikan Anda untuk memilih
-            sesuai kebutuhan.
+            harga terjangkau hingga mobil premium, memastikan Anda untuk
+            memilih sesuai kebutuhan.
           </p>
         </div>
         <div class="benefit-item">
-          <span class="material-symbols-outlined"
-            >sentiment_very_satisfied</span
-          >
-          <h3>Pelayanan Pelanggan yang Unggul</h3>
+          <span class="material-symbols-outlined">check_circle</span>
+          <h3>Proses Pemesanan yang Mudah</h3>
           <p>
             Kami menawarkan beragam jenis mobil mulai dari kendaraan dengan
-            harga terjangkau hingga mobil premium, memastikan Anda untuk memilih
-            sesuai kebutuhan.
+            harga terjangkau hingga mobil premium, memastikan Anda untuk
+            memilih sesuai kebutuhan.
           </p>
-        </div>
-        <div class="benefit-item">
-          <span class="material-symbols-outlined">account_balance_wallet</span>
-          <h3>Harga yang Kompetitif</h3>
-          <p>
-            Kami menawarkan beragam jenis mobil mulai dari kendaraan dengan
-            harga terjangkau hingga mobil premium, memastikan Anda untuk memilih
-            sesuai kebutuhan.
-          </p>
-        </div>
-        <div class="benefit-row-wrapper">
-          <div class="benefit-item">
-            <span class="material-symbols-outlined">trophy</span>
-            <h3>Kendaraan yang Terawat dan Berkualitas</h3>
-            <p>
-              Kami menawarkan beragam jenis mobil mulai dari kendaraan dengan
-              harga terjangkau hingga mobil premium, memastikan Anda untuk
-              memilih sesuai kebutuhan.
-            </p>
-          </div>
-          <div class="benefit-item">
-            <span class="material-symbols-outlined">check_circle</span>
-            <h3>Proses Pemesanan yang Mudah</h3>
-            <p>
-              Kami menawarkan beragam jenis mobil mulai dari kendaraan dengan
-              harga terjangkau hingga mobil premium, memastikan Anda untuk
-              memilih sesuai kebutuhan.
-            </p>
-          </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <script>
-      const loginButton = document.getElementById("btn-login");
+  <section class="about-us" id="aboutUs">
+    <h2 style="font-size: 60px;">About Us</h2>
+    <hr style="width: 600px; margin: auto;">
+    <div class="aboutUs">
+      <div class="aboutusImg"></div>
+      <br>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur, ullam iure nesciunt aperiam aspernatur
+        impedit, accusantium ex deserunt officia, vel culpa quidem modi autem molestias! Aut hic voluptatum esse iusto?
+      </p>
+    </div>
+  </section>
 
-      loginButton.addEventListener("click", () => {
-        window.location.href = "login.html";
+  <section class="ourProgram" id="ourProgram">
+    <h2 style="font-size: 50px;">Our Program</h2>
+    <hr style="width: 600px; margin: auto;">
+    <div class="programContainer">
+      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. At, sapiente architecto! Asperiores velit possimus
+        recusandae provident obcaecati aut quos quis quidem maiores ab! Iste error incidunt est officia nemo vitae.</p>
+    </div>
+  </section>
+
+  <div class="fab-container">
+    <div class="fab-container">
+      <button class="fab" id="fabButton">
+        <span class="fab-icon" id="fabIcon">&times;</span>
+      </button>
+    </div>
+
+    <div class="popover" id="popover">
+      <h3>FAB Popover</h3>
+      <p>The content of the popover is fully customizable. You can use it to create, for example, a menu.</p>
+    </div>
+  </div>
+  <script>
+    const loginButton = document.getElementById("btn-login");
+
+    loginButton.addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const fabButton = document.getElementById('fabButton');
+      const fabIcon = document.getElementById('fabIcon');
+      const popover = document.getElementById('popover');
+      const overlay = document.getElementById('overlay');
+
+      // Animasi Handling nya
+
+      fabButton.addEventListener('click', function () {
+        if (popover.classList.contains('show')) {
+          popover.classList.remove('show');
+          overlay.classList.remove('show');
+          fabIcon.style.transform = 'rotate(0deg)';
+        } else {
+          popover.classList.add('show');
+          overlay.classList.add('show');
+          fabIcon.style.transform = 'rotate(45deg)';
+        }
       });
-    </script>
-  </body>
-  <footer></footer>
+
+      document.addEventListener('click', function (event) {
+        if (!fabButton.contains(event.target) && !popover.contains(event.target)) {
+          popover.classList.remove('show');
+          overlay.classList.remove('show');
+          fabIcon.style.transform = 'rotate(0deg)';
+        }
+      });
+    });
+
+
+  </script>
+</body>
+
+
+
+
+<!-- Site footer -->
+<footer class="site-footer">
+  <div class="containerFooter">
+    <div class="row" style="display: flex; gap: 100px;">
+      <div class="company">
+        <h6>Company</h6>
+        <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
+      </div>
+      <div class="social">
+        <h6>Social</h6>
+        <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
+      </div>
+    </div>
+    <div class="Contact" style="margin-top: 20px;">
+      <h6>Legal</h6>
+      <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
+    </div>
+    <hr>
+    <div class="footerContainer">
+      <div class="row">
+        <div class="col-md-8 col-sm-6 col-xs-12">
+          <p class="copyright-text">PT. SUKSES JAYA TRANSPORINDO</p>
+        </div>
+      </div>
+    </div>
+</footer>
+
 </html>

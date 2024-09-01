@@ -10,6 +10,7 @@ body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
   color: #333;
+  background: #f5f5f5;
 }
 
 header nav {
@@ -20,6 +21,7 @@ header nav {
   padding: 10px 20px;
   background-color: #F9D689;
 }
+
 
 .logo img {
   height: 50px;
@@ -722,7 +724,28 @@ h3 {
   display: none;
 }
 
-/* Modal Register */
+/* Modal Register User */
+input#username {
+  height: 35px;
+  border-radius: 10px;
+}
+
+input#password {
+  height: 35px;
+  border-radius: 10px;
+}
+
+select#mobil {
+  height: 40px;
+  border-radius: 10px;
+}
+
+button.registerBtn {
+  height: 45px;
+  background: #ffbf4a;
+  border-radius: 10px;
+  margin-top: 50px;
+}
 
 form#registerForm {
   display: grid;
@@ -730,22 +753,23 @@ form#registerForm {
 }
 
 .modalUser {
-  display: none; /* Hidden by default */
-  position: fixed; 
-  z-index: 1; 
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  z-index: 1;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Black w/ opacity */
 }
 
 .modal-contentUser {
-  background-color: #fefefe;
-  margin: 15% auto; 
+  background: white;
+  margin: 15% auto;
   padding: 20px;
-  border: 1px solid #888;
   width: 80%;
   max-width: 400px;
   border-radius: 8px;
@@ -764,6 +788,153 @@ form#registerForm {
   text-decoration: none;
   cursor: pointer;
 }
+
+/* Modal Register Admin */
+
+
+.modalAdmin {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-contentAdmin {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 400px;
+  border-radius: 8px;
+}
+
+.closeAdmin {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.closeAdmin:hover,
+.closeAdmin:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Modal Register Pembayaran */
+
+
+.modalPembayaran {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-contentPembayaran {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 400px;
+  border-radius: 8px;
+}
+
+.closePembayaran {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.closePembayaran:hover,
+.closePembayaran:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Modal Register Pembayaran */
+
+input#namaMobil {
+  height: 40px;
+  border-radius: 10px;
+  padding: auto;
+}
+
+input#hargaMobil {
+  height: 40px;
+  border-radius: 10px;
+}
+
+input#noPol {
+  height: 40px;
+  border-radius: 10px;
+}
+
+img.uploadIcon {
+  width: 80px;
+  height: 80px;
+}
+
+.uploadContainer {
+  text-align: center;
+}
+
+p#textInfo {
+  text-align: center;
+  margin-bottom: -25px;
+}
+
+.modalMobil {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-contentMobil {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 400px;
+  border-radius: 8px;
+}
+
+.closeMobil {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.closeMobil:hover,
+.closeMobil:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 /*Profile Card*/
 .leftContent {
   background: rgb(35 49 60);
@@ -832,11 +1003,12 @@ input.rbtn {
   color: #EA3323;
   padding-right: 10px;
 }
-#success{
-    width: 36px;
-    height: 15px;
-    margin-top: 11px;
-    color: #75FB4C;
+
+#success {
+  width: 36px;
+  height: 15px;
+  margin-top: 11px;
+  color: #75FB4C;
 }
 
 a#tanggal {
@@ -861,6 +1033,11 @@ a#tanggal {
 #notification {
   margin: 7px;
 }
+
+#mobil {
+  margin-top: 7px;
+}
+
 
 /*Dropdown For Logout*/
 
@@ -928,6 +1105,197 @@ a#tanggal {
   /* Safari */
   animation: spin 2s linear infinite;
 }
+
+/* FAB */
+.fab-container {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 100;
+}
+
+.fab {
+  background-color: #6200ea;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  background: #26272b;
+  color: #ffffff;
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s;
+  outline: none;
+  z-index: 101;
+}
+
+.fab:hover {
+  background-color: #3700b3;
+}
+
+.fab-icon {
+  font-size: 24px;
+  font-weight: bold;
+  transition: transform 0.3s;
+}
+
+.popover {
+  position: fixed;
+  bottom: 100px;
+  right: 30px;
+  background-color: #ffffff;
+  color: #333;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 250px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 102;
+  display: none;
+}
+
+.popover.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.popover h3 {
+  margin-top: 0;
+}
+
+.popover p {
+  margin-bottom: 0;
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 99;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.overlay.show {
+  display: block;
+  opacity: 1;
+}
+
+
+/*FOOTER*/
+
+.col-md-4.col-sm-6.col-xs-12 {
+  margin-top: 15px;
+}
+
+.containerFooter {
+  margin-left: 15px;
+}
+
+.site-footer {
+  background-color: #26272b;
+  padding: 20px 0 20px;
+  font-size: 15px;
+  line-height: 24px;
+  color: #737373;
+  margin-top: 100px;
+}
+
+.site-footer hr {
+  border-top-color: #bbb;
+  opacity: 0.5;
+  margin-left: -22px;
+  margin-top: 30px;
+}
+
+.site-footer hr.small {
+  margin: 20px 0
+}
+
+.site-footer h6 {
+  color: #fff;
+  font-size: 16px;
+  text-transform: uppercase;
+  margin-top: 5px;
+  letter-spacing: 2px
+}
+
+.footer-links {
+  padding-left: 0;
+  list-style: none
+}
+
+.footer-links.inline li {
+  display: inline-block
+}
+
+.site-footer .social-icons {
+  text-align: right
+}
+
+.copyright-text {
+  padding-top: 10px;
+  margin: 0
+}
+
+
+/*About Us*/
+
+.about-us {
+  text-align: center;
+  padding-left: 30px;
+  background: #f5f5f5;
+}
+
+.aboutusImg {
+  width: 300px;
+  height: 400px;
+  margin: auto;
+  background: #000000;
+}
+
+.aboutUs {
+  margin-top: 20px;
+  padding-right: 30px;
+}
+
+
+/*Mobil*/
+.ourProgram {
+  padding-top: 50px;
+  padding-left: 30px;
+  text-align: center;
+  background: #f5f5f5;
+}
+
+.programContainer {
+  display: flex;
+  padding-top: 30px;
+  padding-right: 30px;
+  justify-content: center;
+}
+
+.imgMobil {
+  width: 300px;
+  height: 300px;
+  background: #000000;
+}
+
 
 /* Safari */
 @-webkit-keyframes spin {
