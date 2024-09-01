@@ -747,7 +747,7 @@ button.registerBtn {
   margin-top: 50px;
 }
 
-form#registerForm {
+form.registerForm {
   display: grid;
   row-gap: 10px;
 }

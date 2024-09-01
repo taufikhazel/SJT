@@ -99,7 +99,7 @@
                     <div class="modal-contentUser">
                         <span class="closeUser" onclick="closeModalUser()">&times;</span>
                         <h2>Register User</h2>
-                        <form id="registerForm">
+                        <form id="registerForm" class="registerForm">
                             <label for="username">Username</label>
                             <input type="text" id="username" name="username" required>
 
@@ -108,12 +108,9 @@
 
                             <label for="mobil">Mobil</label>
                             <select id="mobil" name="mobil">
-                                <option value="user">User</option>
-                                <option value="admin">Admin</option>
-                                <option value="guest">Guest</option>
                             </select>
 
-                            <button type="submit" class="registerBtn">Register</button>
+                            <button type="submit" class="registerBtn" id="registUserBtn" disabled>Register</button>
                         </form>
                     </div>
                 </div>
@@ -123,14 +120,14 @@
                     <div class="modal-contentAdmin">
                         <span class="closeAdmin" onclick="closeModalAdmin()">&times;</span>
                         <h2>Register Admin</h2>
-                        <form id="registerForm">
+                        <form id="registerForm" class="registerForm">
                             <label for="username">Username</label>
                             <input type="text" id="username" name="username" required>
 
                             <label for="password">Password</label>
                             <input type="password" id="password" name="password" required>
 
-                            <button type="submit" class="registerBtn">Register</button>
+                            <button type="submit" class="registerBtn" disabled>Register</button>
                         </form>
                     </div>
                 </div>
@@ -140,7 +137,7 @@
                     <div class="modal-contentPembayaran">
                         <span class="closePembayaran" onclick="closeModalPembayaran()">&times;</span>
                         <h2>Edit Pembayaran</h2>
-                        <form id="registerForm">
+                        <form id="registerForm" class="registerForm">
                             <label for="username">Username</label>
                             <input type="text" id="username" name="username" required>
 
@@ -177,7 +174,7 @@
                         <div class="modal-contentMobil">
                             <span class="closeMobil" onclick="closeModalMobil()">&times;</span>
                             <h2>Register Mobil</h2>
-                            <form id="registerForm">
+                            <form id="registerFormMobil" class="registerForm">
                                 <label for="namaMobil">Nama Mobil</label>
                                 <input type="text" id="namaMobil" name="Nama Mobil" placeholder="Nama Mobil" required>
 
@@ -189,9 +186,9 @@
                                 <input type="text" id="noPol" name="Nomor Polisi" placeholder="Nomor Polisi" required>
 
                                 <div class="uploadContainer">
-                                    <div class="uploadCard">
+                                    <div class="uploadCard" onclick="document.getElementById('fileInput').click()">
                                         <img class="uploadIcon" src="../../src/drop icon.png" alt="Upload">
-                                        <input type="file" id="fileInput" accept=".jpg, .jpeg, .png"
+                                        <input type="file" id="fileInput" accept=".jpg, .jpeg, .png" required
                                             style="display: none;" />
                                     </div>
                                 </div>
@@ -199,8 +196,9 @@
                                     Upload Gambar <br> Mobil
                                 </p>
 
-                                <button type="submit" class="registerBtn">Register</button>
+                                <button type="submit" class="registerBtn" id="submitMobil" disabled>Register</button>
                             </form>
+                            <div id="loader" style="display:none;">Loading...</div>
                         </div>
                     </div>
                 </li>
@@ -350,6 +348,123 @@
             }
         }
 
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobilSelect = document.getElementById('mobil');
+            const registerForm = document.getElementById('registerForm');
+            const registUserBtn = document.getElementById('registUserBtn');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+
+            function checkFormValidity() {
+                const isFormValid = usernameInput.value.trim() !== '' &&
+                    passwordInput.value.trim() !== '' &&
+                    mobilSelect.value !== '';
+                registUserBtn.disabled = !isFormValid;
+            }
+
+            usernameInput.addEventListener('input', checkFormValidity);
+            passwordInput.addEventListener('input', checkFormValidity);
+            mobilSelect.addEventListener('change', checkFormValidity);
+
+            fetch('../data/mobil.json') // Updated path
+                .then(response => response.json())
+                .then(mobilData => {
+                    mobilData.forEach(car => {
+                        if (car.status === 'Tersedia') {
+                            const option = document.createElement('option');
+                            option.value = car.idMobil;
+                            option.textContent = car.namaMobil;
+                            mobilSelect.appendChild(option);
+                        }
+                    });
+                    checkFormValidity();
+                })
+                .catch(error => {
+                    console.error('Error loading car data:', error.message);
+                    console.error('Full error details:', error);
+                    alert('Failed to load car data. Please try again later.');
+                });
+
+            registerForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const username = usernameInput.value;
+                const password = passwordInput.value;
+                const selectedMobil = mobilSelect.value;
+
+                if (username && password && selectedMobil) {
+                    fetch('get_last_user_id.php') // Updated path
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok: ' + response.statusText);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            const newIdUser = data.lastIdUser + 1;
+
+                            const userData = {
+                                idUser: newIdUser,
+                                username: username,
+                                password: password,
+                                mobil: selectedMobil
+                            };
+
+                            return fetch('register_user.php', { // Updated path
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(userData)
+                            });
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok: ' + response.statusText);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.status === 'success') {
+                                return fetch('update_mobil_status.php', { // Updated path
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ idMobil: selectedMobil, status: 'Terpakai' })
+                                });
+                            } else {
+                                throw new Error(data.message || 'An unknown error occurred');
+                            }
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok: ' + response.statusText);
+                            }
+                            return response.json();
+                        })
+                        .then(statusUpdateData => {
+                            if (statusUpdateData.status === 'success') {
+                                alert('User registered successfully!');
+                                closeModalUser();
+                                registerForm.reset();
+                                checkFormValidity();
+                            } else {
+                                throw new Error('Error updating mobil status: ' + statusUpdateData.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error during registration:', error.message);
+                            console.error('Full error details:', error);
+                            alert('There was a problem with registration. Please try again.');
+                        });
+                } else {
+                    alert('Please fill out all fields.');
+                }
+            });
+        });
+
+
         // Modal Admin
 
         function openModalAdmin() {
@@ -397,6 +512,68 @@
                 closeModalMobil();
             }
         }
+
+        //Handle Logika Modal Mobil
+        document.addEventListener("DOMContentLoaded", function () {
+            const namaMobilInput = document.getElementById("namaMobil");
+            const hargaMobilInput = document.getElementById("hargaMobil");
+            const noPolInput = document.getElementById("noPol");
+            const fileInput = document.getElementById("fileInput");
+            const submitMobilBtn = document.getElementById("submitMobil");
+            const loader = document.getElementById("loader");
+
+            function checkFormValidity() {
+                if (
+                    namaMobilInput.value.trim() &&
+                    hargaMobilInput.value.trim() &&
+                    noPolInput.value.trim() &&
+                    fileInput.files.length > 0
+                ) {
+                    submitMobilBtn.disabled = false;
+                } else {
+                    submitMobilBtn.disabled = true;
+                }
+            }
+
+            [namaMobilInput, hargaMobilInput, noPolInput, fileInput].forEach(input => {
+                input.addEventListener("input", checkFormValidity);
+            });
+
+            document.getElementById("registerFormMobil").addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                loader.style.display = "block";
+
+                const formData = new FormData();
+                formData.append("namaMobil", namaMobilInput.value);
+                formData.append("hargaMobil", parseInt(hargaMobilInput.value));
+                formData.append("noPol", noPolInput.value);
+                formData.append("gambar", fileInput.files[0]);
+
+                fetch('submit_mobil.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        loader.style.display = "none";
+
+                        if (data.success) {
+                            document.getElementById("registerForm").reset();
+                            submitMobilBtn.disabled = true;
+                            alert(data.message);
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        loader.style.display = "none";
+                        alert("Terjadi kesalahan saat mengirim data.");
+                    });
+            });
+        });
+
 
 
         function updateButtonText() {

@@ -504,87 +504,83 @@
 
         //Bagian Upload Gambar
 
-        const uploadCard = document.querySelector('.uploadCard');
-        const fileInput = document.getElementById('fileInput');
-        const textInfo = document.getElementById('textInfo');
+        document.addEventListener('DOMContentLoaded', function () {
+            const uploadCard = document.querySelector('.uploadCard');
+            const fileInput = document.getElementById('fileInput');
+            const textInfo = document.getElementById('textInfo');
+            const submitBtn = document.getElementById('submitBtn'); 
+            const loader = document.getElementById('loader');
 
-        uploadCard.addEventListener('click', function () {
-            fileInput.click();
-        });
+            uploadCard.addEventListener('click', function () {
+                fileInput.click();
+            });
 
-        fileInput.addEventListener('change', function () {
-            const file = this.files[0];
+            fileInput.addEventListener('change', function () {
+                const file = this.files[0];
 
-            if (file) {
-                const fileExtension = file.name.split('.').pop().toLowerCase();
+                if (file) {
+                    const fileExtension = file.name.split('.').pop().toLowerCase();
+                    const allowedExtensions = ['jpg', 'jpeg', 'png'];
 
-                const allowedExtensions = ['jpg', 'jpeg', 'png'];
+                    if (allowedExtensions.includes(fileExtension)) {
+                        const fileURL = URL.createObjectURL(file);
 
-                if (allowedExtensions.includes(fileExtension)) {
-                    const fileURL = URL.createObjectURL(file);
-                    JSON.parse(sessionStorage.getItem("transaksiData"));
+                        let transaksiData = JSON.parse(sessionStorage.getItem("transaksiData")) || {};
+                        transaksiData.bukti = fileURL; 
+                        sessionStorage.setItem("transaksiData", JSON.stringify(transaksiData));
 
-                    transaksiData.bukti = fileURL;
-                    submitBtn.disabled = false;
-                    sessionStorage.setItem(
-                        "transaksiData",
-                        JSON.stringify(transaksiData)
-                    );
+                        textInfo.textContent = `${file.name}`;
+                        submitBtn.disabled = false;
 
-                    textInfo.textContent = `${file.name}`;
-
-                    // Bagian image preview
-                    let imgElement = document.querySelector('.uploadCard img');
-                    if (!imgElement) {
-                        imgElement = document.createElement('img');
-                        imgElement.className = 'previewImage';
-                        imgElement.style.width = '250px';
-                        imgElement.style.height = '250px';
-                        uploadCard.appendChild(imgElement);
-                    }
-                    imgElement.src = fileURL;
-                } else {
-                    alert('Hanya file .jpg, .jpeg, and .png yang diperbolehkan');
-                    fileInput.value = '';
-                }
-            }
-        });
-
-        submitBtn.addEventListener('click', function () {
-            let transaksiData = JSON.parse(sessionStorage.getItem('transaksiData'));
-            transaksiData.status = 'Belum Diproses';
-
-            sessionStorage.setItem('transaksiData', JSON.stringify(transaksiData));
-
-            if (transaksiData) {
-                document.getElementById('loader').style.display = 'block';
-
-                fetch('update_transaksi.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(transaksiData),
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('loader').style.display = 'none';
-
-                        if (data.status === 'success') {
-                            sessionStorage.removeItem('transaksiData');
-                            alert('Data anda sedang diproses, harap tunggu konfirmasi dari Perusahaan. Anda akan dikirimkan ke halaman user kembali');
-                            window.location.href = 'user.html';
-                        } else {
-                            throw new Error('Error: ' + data.message);
+                        // Image preview
+                        let imgElement = document.querySelector('.uploadCard img');
+                        if (!imgElement) {
+                            imgElement = document.createElement('img');
+                            imgElement.className = 'previewImage';
+                            imgElement.style.width = '250px';
+                            imgElement.style.height = '250px';
+                            uploadCard.appendChild(imgElement);
                         }
+                        imgElement.src = fileURL;
+                    } else {
+                        alert('Hanya file .jpg, .jpeg, dan .png yang diperbolehkan');
+                        fileInput.value = '';
+                    }
+                }
+            });
+
+            submitBtn.addEventListener('click', function () {
+                let transaksiData = JSON.parse(sessionStorage.getItem('transaksiData')) || {};
+                transaksiData.status = 'Belum Diproses';
+
+                const file = fileInput.files[0];
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('transaksiData', JSON.stringify(transaksiData));
+
+                    fetch('update_transaksi.php', {
+                        method: 'POST',
+                        body: formData,
                     })
-                    .catch(error => {
-                        document.getElementById('loader').style.display = 'none';
-                        console.error('There was a problem with the fetch operation:', error);
-                    });
-            } else {
-                alert('Tidak ada data untuk dikirim.');
-            }
+                        .then(response => response.json())
+                        .then(data => {
+
+                            if (data.status === 'success') {
+                                sessionStorage.removeItem('transaksiData');
+                                alert('Data Anda sedang diproses, harap tunggu konfirmasi dari perusahaan. Anda akan dikirimkan ke halaman user kembali.');
+                                window.location.href = 'user.html';
+                            } else {
+                                throw new Error('Error: ' + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('There was a problem with the fetch operation:', error);
+                        });
+                } else {
+                    alert('Tidak ada file gambar untuk diupload.');
+                }
+            });
         });
 
         //Logika Notifikasi
@@ -668,7 +664,7 @@
 
             if (isBelumDiprosesFound) {
                 notificationIcon.textContent = 'notification_important';
-                notificationIcon.style.color = '#EA3323'; 
+                notificationIcon.style.color = '#EA3323';
             } else {
                 notificationIcon.textContent = 'notifications';
                 notificationIcon.style.color = '#000';
@@ -684,29 +680,29 @@
 <!-- Site footer -->
 <footer class="site-footer">
     <div class="containerFooter">
-      <div class="row" style="display: flex; gap: 100px;">
-        <div class="company">
-          <h6>Company</h6>
-          <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
+        <div class="row" style="display: flex; gap: 100px;">
+            <div class="company">
+                <h6>Company</h6>
+                <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
+            </div>
+            <div class="social">
+                <h6>Social</h6>
+                <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
+            </div>
         </div>
-        <div class="social">
-          <h6>Social</h6>
-          <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
+        <div class="Contact" style="margin-top: 20px;">
+            <h6>Legal</h6>
+            <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
         </div>
-      </div>
-      <div class="Contact" style="margin-top: 20px;">
-        <h6>Legal</h6>
-        <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
-      </div>
-      <hr>
-      <div class="footerContainer">
-        <div class="row">
-          <div class="col-md-8 col-sm-6 col-xs-12">
-            <p class="copyright-text">PT. SUKSES JAYA TRANSPORINDO</p>
-          </div>
+        <hr>
+        <div class="footerContainer">
+            <div class="row">
+                <div class="col-md-8 col-sm-6 col-xs-12">
+                    <p class="copyright-text">PT. SUKSES JAYA TRANSPORINDO</p>
+                </div>
+            </div>
         </div>
-      </div>
-  </footer>
-  
+</footer>
+
 
 </html>

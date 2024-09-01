@@ -1,18 +1,18 @@
 [
     {
         "idMobil": "1",
-        "namaMobil": "user",
-        "hargaMobil": 400000,
-        "gambar":"url",
-        "noPol":"",
-        "status":"Tersedia"
+        "namaMobil": "asdsad",
+        "hargaMobil": 12314,
+        "gambar": "..\/uploads\/mobil\/WhatsApp Image 2024-01-04 at 16.43.23.jpeg",
+        "noPol": "asasff",
+        "status": "Terpakai"
     },
     {
         "idMobil": "2",
-        "namaMobil": "user1",
-        "hargaMobil": 400000,
-        "gambar":"url",
-        "noPol":"",
-        "status":"Tersedia"
+        "namaMobil": "asdsafad",
+        "hargaMobil": 12314,
+        "gambar": "..\/uploads\/mobil\/WhatsApp Image 2024-01-04 at 16.43.23.jpeg",
+        "noPol": "asasff",
+        "status": "Terpakai"
     }
 ]
