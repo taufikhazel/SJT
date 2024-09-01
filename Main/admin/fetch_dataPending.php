@@ -2,10 +2,8 @@
 // Read the JSON file
 $jsonData = file_get_contents('../data/transaksi.json');
 
-// Decode the JSON data into a PHP array
 $data = json_decode($jsonData, true);
 
-// Group data by "tanggal"
 $groupedData = [];
 foreach ($data as $transaction) {
     // Only include transactions with status "Belum Diproses"

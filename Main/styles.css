@@ -1024,6 +1024,12 @@ a#tanggal {
   margin-left: 70px;
 }
 
+/* Halaman Proses */
+.page-contentProses, .page-contentSukses,.page-contentReject,.page-contentUser {
+  padding-left: 0px;
+  padding-top: 20px;
+}
+
 /* The Close Button Modal*/
 .close {
   color: #aaa;
