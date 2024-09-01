@@ -14,5 +14,37 @@
         "gambar": "..\/uploads\/mobil\/WhatsApp Image 2024-01-04 at 16.43.23.jpeg",
         "noPol": "asasff",
         "status": "Terpakai"
+    },
+    {
+        "idMobil": "3",
+        "namaMobil": "asfasfa",
+        "hargaMobil": 12414214,
+        "gambar": "..\/uploads\/mobil\/WhatsApp Image 2024-01-04 at 14.57.27.jpeg",
+        "noPol": "asasff",
+        "status": "Tersedia"
+    },
+    {
+        "idMobil": "4",
+        "namaMobil": "asfasfa",
+        "hargaMobil": 12414214,
+        "gambar": "..\/uploads\/mobil\/WhatsApp Image 2024-01-04 at 14.57.27.jpeg",
+        "noPol": "asasff",
+        "status": "Tersedia"
+    },
+    {
+        "idMobil": "5",
+        "namaMobil": "afasfa",
+        "hargaMobil": 124151,
+        "gambar": "..\/uploads\/mobil\/WhatsApp Image 2024-01-04 at 16.43.23.jpeg",
+        "noPol": "asfafaf",
+        "status": "Tersedia"
+    },
+    {
+        "idMobil": "6",
+        "namaMobil": "safasfafsatsdZczxv",
+        "hargaMobil": 112512513636,
+        "gambar": "..\/uploads\/mobil\/WhatsApp Image 2024-01-04 at 16.32.55.jpeg",
+        "noPol": "ett31",
+        "status": "Tersedia"
     }
 ]

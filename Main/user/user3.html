@@ -336,7 +336,7 @@
                 </div>
             </div>
             <a class="salinRekening">Salin rekening</a>
-            <p class="noRekening">XXXXXXXXXXXXXX</p>
+            <p class="noRekening" id="noRekening"></p>
             <div class="uploadContainer">
                 <div class="uploadCard">
                     <img class="uploadIcon" src="../../src/drop icon.png" alt="Upload">
@@ -502,13 +502,29 @@
             alert('Rekening copied to clipboard!');
         });
 
+        //Logika Set nomor Rekening
+
+        function setNoRekeningValue() {
+            fetch('../admin/getRekening.php') 
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        document.getElementById('noRekening').textContent = data.rekening;  
+                    } else {
+                        console.error('Error fetching rekening data:', data.message);
+                    }
+                })
+                .catch(error => console.error('Error fetching rekening data:', error));
+        }
+        document.addEventListener('DOMContentLoaded', setNoRekeningValue);
+
         //Bagian Upload Gambar
 
         document.addEventListener('DOMContentLoaded', function () {
             const uploadCard = document.querySelector('.uploadCard');
             const fileInput = document.getElementById('fileInput');
             const textInfo = document.getElementById('textInfo');
-            const submitBtn = document.getElementById('submitBtn'); 
+            const submitBtn = document.getElementById('submitBtn');
             const loader = document.getElementById('loader');
 
             uploadCard.addEventListener('click', function () {
@@ -526,7 +542,7 @@
                         const fileURL = URL.createObjectURL(file);
 
                         let transaksiData = JSON.parse(sessionStorage.getItem("transaksiData")) || {};
-                        transaksiData.bukti = fileURL; 
+                        transaksiData.bukti = fileURL;
                         sessionStorage.setItem("transaksiData", JSON.stringify(transaksiData));
 
                         textInfo.textContent = `${file.name}`;

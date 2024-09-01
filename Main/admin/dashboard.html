@@ -99,12 +99,12 @@
                     <div class="modal-contentUser">
                         <span class="closeUser" onclick="closeModalUser()">&times;</span>
                         <h2>Register User</h2>
-                        <form id="registerForm" class="registerForm">
+                        <form id="registerFormUser" class="registerForm">
                             <label for="username">Username</label>
-                            <input type="text" id="username" name="username" required>
+                            <input type="text" id="usernameUser" name="username" required>
 
                             <label for="password">Password</label>
-                            <input type="password" id="password" name="password" required>
+                            <input type="password" id="passwordUser" name="password" required>
 
                             <label for="mobil">Mobil</label>
                             <select id="mobil" name="mobil">
@@ -120,14 +120,14 @@
                     <div class="modal-contentAdmin">
                         <span class="closeAdmin" onclick="closeModalAdmin()">&times;</span>
                         <h2>Register Admin</h2>
-                        <form id="registerForm" class="registerForm">
+                        <form id="registerFormAdmin" class="registerForm">
                             <label for="username">Username</label>
-                            <input type="text" id="username" name="username" required>
+                            <input type="text" id="usernameAdmin" name="username" required>
 
                             <label for="password">Password</label>
-                            <input type="password" id="password" name="password" required>
+                            <input type="password" id="passwordAdmin" name="password" required>
 
-                            <button type="submit" class="registerBtn" disabled>Register</button>
+                            <button type="submit" class="registerBtn" id="registerBtnAdmin" disabled>Register</button>
                         </form>
                     </div>
                 </div>
@@ -137,17 +137,19 @@
                     <div class="modal-contentPembayaran">
                         <span class="closePembayaran" onclick="closeModalPembayaran()">&times;</span>
                         <h2>Edit Pembayaran</h2>
-                        <form id="registerForm" class="registerForm">
-                            <label for="username">Username</label>
-                            <input type="text" id="username" name="username" required>
+                        <form id="registerFormPembayaran" class="registerForm">
+                            <label for="nomorRekeningSekarang">Nomor Rekening Sekarang</label>
+                            <p id="nomorRekeningSekarang"></p>
 
-                            <label for="password">Password</label>
-                            <input type="password" id="password" name="password" required>
+                            <label for="nomorRekeningBaru">Nomor Rekening Baru</label>
+                            <input type="number" id="nomorRekeningBaru" name="nomorRekeningBaru" required>
 
-                            <button type="submit" class="registerBtn">Register</button>
+                            <button type="submit" class="registerBtn" id="registerBtnPembayaran"
+                                disabled>Update</button>
                         </form>
                     </div>
                 </div>
+
 
                 <li>
                     <span class="material-symbols-outlined" id="notification">
@@ -350,10 +352,10 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             const mobilSelect = document.getElementById('mobil');
-            const registerForm = document.getElementById('registerForm');
+            const registerForm = document.getElementById('registerFormUser');
             const registUserBtn = document.getElementById('registUserBtn');
-            const usernameInput = document.getElementById('username');
-            const passwordInput = document.getElementById('password');
+            const usernameInput = document.getElementById('usernameUser');
+            const passwordInput = document.getElementById('passwordUser');
 
             function checkFormValidity() {
                 const isFormValid = usernameInput.value.trim() !== '' &&
@@ -481,13 +483,103 @@
             }
         }
 
+        document.addEventListener('DOMContentLoaded', function () {
+            const registerForm = document.getElementById('registerFormAdmin');
+            const usernameInput = document.getElementById('usernameAdmin');
+            const passwordInput = document.getElementById('passwordAdmin');
+            const registerBtnAdmin = document.getElementById('registerBtnAdmin');
+
+            function checkFormValidity() {
+                const isFormValid = usernameInput.value.trim() !== '' && passwordInput.value.trim() !== '';
+                registerBtnAdmin.disabled = !isFormValid;
+            }
+
+            usernameInput.addEventListener('input', checkFormValidity);
+            passwordInput.addEventListener('input', checkFormValidity);
+
+            registerForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const username = usernameInput.value;
+                const password = passwordInput.value;
+
+                if (username && password) {
+                    fetch('get_last_admin_id.php')
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok: ' + response.statusText);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            const lastIdAdmin = data.lastIdAdmin || 0;
+                            const newIdAdmin = lastIdAdmin + 1;
+
+                            const adminDataToSend = {
+                                idAdmin: newIdAdmin.toString(),
+                                username: username,
+                                password: password
+                            };
+
+                            return fetch('register_admin.php', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(adminDataToSend)
+                            });
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok: ' + response.statusText);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.status === 'success') {
+                                alert('Admin registered successfully!');
+                                closeModalAdmin();
+                                registerForm.reset();
+                                checkFormValidity();
+                            } else {
+                                throw new Error(data.message || 'An unknown error occurred');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error during registration:', error.message);
+                            console.error('Full error details:', error);
+                            alert('There was a problem with registration. Please try again.');
+                        });
+                } else {
+                    alert('Please fill out all fields.');
+                }
+            });
+        });
+
         // Modal Pembayaran
+
         function openModalPembayaran() {
-            document.getElementById('registerModalPembayaran').style.display = 'block';
+            const modal = document.getElementById("registerModalPembayaran");
+            modal.style.display = "block";
+
+            fetchRekeningData(); 
         }
 
         function closeModalPembayaran() {
-            document.getElementById('registerModalPembayaran').style.display = 'none';
+            document.getElementById("registerModalPembayaran").style.display = "none";
+        }
+
+        function fetchRekeningData() {
+            fetch('getRekening.php')  
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        document.getElementById('nomorRekeningSekarang').textContent = data.rekening;
+                    } else {
+                        console.error('Error fetching rekening data:', data.message);
+                    }
+                })
+                .catch(error => console.error('Error fetching rekening data:', error));
         }
 
         window.onclick = function (event) {
@@ -495,6 +587,48 @@
                 closeModalPembayaran();
             }
         }
+
+        const nomorRekeningBaruInput = document.getElementById('nomorRekeningBaru');
+        const registerBtnPembayaran = document.getElementById('registerBtnPembayaran');
+
+        nomorRekeningBaruInput.addEventListener('input', function () {
+            if (nomorRekeningBaruInput.value.trim() !== '') {
+                registerBtnPembayaran.disabled = false;
+            } else {
+                registerBtnPembayaran.disabled = true;
+            }
+        });
+
+        document.getElementById('registerFormPembayaran').addEventListener('submit', function (event) {
+            event.preventDefault();
+            
+
+            const newRekening = nomorRekeningBaruInput.value.trim();
+
+            fetch('updateRekening.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',  
+                },
+                body: JSON.stringify({                 
+                    'nomorRekeningBaru': newRekening
+                })
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.status === 'success') {
+                        alert(result.message);
+                        fetchRekeningData(); 
+                        closeModalPembayaran(); 
+                        nomorRekeningBaruInput.value = '';
+                        registerBtnPembayaran.disabled = true;
+                    } else {
+                        alert(result.message);
+                    }
+                })
+                .catch(error => console.error('Error updating rekening data:', error));
+        });
+
 
 
         // Modal Mobil
@@ -559,7 +693,7 @@
                         loader.style.display = "none";
 
                         if (data.success) {
-                            document.getElementById("registerForm").reset();
+                            document.getElementById("registerFormMobil").reset();
                             submitMobilBtn.disabled = true;
                             alert(data.message);
                         } else {
