@@ -37,6 +37,7 @@
             background: none;
             border: none;
             display: flex;
+            height: 50px;
         }
 
         .dashboardBtn {
@@ -76,7 +77,8 @@
         }
 
         .page-content {
-            padding: 20px;
+            padding-left: 40px;
+            padding-top: 20px;
         }
 
         .dashboardBtn .btn {
@@ -227,19 +229,19 @@
 
     <!-- Bagian Page untuk One Page -->
     <div id="pendingPage" class="page-content" style="display: none;">
-        <div class="cardProfile">
-            <a href="#" class="tanggalBulan">tanggal/bulan/tahun</a>
-            <div class="leftContent">
-                <div class="profilePict">
+        <!-- <div class="cardProfile">
+            <a href="#" class="tanggalBulan" id="tanggalBulan"></a>
+            <div class="leftContent" id="leftContent">
+                <div>
                 </div>
                 <div class="isiContentLeft">
-                    <a href="#" class="leftNama">USERNAME</a>
-                    <a href="#" class="leftMobil">Jenis Nama Mobil</a>
-                    <a href="#" class="leftKode">Kode Pesanan :</a>
-                    <a href="#" class="leftStatus">Status :</a>
+                    <a href="#" id="namaUser"></a>
+                    <a href="#" id="jenisNamaMobil"></a>
+                    <a href="#" id="kodePesanan">Kode Pesanan :</a>
+                    <a href="#" id="statusMobil">Status :</a>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <div id="prosesPage" class="page-content" style="display: none;">
@@ -316,6 +318,18 @@
             showPage('pendingPage', 'pendingBtn');
             updateButtonText();
         };
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const pendingPage = document.getElementById('pendingPage');
+
+            fetch('fetch_dataPending.php')
+                .then(response => response.text())
+                .then(data => {
+                    pendingPage.innerHTML = data;
+                    pendingPage.style.display = 'block'; 
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        });
 
         var modal = document.getElementById("myModal");
         var spanNotif = document.getElementById("notification");
@@ -562,7 +576,7 @@
             const modal = document.getElementById("registerModalPembayaran");
             modal.style.display = "block";
 
-            fetchRekeningData(); 
+            fetchRekeningData();
         }
 
         function closeModalPembayaran() {
@@ -570,7 +584,7 @@
         }
 
         function fetchRekeningData() {
-            fetch('getRekening.php')  
+            fetch('getRekening.php')
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
@@ -601,16 +615,16 @@
 
         document.getElementById('registerFormPembayaran').addEventListener('submit', function (event) {
             event.preventDefault();
-            
+
 
             const newRekening = nomorRekeningBaruInput.value.trim();
 
             fetch('updateRekening.php', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',  
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({                 
+                body: JSON.stringify({
                     'nomorRekeningBaru': newRekening
                 })
             })
@@ -618,8 +632,8 @@
                 .then(result => {
                     if (result.status === 'success') {
                         alert(result.message);
-                        fetchRekeningData(); 
-                        closeModalPembayaran(); 
+                        fetchRekeningData();
+                        closeModalPembayaran();
                         nomorRekeningBaruInput.value = '';
                         registerBtnPembayaran.disabled = true;
                     } else {

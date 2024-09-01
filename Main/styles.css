@@ -936,13 +936,18 @@ p#textInfo {
 }
 
 /*Profile Card*/
+.separator {
+  margin-top: 20px;
+}
+
 .leftContent {
   background: rgb(35 49 60);
-  width: 400px;
+  width: 250px;
   height: 150px;
   border-radius: 20px;
   box-shadow: 3px 2px 4px 0px;
-  display: flex;
+  display: inline-grid;
+  margin-left: 20px;
 }
 
 .leftText {
@@ -976,12 +981,14 @@ p#textInfo {
 }
 
 .isiContentLeft a {
-  font-size: 14px;
+  font-size: 12px;
   color: white;
+  padding-bottom: 6px;
+  padding-left: 20px;
 }
 
 a.leftNama {
-  font-size: 15px;
+  font-size: 12px;
 }
 
 a.leftMobil {
@@ -989,8 +996,10 @@ a.leftMobil {
 }
 
 a.tanggalBulan {
-  font-size: 14px;
-  font-weight: 800;
+  font-size: 12px;
+  font-weight: 700;
+  color: black;
+  margin-left: 35px;
 }
 
 input.rbtn {
