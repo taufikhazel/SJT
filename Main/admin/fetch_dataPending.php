@@ -1,12 +1,10 @@
 <?php
-// Read the JSON file
 $jsonData = file_get_contents('../data/transaksi.json');
 
 $data = json_decode($jsonData, true);
 
 $groupedData = [];
 foreach ($data as $transaction) {
-    // Only include transactions with status "Belum Diproses"
     if ($transaction['status'] === 'Belum Diproses') {
         $date = $transaction['tanggal'];
         if (!isset($groupedData[$date])) {
@@ -16,10 +14,8 @@ foreach ($data as $transaction) {
     }
 }
 
-// Sort dates by newest first
 krsort($groupedData);
 
-// Generate HTML
 $html = '';
 foreach ($groupedData as $date => $transactions) {
     $html .= '<div class="separator">';

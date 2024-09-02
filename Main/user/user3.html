@@ -549,7 +549,7 @@
                         textInfo.textContent = `${file.name}`;
                         submitBtn.disabled = false;
 
-                        // Image preview
+                        // Menampilkan Gambar
                         let imgElement = document.querySelector('.uploadCard img');
                         if (!imgElement) {
                             imgElement = document.createElement('img');
@@ -695,23 +695,21 @@
         // Logika Car Detail 
 
         document.addEventListener("DOMContentLoaded", function () {
-            // Retrieve the transaksiData from sessionStorage
             const transaksiData = JSON.parse(sessionStorage.getItem('transaksiData'));
 
-            // Ensure that transaksiData exists and has the mobil property
             if (transaksiData && transaksiData.mobil) {
                 const idMobil = transaksiData.mobil;
-                console.log('ID Mobil from sessionStorage:', idMobil); // Debugging line
+                console.log('ID Mobil from sessionStorage:', idMobil);
 
                 fetch('../data/mobil.json')
                     .then(response => response.json())
                     .then(data => {
-                        console.log('Data from mobil.json:', data); // Debugging line
+                        console.log('Data from mobil.json:', data); 
 
                         const mobil = data.find(mobil => mobil.idMobil === idMobil);
 
                         if (mobil) {
-                            console.log('Mobil found:', mobil); // Debugging line
+                            console.log('Mobil found:', mobil);
 
                             document.getElementById('namaMobil').textContent = mobil.namaMobil;
                             document.getElementById('carImg').src = mobil.gambar;
@@ -719,7 +717,7 @@
                             document.getElementById('subTotal').textContent = subTotalHarga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
 
                             const taxPercentage = 0;
-                            const subTotal = mobil.hargaMobil; // Since hargaMobil is a number, no need to parse
+                            const subTotal = mobil.hargaMobil; 
                             const taxAmount = subTotal * (taxPercentage / 100);
                             const totalHarga = subTotal + taxAmount;
 
