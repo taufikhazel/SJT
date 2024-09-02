@@ -1025,9 +1025,26 @@ a#tanggal {
 }
 
 /* Halaman Proses */
-.page-contentProses, .page-contentSukses,.page-contentReject,.page-contentUser {
+.page-contentProses,
+.page-contentSukses,
+.page-contentReject,
+.page-contentUser {
   padding-left: 0px;
   padding-top: 20px;
+}
+
+.resultBtn {
+  text-align: center;
+}
+
+#btnDecision {
+  padding-left: 120px;
+  padding-top: 30px;
+}
+
+#localGas {
+  margin-left: 10px;
+  color: rgb(180, 180, 180);
 }
 
 /* The Close Button Modal*/

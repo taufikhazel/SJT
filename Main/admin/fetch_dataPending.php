@@ -23,7 +23,7 @@ foreach ($groupedData as $date => $transactions) {
     $html .= '<div class="cardProfile">';
 
     foreach ($transactions as $transaction) {
-        $html .= '<div class="leftContent">';
+        $html .= '<div class="leftContent" onclick="saveDataAndRedirect(' . $transaction['idTransaksi'] . ')">';
         $html .= '<div class="isiContentLeft">';
         $html .= '<a href="#" class="namaUser">' . $transaction['nama'] . '</a>';
         $html .= '<a href="#" class="jenisNamaMobil">' . $transaction['mobil'] . '</a>';
@@ -38,3 +38,4 @@ foreach ($groupedData as $date => $transactions) {
 }
 
 echo $html;
+?>
