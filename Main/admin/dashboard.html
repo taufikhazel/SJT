@@ -468,6 +468,11 @@
             fetchProsesData();
         });
 
+        function prosesCek(idTransaksi){
+            sessionStorage.setItem('selectedTransaction', idTransaksi);
+            window.location.href = 'proses.html';
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             function fetchSuksesData() {
                 fetch('fetch_dataSukses.php')

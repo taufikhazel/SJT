@@ -449,6 +449,7 @@
                         document.getElementById('resultBtn').innerHTML = additionalContent;
 
                         hideButtons();
+                        sessionStorage.removeItem("selectedTransaksi");
                     })
                     .catch(error => console.error('Error updating status:', error));
             }

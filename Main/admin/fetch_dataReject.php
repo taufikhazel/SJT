@@ -1,7 +1,14 @@
 <?php
 $jsonData = file_get_contents('../data/transaksi.json');
+$mobilData = file_get_contents('../data/mobil.json');
 
 $data = json_decode($jsonData, true);
+$dataMobil = json_decode($mobilData, true);
+
+$mobilMap = [];
+foreach ($dataMobil as $mobil) {
+    $mobilMap[$mobil['idMobil']] = $mobil['namaMobil'];
+}
 
 $filteredData = array_filter($data, function($transaction) {
     return $transaction['status'] === 'Reject';
@@ -9,6 +16,9 @@ $filteredData = array_filter($data, function($transaction) {
 
 $html = '';
 foreach ($filteredData as $transaction) {
+    $idMobil = $transaction['mobil'];
+    $namaMobil = isset($mobilMap[$idMobil]) ? $mobilMap[$idMobil] : 'Unknown Mobil';
+
     $html .= '<tr>';
     $html .= '<td>' . htmlspecialchars($transaction['nama']) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['user']) . '</td>';
@@ -19,7 +29,7 @@ foreach ($filteredData as $transaction) {
     $html .= '<td>' . htmlspecialchars($transaction['alamat']) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['kota']) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['harga']) . '</td>';
-    $html .= '<td>' . htmlspecialchars($transaction['mobil']) . '</td>';
+    $html .= '<td>' . htmlspecialchars($namaMobil) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['status']) . '</td>';
     $html .= '</tr>';
 }

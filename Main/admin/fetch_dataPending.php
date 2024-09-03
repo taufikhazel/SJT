@@ -1,7 +1,14 @@
 <?php
 $jsonData = file_get_contents('../data/transaksi.json');
+$mobilData = file_get_contents('../data/mobil.json');
 
 $data = json_decode($jsonData, true);
+$dataMobil = json_decode($mobilData, true); 
+
+$mobilMap = [];
+foreach ($dataMobil as $mobil) {
+    $mobilMap[$mobil['idMobil']] = $mobil['namaMobil'];
+}
 
 $groupedData = [];
 foreach ($data as $transaction) {
@@ -23,10 +30,13 @@ foreach ($groupedData as $date => $transactions) {
     $html .= '<div class="cardProfile">';
 
     foreach ($transactions as $transaction) {
+        $idMobil = $transaction['mobil'];
+        $namaMobil = isset($mobilMap[$idMobil]) ? $mobilMap[$idMobil] : 'Unknown Mobil';
+
         $html .= '<div class="leftContent" onclick="saveDataAndRedirect(' . $transaction['idTransaksi'] . ')">';
         $html .= '<div class="isiContentLeft">';
         $html .= '<a href="#" class="namaUser">' . $transaction['nama'] . '</a>';
-        $html .= '<a href="#" class="jenisNamaMobil">' . $transaction['mobil'] . '</a>';
+        $html .= '<a href="#" class="jenisNamaMobil">' . $namaMobil . '</a>';
         $html .= '<a href="#" class="kodePesanan">Kode Pesanan : ' . $transaction['idTransaksi'] . '</a>';
         $html .= '<a href="#" class="statusMobil">Status : ' . $transaction['status'] . '</a>';
         $html .= '</div>';
