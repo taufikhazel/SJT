@@ -1,212 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta name="viewport" content="width=device-width , initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" />
-    <title>SJT</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        background: #fcd98d;
-        font-family: Arial, Helvetica, sans-serif;
-      }
 
-      input {
-        width: 380px;
-        padding: 14px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-        background: rgb(238, 226, 203);
-        border-radius: 7px;
-      }
+<head>
+  <meta name="viewport" content="width=device-width , initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>SJT</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #fcd98d;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-      a {
-        text-decoration: none;
-        color: #000;
-        font-size: 20px;
-      }
+    input {
+      width: 380px;
+      padding: 14px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      background: rgb(238, 226, 203);
+      border-radius: 7px;
+    }
 
-      a:hover {
-        text-decoration: underline black;
-        font: bold;
-      }
+    a {
+      text-decoration: none;
+      color: #000;
+      font-size: 20px;
+    }
 
-      .popup {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 20px;
-        border-radius: 5px;
-        text-align: center;
-        font-size: 16px;
-        color: #333;
-        border: 1px solid #ccc;
-        z-index: 1001;
-        display: none;
-      }
+    a:hover {
+      text-decoration: underline black;
+      font: bold;
+    }
 
-      .popup p {
-        margin-bottom: 10px;
-      }
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 16px;
+      color: #333;
+      border: 1px solid #ccc;
+      z-index: 1001;
+      display: none;
+    }
 
-      .popup button {
-        padding: 5px 10px;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-      }
+    .popup p {
+      margin-bottom: 10px;
+    }
 
-      .popup button {
-        background-color: #007bff;
-        color: white;
-      }
-    </style>
-  </head>
+    .popup button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
 
-  <body>
-    <header>
-      <nav>
-        <div class="logo">
-          <img src="../src/logo.png" alt="Logo" />
-        </div>
-        <ul class="nav-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="index.html#aboutUs">About Us</a></li>
-          <li><a href="index.html#ourProgram">Our Program</a></li>
-        </ul>
-        <button class="login-btn" id="btn-login">Login</button>
-      </nav>
-    </header>
-    <div class="cardLogin">
-      <div class="login">
-        <div class="login-header">
-          <h1>Login User</h1>
-        </div>
-        <div class="login-form">
-          <h3>Username:</h3>
-          <input type="text" id="username" placeholder="Username" />
-          <br />
-          <h3>Password:</h3>
-          <input type="password" id="password" placeholder="Password" />
-          <br />
-          <input
-            type="button"
-            value="Enter"
-            class="Enter-button"
-            id="btnSubmit"
-            onclick="validateLogin()"
-          />
-          <br />
-        </div>
+    .popup button {
+      background-color: #007bff;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <div class="logo">
+        <img src="../src/logo.png" alt="Logo" />
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#aboutUs">About Us</a></li>
+        <li><a href="index.html#ourProgram">Our Program</a></li>
+      </ul>
+      <button class="login-btn" id="btn-login">Login</button>
+    </nav>
+  </header>
+  <div class="cardLogin">
+    <div class="login">
+      <div class="login-header">
+        <h1>Login User</h1>
+      </div>
+      <div class="login-form">
+        <h3>Username:</h3>
+        <input type="text" id="username" placeholder="Username" />
+        <br />
+        <h3>Password:</h3>
+        <input type="password" id="password" placeholder="Password" />
+        <br />
+        <input type="button" value="Enter" class="Enter-button" id="btnSubmit" onclick="validateLogin()" />
+        <br />
       </div>
     </div>
-    <div id="loaderPopup" class="popup">
-      <p>Mohon tunggu...</p>
-    </div>
+  </div>
+  <div id="loaderPopup" class="popup">
+    <p>Mohon tunggu...</p>
+  </div>
 
-    <div
-      id="errorAlert"
-      class="popup"
-      style="background-color: #f8d7da; border-color: #f5c6cb"
-    >
-      <p id="errorMessage">Error message</p>
-      <button onclick="closeAlert('errorAlert')">OK</button>
-    </div>
+  <div id="errorAlert" class="popup" style="background-color: #f8d7da; border-color: #f5c6cb">
+    <p id="errorMessage">Error message</p>
+    <button onclick="closeAlert('errorAlert')">OK</button>
+  </div>
 
-    <div
-      id="successAlert"
-      class="popup"
-      style="background-color: #d4edda; border-color: #c3e6cb"
-    >
-      <p id="successMessage">Success message</p>
-      <button onclick="closeAlert('successAlert')">OK</button>
-    </div>
+  <div id="successAlert" class="popup" style="background-color: #d4edda; border-color: #c3e6cb">
+    <p id="successMessage">Success message</p>
+    <button onclick="closeAlert('successAlert')">OK</button>
+  </div>
 
-    <script>
-      async function validateLogin() {
-        console.log("validateLogin called"); // Tambahkan ini untuk debugging
-        const username = document.getElementById("username").value.trim();
-        const password = document.getElementById("password").value.trim();
-        const loaderPopup = document.getElementById("loaderPopup");
+  <script>
+    history.pushState(null, null, window.location.href);
 
-        if (!username || !password) {
-          showAlert("errorAlert", "Harap Isi Semua Field.");
-          return;
-        }
+    window.onpopstate = function () {
+      history.go(1);
+    };
+    
+    async function validateLogin() {
+      console.log("validateLogin called");
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const loaderPopup = document.getElementById("loaderPopup");
 
-        loaderPopup.style.display = "block";
+      if (!username || !password) {
+        showAlert("errorAlert", "Harap Isi Semua Field.");
+        return;
+      }
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+      loaderPopup.style.display = "block";
 
-        try {
-          const response = await fetch("../Main/data/user.json");
-          console.log("Fetch response received"); // Tambahkan ini untuk debugging
-          const users = await response.json();
-          const user = users.find(
-            (u) => u.username === username && u.password === password
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      try {
+        const response = await fetch("../Main/data/user.json");
+        console.log("Fetch response received");
+        const users = await response.json();
+        const user = users.find(
+          (u) => u.username === username && u.password === password
+        );
+
+        loaderPopup.style.display = "none";
+
+        if (user) {
+          sessionStorage.setItem("loggedInUser", JSON.stringify(user));
+          showAlert(
+            "successAlert",
+            "Login Sukses! Anda akan dipindahkan ke halaman User",
+            () => {
+              window.location.href = "../Main/user/user.html";
+            }
           );
-
-          loaderPopup.style.display = "none";
-
-          if (user) {
-            sessionStorage.setItem("loggedInUser", JSON.stringify(user));
-            showAlert(
-              "successAlert",
-              "Login Sukses! Anda akan dipindahkan ke halaman User",
-              () => {
-                window.location.href = "../Main/user/user.html";
-              }
-            );
-          } else {
-            showAlert(
-              "errorAlert",
-              "Username atau Password Anda Salah! Silahkan Isi Lagi."
-            );
-          }
-        } catch (error) {
-          loaderPopup.style.display = "none";
-          showAlert("errorAlert", "Ada error, Harap Hubungi Pemilik!");
-          console.error("Error fetching user data:", error);
-        }
-      }
-
-      function showAlert(alertId, message, callback) {
-        const alert = document.getElementById(alertId);
-        const messageElement = alert.querySelector("p");
-        messageElement.textContent = message;
-        alert.style.display = "block";
-
-        if (callback) {
-          alert.querySelector("button").onclick = () => {
-            closeAlert(alertId);
-            callback();
-          };
         } else {
-          alert.querySelector("button").onclick = () => closeAlert(alertId);
+          showAlert(
+            "errorAlert",
+            "Username atau Password Anda Salah! Silahkan Isi Lagi."
+          );
         }
+      } catch (error) {
+        loaderPopup.style.display = "none";
+        showAlert("errorAlert", "Ada error, Harap Hubungi Pemilik!");
+        console.error("Error fetching user data:", error);
       }
+    }
 
-      function closeAlert(alertId) {
-        document.getElementById(alertId).style.display = "none";
+    function showAlert(alertId, message, callback) {
+      const alert = document.getElementById(alertId);
+      const messageElement = alert.querySelector("p");
+      messageElement.textContent = message;
+      alert.style.display = "block";
 
-        const usernameInput = document.getElementById("username");
-        const passwordInput = document.getElementById("password");
-
-        usernameInput.value = "";
-        passwordInput.value = "";
+      if (callback) {
+        alert.querySelector("button").onclick = () => {
+          closeAlert(alertId);
+          callback();
+        };
+      } else {
+        alert.querySelector("button").onclick = () => closeAlert(alertId);
       }
+    }
 
-      const loginButton = document.getElementById("btn-login");
+    function closeAlert(alertId) {
+      document.getElementById(alertId).style.display = "none";
 
-      loginButton.addEventListener("click", () => {
-        window.location.href = "login.html";
-      });
-    </script>
-  </body>
+      const usernameInput = document.getElementById("username");
+      const passwordInput = document.getElementById("password");
+
+      usernameInput.value = "";
+      passwordInput.value = "";
+    }
+
+    const loginButton = document.getElementById("btn-login");
+
+    loginButton.addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
 
 <!-- Site footer -->
 <footer class="site-footer">

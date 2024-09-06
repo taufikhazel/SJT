@@ -1245,7 +1245,7 @@ a#tanggal {
   font-size: 15px;
   line-height: 24px;
   color: #737373;
-  margin-top: 100px;
+  margin-top: 110px;
 }
 
 .site-footer hr {
@@ -1387,11 +1387,5 @@ a#tanggal {
 
   .cta-btn {
     margin-right: 405px;
-  }
-}
-
-@media (max-width: 480px) {
-  .benefits {
-    grid-template-columns: 1fr;
   }
 }

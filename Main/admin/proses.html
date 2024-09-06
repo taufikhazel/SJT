@@ -478,7 +478,7 @@
             }
         };
 
-        window.onload = function(){
+        window.onload = function () {
             updateButtonText();
         };
 
@@ -855,8 +855,6 @@
             });
         });
 
-
-
         function updateButtonText() {
             const btnUser = document.getElementById("btnUser");
             const user = JSON.parse(sessionStorage.getItem("loggedInAdmin"));
@@ -864,7 +862,9 @@
             if (user && user.username) {
                 btnUser.textContent = "Hi, " + user.username + "!";
             } else {
-                btnUser.textContent = "Hi, Guest!";
+                alert("Anda Perlu Login, Silahkan Login Kembali!");
+                window.location.href = "../logUser.html";
+                sessionStorage.clear();
             }
         }
 

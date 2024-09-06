@@ -468,7 +468,7 @@
             fetchProsesData();
         });
 
-        function prosesCek(idTransaksi){
+        function prosesCek(idTransaksi) {
             sessionStorage.setItem('selectedTransaction', idTransaksi);
             window.location.href = 'proses.html';
         }
@@ -914,7 +914,9 @@
             if (user && user.username) {
                 btnUser.textContent = "Hi, " + user.username + "!";
             } else {
-                btnUser.textContent = "Hi, Guest!";
+                alert("Anda Perlu Login, Silahkan Login Kembali!");
+                window.location.href = "../logAdmin.html";
+                sessionStorage.clear();
             }
         }
 

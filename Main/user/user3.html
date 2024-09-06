@@ -354,8 +354,8 @@
                         <a id="nama"></a>
                     </p>
                     <p class="detailInfo">
-                        <a>Harga :</a>
-                        <a id="harga"></a>
+                    <p>Harga :</p>
+                    <p id="harga"></p>
                     </p>
                 </div>
                 <button class="nextBtn" id="submitBtn" disabled>Submit</button>
@@ -368,8 +368,8 @@
             <div class="carCard">
                 <img class="carImg" id="carImg"></img>
                 <div class="wrapCar">
-                    <a class="namaMobil" id="namaMobil"><b>NAMA MOBIL</b></a>
-                    <a class="merkMobil" id="merkMobil"></a>
+                    <p class="namaMobil" id="namaMobil"><b>NAMA MOBIL</b></p>
+                    <p class="merkMobil" id="merkMobil"></p>
                 </div>
             </div>
             <div class="subTotal">
@@ -378,8 +378,8 @@
                     <a class="hasilTotal" id="subTotal">Rp. 00000</a>
                 </div>
                 <div class="taxContent">
-                    <a class="totalTax">Tax</a>
-                    <a class="hasilTax" id="tax">0</a>
+                    <p class="totalTax">Tax</p>
+                    <p class="hasilTax" id="tax">0</p>
                 </div>
             </div>
             <div class="promoCard">
@@ -392,10 +392,10 @@
             </div>
             <div class="hargaCard">
                 <div class="hargaContent">
-                    <a class="totalHarga">Total Harga</a>
+                    <p class="totalHarga">Total Harga</p>
                     <p class="infoHarga">Harga sudah termasuk diskon.</p>
                 </div>
-                <a class="harga" id="totalHarga">000000</a>
+                <p class="harga" id="totalHarga">000000</p>
             </div>
         </div>
     </div>
@@ -417,14 +417,63 @@
         var spanNotif = document.getElementById("notification");
         var span = document.getElementsByClassName("close")[0];
 
-        const transaksiData = JSON.parse(sessionStorage.getItem("transaksiData"));
+        document.addEventListener("DOMContentLoaded", function () {
+            const transaksiData = JSON.parse(sessionStorage.getItem("transaksiData"));
 
-        if (transaksiData) {
-            document.getElementById("nama").textContent = transaksiData.nama;
-            document.getElementById("harga").textContent = transaksiData.harga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }); 
-        } else {
-            console.log("No transaction data found in sessionStorage.");
-        }
+            if (transaksiData) {
+                document.getElementById("nama").textContent = transaksiData.nama;
+
+                const tanggalArray = transaksiData.tanggal || [];
+                const multiplier = tanggalArray.length > 0 ? tanggalArray.length : 1;
+
+                const adjustedHarga = transaksiData.harga * multiplier;
+                document.getElementById("harga").textContent = adjustedHarga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+
+                if (transaksiData.mobil) {
+                    const idMobil = transaksiData.mobil;
+                    console.log('ID Mobil from sessionStorage:', idMobil);
+
+                    fetch('../data/mobil.json')
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Data from mobil.json:', data);
+
+                            const mobil = data.find(mobil => mobil.idMobil === idMobil);
+
+                            if (mobil) {
+                                console.log('Mobil found:', mobil);
+
+                                document.getElementById('namaMobil').textContent = mobil.namaMobil;
+                                document.getElementById('carImg').src = mobil.gambar;
+
+                                const rentalDaysText = `${multiplier} Hari Perentalan`;
+                                document.getElementById('subTotal').textContent = `${mobil.hargaMobil.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} (${rentalDaysText})`;
+
+                                const subTotalHarga = mobil.hargaMobil;
+                                const totalHarga = subTotalHarga * multiplier;
+                                const taxPercentage = 0;
+                                const taxAmount = totalHarga * (taxPercentage / 100);
+
+                                const totalBayar = totalHarga + taxAmount;
+
+                                document.getElementById('totalHarga').textContent = totalBayar.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+                                document.getElementById('tax').textContent = `${taxPercentage}%`;
+
+                                transaksiData.totalBayar = totalBayar;
+                                sessionStorage.setItem("transaksiData", JSON.stringify(transaksiData));
+
+                            } else {
+                                console.error('Car not found in mobil.json');
+                            }
+                        })
+                        .catch(error => console.error('Error fetching mobil.json:', error));
+                } else {
+                    console.error('No valid transaksiData found in sessionStorage');
+                }
+            } else {
+                console.log("No transaction data found in sessionStorage.");
+            }
+        });
 
         spanNotif.onclick = function () {
             modal.style.display = "block";
@@ -449,7 +498,9 @@
             if (user && user.username) {
                 btnUser.textContent = "Hi, " + user.username + "!";
             } else {
-                btnUser.textContent = "Hi, Guest!";
+                alert("Anda Perlu Login, Silahkan Login Kembali!");
+                window.location.href = "../logUser.html";
+                sessionStorage.clear();
             }
         }
 
@@ -649,12 +700,12 @@
                 const textNotifikasiDiv = document.createElement('div');
                 textNotifikasiDiv.classList.add('textNotifikasi');
 
-                const idTransaksiLink = document.createElement('a');
+                const idTransaksiLink = document.createElement('p');
                 idTransaksiLink.href = '#';
                 idTransaksiLink.id = 'idTransaksi';
                 idTransaksiLink.textContent = `Kode Pesanan: ${transaksi.idTransaksi}`;
 
-                const tanggalLink = document.createElement('a');
+                const tanggalLink = document.createElement('p');
                 tanggalLink.href = '#';
                 tanggalLink.id = 'tanggal';
                 tanggalLink.textContent = `Tanggal jatuh tempo: ${transaksi.tanggal}`;
@@ -694,44 +745,44 @@
 
         // Logika Car Detail 
 
-        document.addEventListener("DOMContentLoaded", function () {
-            const transaksiData = JSON.parse(sessionStorage.getItem('transaksiData'));
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     const transaksiData = JSON.parse(sessionStorage.getItem('transaksiData'));
 
-            if (transaksiData && transaksiData.mobil) {
-                const idMobil = transaksiData.mobil;
-                console.log('ID Mobil from sessionStorage:', idMobil);
+        //     if (transaksiData && transaksiData.mobil) {
+        //         const idMobil = transaksiData.mobil;
+        //         console.log('ID Mobil from sessionStorage:', idMobil);
 
-                fetch('../data/mobil.json')
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Data from mobil.json:', data); 
+        //         fetch('../data/mobil.json')
+        //             .then(response => response.json())
+        //             .then(data => {
+        //                 console.log('Data from mobil.json:', data);
 
-                        const mobil = data.find(mobil => mobil.idMobil === idMobil);
+        //                 const mobil = data.find(mobil => mobil.idMobil === idMobil);
 
-                        if (mobil) {
-                            console.log('Mobil found:', mobil);
+        //                 if (mobil) {
+        //                     console.log('Mobil found:', mobil);
 
-                            document.getElementById('namaMobil').textContent = mobil.namaMobil;
-                            document.getElementById('carImg').src = mobil.gambar;
-                            const subTotalHarga = mobil.hargaMobil
-                            document.getElementById('subTotal').textContent = subTotalHarga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+        //                     document.getElementById('namaMobil').textContent = mobil.namaMobil;
+        //                     document.getElementById('carImg').src = mobil.gambar;
+        //                     const subTotalHarga = mobil.hargaMobil
+        //                     document.getElementById('subTotal').textContent = subTotalHarga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
 
-                            const taxPercentage = 0;
-                            const subTotal = mobil.hargaMobil; 
-                            const taxAmount = subTotal * (taxPercentage / 100);
-                            const totalHarga = subTotal + taxAmount;
+        //                     const taxPercentage = 0;
+        //                     const subTotal = mobil.hargaMobil;
+        //                     const taxAmount = subTotal * (taxPercentage / 100);
+        //                     const totalHarga = subTotal + taxAmount;
 
-                            document.getElementById('totalHarga').textContent = `${totalHarga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}`;
-                            document.getElementById('tax').textContent = `${taxPercentage}%`;
-                        } else {
-                            console.error('Car not found in mobil.json');
-                        }
-                    })
-                    .catch(error => console.error('Error fetching mobil.json:', error));
-            } else {
-                console.error('No valid transaksiData found in sessionStorage');
-            }
-        });
+        //                     document.getElementById('totalHarga').textContent = `${totalHarga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}`;
+        //                     document.getElementById('tax').textContent = `${taxPercentage}%`;
+        //                 } else {
+        //                     console.error('Car not found in mobil.json');
+        //                 }
+        //             })
+        //             .catch(error => console.error('Error fetching mobil.json:', error));
+        //     } else {
+        //         console.error('No valid transaksiData found in sessionStorage');
+        //     }
+        // });
 
 
     </script>

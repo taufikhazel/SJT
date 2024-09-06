@@ -99,13 +99,18 @@
       <label class="input-tanggal">Input Tanggal</label>
       <div class="isi-tanggal">
         <h3 class="tanggal-txt">Tanggal</h3>
-        <input type="date" placeholder="isi Tanggal" id="tanggalInput" />
+        <div id="tanggalInputsContainer">
+          <input type="date" placeholder="isi Tanggal" class="tanggalInput" />
+        </div>
+        <button type="button" id="addDateBtn">Add Another Date</button>
+        <button type="button" id="removeDateBtn">Remove Last Date</button>
         <div class="next2">
           <button class="next-btn2" id="nextBtn">Next</button>
         </div>
       </div>
     </div>
   </div>
+
 
   <div id="loaderPopup" class="popup">
     <p>Mohon tunggu...</p>
@@ -118,15 +123,15 @@
   </div>
 
   <script>
-    const dateInput = document.getElementById("tanggalInput");
+    // const dateInput = document.getElementById("tanggalInput");
 
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); 
-    const day = String(today.getDate()).padStart(2, '0'); 
-    const formattedToday = `${year}-${month}-${day}`;
+    // const today = new Date();
+    // const year = today.getFullYear();
+    // const month = String(today.getMonth() + 1).padStart(2, '0');
+    // const day = String(today.getDate()).padStart(2, '0');
+    // const formattedToday = `${year}-${month}-${day}`;
 
-    dateInput.setAttribute("min", formattedToday);
+    // dateInput.setAttribute("min", formattedToday);
 
     var modal = document.getElementById("myModal");
     var spanNotif = document.getElementById("notification");
@@ -153,7 +158,9 @@
       if (user && user.username) {
         btnUser.textContent = "Hi, " + user.username + "!";
       } else {
-        btnUser.textContent = "Hi, Guest!";
+        alert("Anda Perlu Login, Silahkan Login Kembali!");
+        window.location.href = "../logUser.html";
+        sessionStorage.clear();
       }
     }
 
@@ -191,39 +198,97 @@
 
     window.onload = updateButtonText;
 
+
     document.getElementById("nextBtn").disabled = true;
-    const inputs = document.querySelectorAll(".isi-tanggal input");
+
     const nextBtn = document.getElementById("nextBtn");
+    const addDateBtn = document.getElementById("addDateBtn");
+    const removeDateBtn = document.getElementById("removeDateBtn");
+    const tanggalInputsContainer = document.getElementById("tanggalInputsContainer");
 
-    inputs.forEach((input) => {
-      input.addEventListener("input", checkFields);
-    });
-
-    function checkFields() {
-      const allFilled = Array.from(inputs).every(
-        (input) => input.value.trim() !== ""
-      );
+    function updateNextButtonState() {
+      const inputs = document.querySelectorAll(".tanggalInput");
+      const allFilled = Array.from(inputs).every((input) => input.value.trim() !== "");
       nextBtn.disabled = !allFilled;
     }
 
+    function addDateInput() {
+      const newDateInput = document.createElement("input");
+      newDateInput.type = "date";
+      newDateInput.placeholder = "isi Tanggal";
+      newDateInput.classList.add("tanggalInput");
+      newDateInput.addEventListener("input", updateNextButtonState);
+      tanggalInputsContainer.appendChild(newDateInput);
+      updateNextButtonState();
+    }
+
+    function removeDateInput() {
+      const dateInputs = document.querySelectorAll(".tanggalInput");
+      if (dateInputs.length > 1) {
+        tanggalInputsContainer.removeChild(dateInputs[dateInputs.length - 1]);
+      }
+      updateNextButtonState();
+    }
+
+    addDateBtn.addEventListener("click", addDateInput);
+    removeDateBtn.addEventListener("click", removeDateInput);
+
+    document.querySelectorAll(".tanggalInput").forEach((input) => {
+      input.addEventListener("input", updateNextButtonState);
+    });
+
     nextBtn.addEventListener("click", async function () {
       if (sessionStorage) {
-        let transaksiData =
-          JSON.parse(sessionStorage.getItem("transaksiData")) || {};
-        let tanggalValue = "";
-        inputs.forEach((input) => {
-          tanggalValue += input.value.trim();
+        let transaksiData = JSON.parse(sessionStorage.getItem("transaksiData")) || {};
+        let tanggalValues = [];
+        document.querySelectorAll(".tanggalInput").forEach((input) => {
+          if (input.value.trim()) {
+            tanggalValues.push(input.value.trim());
+          }
         });
-        transaksiData.tanggal = tanggalValue;
-        sessionStorage.setItem(
-          "transaksiData",
-          JSON.stringify(transaksiData)
-        );
+        transaksiData.tanggal = tanggalValues;
+        sessionStorage.setItem("transaksiData", JSON.stringify(transaksiData));
         window.location.href = "user3.html";
       } else {
         alert("Gagal menghasilkan ID Transaksi baru. Silakan coba lagi.");
       }
     });
+
+    updateNextButtonState();
+
+    // document.getElementById("nextBtn").disabled = true;
+    // const inputs = document.querySelectorAll(".isi-tanggal input");
+    // const nextBtn = document.getElementById("nextBtn");
+
+    // inputs.forEach((input) => {
+    //   input.addEventListener("input", checkFields);
+    // });
+
+    // function checkFields() {
+    //   const allFilled = Array.from(inputs).every(
+    //     (input) => input.value.trim() !== ""
+    //   );
+    //   nextBtn.disabled = !allFilled;
+    // }
+
+    // nextBtn.addEventListener("click", async function () {
+    //   if (sessionStorage) {
+    //     let transaksiData =
+    //       JSON.parse(sessionStorage.getItem("transaksiData")) || {};
+    //     let tanggalValue = "";
+    //     inputs.forEach((input) => {
+    //       tanggalValue += input.value.trim();
+    //     });
+    //     transaksiData.tanggal = tanggalValue;
+    //     sessionStorage.setItem(
+    //       "transaksiData",
+    //       JSON.stringify(transaksiData)
+    //     );
+    //     window.location.href = "user3.html";
+    //   } else {
+    //     alert("Gagal menghasilkan ID Transaksi baru. Silakan coba lagi.");
+    //   }
+    // });
     //Logika Notifikasi
     // Mengambil idUser dari sessionStorage
     const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
@@ -273,12 +338,12 @@
         const textNotifikasiDiv = document.createElement('div');
         textNotifikasiDiv.classList.add('textNotifikasi');
 
-        const idTransaksiLink = document.createElement('a');
+        const idTransaksiLink = document.createElement('p');
         idTransaksiLink.href = '#';
         idTransaksiLink.id = 'idTransaksi';
         idTransaksiLink.textContent = `Kode Pesanan: ${transaksi.idTransaksi}`;
 
-        const tanggalLink = document.createElement('a');
+        const tanggalLink = document.createElement('p');
         tanggalLink.href = '#';
         tanggalLink.id = 'tanggal';
         tanggalLink.textContent = `Tanggal jatuh tempo: ${transaksi.tanggal}`;

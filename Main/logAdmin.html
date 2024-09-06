@@ -81,8 +81,14 @@
   </div>
 
   <script>
+
+    history.pushState(null, null, window.location.href);
+
+    window.onpopstate = function () {
+      history.go(1);
+    };
+
     async function validateLogin() {
-      console.log("validateLogin called"); // Tambahkan ini untuk debugging
       const username = document.getElementById("username").value.trim();
       const password = document.getElementById("password").value.trim();
       const loaderPopup = document.getElementById("loaderPopup");
@@ -98,7 +104,6 @@
 
       try {
         const response = await fetch("../Main/data/admin.json");
-        console.log("Fetch response received"); // Tambahkan ini untuk debugging
         const users = await response.json();
         const user = users.find(
           (u) => u.username === username && u.password === password

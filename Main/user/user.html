@@ -95,7 +95,7 @@
     <p class="step">Step 1 of 4</p>
     <div class="card-text">
       <h3 class="text-input">Nama</h3>
-      <input type="text" placeholder="Nama" id="nama" />
+      <input type="text" placeholder="Nama" id="nama" disabled />
       <h3 class="text-input">Alamat</h3>
       <input type="text" placeholder="Alamat" id="alamat" />
       <div class="card-text-right">
@@ -146,13 +146,30 @@
       if (user && user.username) {
         btnUser.textContent = "Hi, " + user.username + "!";
       } else {
-        btnUser.textContent = "Hi, Guest!";
+        alert("Anda Perlu Login, Silahkan Login Kembali!");
+        window.location.href = "../logUser.html";
+        sessionStorage.clear();
       }
     }
+
 
     document.getElementById("btnUser").addEventListener("click", function () {
       const dropdownMenu = document.getElementById("dropdownMenu");
       dropdownMenu.classList.toggle("show");
+    });
+
+    window.addEventListener('popstate', function (event) {
+      document.getElementById("confirmationPopup").style.display = "block";
+    });
+
+    window.onpopstate = function (event) {
+      history.pushState(null, null, window.location.href);
+    };
+
+    document.querySelector('.confirmBtn').addEventListener('click', function (event) {
+      if (event.target.innerText === "Iya") {
+        window.history.back(); 
+      }
     });
 
     document
@@ -184,87 +201,96 @@
 
     window.onload = updateButtonText;
 
-    document.getElementById("nextBtn").disabled = true;
-    const inputs = document.querySelectorAll(".card-text input");
-    const nextBtn = document.getElementById("nextBtn");
-
-    inputs.forEach((input) => {
-      input.addEventListener("input", checkFields);
-    });
-
-    function checkFields() {
-      const allFilled = Array.from(inputs).every(
-        (input) => input.value.trim() !== ""
-      );
-      nextBtn.disabled = !allFilled;
-    }
-
-    nextBtn.addEventListener("click", async function () {
+    document.addEventListener("DOMContentLoaded", function () {
       const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
-      const idUser = loggedInUser.idUser;
-      const mobil = loggedInUser.mobil;
+      const inputs = document.querySelectorAll(".card-text input");
+      const nextBtn = document.getElementById("nextBtn");
 
-      const idTransaksi = await generateIdTransaksi();
+      if (loggedInUser && loggedInUser.username) {
+        // Set textContent of 'nama' field to loggedInUser.username and disable it
+        const namaInput = document.getElementById("nama");
+        namaInput.value = loggedInUser.username;
+        namaInput.disabled = true; // Disable to prevent editing
+      }
 
-      if (idTransaksi) {
+      // Function to check if all fields are filled
+      function checkFields() {
+        const allFilled = Array.from(inputs).every(
+          (input) => input.value.trim() !== ""
+        );
+        nextBtn.disabled = !allFilled;
+      }
+
+      inputs.forEach((input) => {
+        input.addEventListener("input", checkFields);
+      });
+
+      nextBtn.addEventListener("click", async function () {
+        const idUser = loggedInUser.idUser;
+        const mobil = loggedInUser.mobil;
+
+        const idTransaksi = await generateIdTransaksi();
+
+        if (idTransaksi) {
+          try {
+            const response = await fetch("../data/mobil.json");
+            const data = await response.json();
+
+            const mobilData = data.find((item) => item.idMobil === mobil);
+
+            if (mobilData) {
+              const transaksiData = {
+                idTransaksi: idTransaksi,
+                user: idUser,
+                nama: loggedInUser.username, // Set nama to loggedInUser.username
+                noTelp: document.getElementById("noTelp").value,
+                alamat: document.getElementById("alamat").value,
+                kota: document.getElementById("kota").value,
+                harga: mobilData.hargaMobil,
+                mobil: mobil,
+                tanggal: "",
+                bukti: "",
+                status: "",
+              };
+
+              sessionStorage.setItem(
+                "transaksiData",
+                JSON.stringify(transaksiData)
+              );
+
+              window.location.href = "user2.html";
+            } else {
+              alert("Mobil tidak ditemukan dalam data transaksi.");
+            }
+          } catch (error) {
+            console.error("Error fetching or processing data:", error);
+            alert(
+              "Terjadi kesalahan saat mengambil data transaksi. Silakan coba lagi."
+            );
+          }
+        } else {
+          alert("Gagal menghasilkan ID Transaksi baru. Silakan coba lagi.");
+        }
+      });
+
+      async function generateIdTransaksi() {
         try {
-          const response = await fetch("../data/mobil.json");
+          const response = await fetch("../data/transaksi.json");
           const data = await response.json();
 
-          const mobilData = data.find((item) => item.idMobil === mobil);
-
-          if (mobilData) {
-            const transaksiData = {
-              idTransaksi: idTransaksi,
-              user: idUser,
-              nama: document.getElementById("nama").value,
-              noTelp: document.getElementById("noTelp").value,
-              alamat: document.getElementById("alamat").value,
-              kota: document.getElementById("kota").value,
-              harga: mobilData.hargaMobil,
-              mobil: mobil,
-              tanggal: "",
-              bukti: "",
-              status: "",
-            };
-
-            sessionStorage.setItem(
-              "transaksiData",
-              JSON.stringify(transaksiData)
-            );
-
-            window.location.href = "user2.html";
-          } else {
-            alert("Mobil tidak ditemukan dalam data transaksi.");
-          }
-        } catch (error) {
-          console.error("Error fetching or processing data:", error);
-          alert(
-            "Terjadi kesalahan saat mengambil data transaksi. Silakan coba lagi."
+          let maxId = data.reduce(
+            (max, item) => Math.max(max, parseInt(item.idTransaksi || "0")),
+            0
           );
+
+          const newId = maxId + 1;
+          return newId.toString();
+        } catch (error) {
+          console.error("Error fetching transaksi data:", error);
+          return null;
         }
-      } else {
-        alert("Gagal menghasilkan ID Transaksi baru. Silakan coba lagi.");
       }
     });
-
-    async function generateIdTransaksi() {
-      try {
-        const response = await fetch("../data/transaksi.json");
-        const data = await response.json();
-
-        let maxId = data.reduce(
-          (max, item) => Math.max(max, parseInt(item.idTransaksi || "0")),
-          0
-        );
-
-        const newId = maxId + 1;
-        return newId.toString();
-      } catch (error) {
-        console.error("Error fetching transaksi data:", error);
-        return null;
-      }
-    }
 
     //Logika Notifikasi
     // Mengambil idUser dari sessionStorage
@@ -282,6 +308,7 @@
         }
       })
       .catch(error => console.error('Error fetching data:', error));
+
     function generateModalContent(transaksiList) {
       const isiNotifikasiContainer = document.querySelector('.containerIsiNotifikasi');
       isiNotifikasiContainer.innerHTML = '';
@@ -316,12 +343,12 @@
         const textNotifikasiDiv = document.createElement('div');
         textNotifikasiDiv.classList.add('textNotifikasi');
 
-        const idTransaksiLink = document.createElement('a');
+        const idTransaksiLink = document.createElement('p');
         idTransaksiLink.href = '#';
         idTransaksiLink.id = 'idTransaksi';
         idTransaksiLink.textContent = `Kode Pesanan: ${transaksi.idTransaksi}`;
 
-        const tanggalLink = document.createElement('a');
+        const tanggalLink = document.createElement('p');
         tanggalLink.href = '#';
         tanggalLink.id = 'tanggal';
         tanggalLink.textContent = `Tanggal jatuh tempo: ${transaksi.tanggal}`;
@@ -348,10 +375,10 @@
 
       if (isBelumDiprosesFound) {
         notificationIcon.textContent = 'notification_important';
-        notificationIcon.style.color = '#EA3323'; 
+        notificationIcon.style.color = '#EA3323';
       } else {
         notificationIcon.textContent = 'notifications';
-        notificationIcon.style.color = '#000'; 
+        notificationIcon.style.color = '#000';
       }
 
       const modalBody = document.querySelector('.modal-body');
