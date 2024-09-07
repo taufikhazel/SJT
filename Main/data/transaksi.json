@@ -1,6 +1,6 @@
 [
     {
-        "idTransaksi": "1",
+        "idTransaksi": 1,
         "user": "asa",
         "idUser": "1",
         "nama": "dada",

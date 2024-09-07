@@ -416,6 +416,13 @@
                                     document.querySelector('.jenisNamaMobil').textContent = matchingMobil.namaMobil;
                                     document.querySelector('.kodePesanan').textContent = "Kode Pesanan: " + transaksi.idTransaksi;
                                     document.querySelector('.statusMobil').textContent = "Status: " + transaksi.status;
+
+                                    if (transaksi.status === "Belum Diproses") {
+                                        btnAccept.style.display = 'block';
+                                        btnReject.style.display = 'block';
+                                    } else {
+                                        hideButtons(); // Hide buttons if status is not "Belum Diproses"
+                                    }
                                 } else {
                                     console.error("No matching car found.");
                                 }
@@ -863,7 +870,7 @@
                 btnUser.textContent = "Hi, " + user.username + "!";
             } else {
                 alert("Anda Perlu Login, Silahkan Login Kembali!");
-                window.location.href = "../logUser.html";
+                window.location.href = "../logAdmin.html";
                 sessionStorage.clear();
             }
         }
@@ -881,7 +888,7 @@
 
         function confirmLogout(confirmed) {
             if (confirmed) {
-                sessionStorage.removeItem("loggedInAdmin");
+                sessionStorage.clear();
                 window.location.href = "../logAdmin.html";
             } else {
                 document.getElementById("confirmationPopup").style.display = "none";
@@ -904,24 +911,24 @@
 <!-- Site footer -->
 <footer>
     <div class="containerFooter">
-      <div class="parentFooter">
-        <div class="contentFooter">
-          <h1>Company</h1>
-          <p style="font-size: 12px;">PT SUKSES JAYA TRANSPORINDO</p>
+        <div class="parentFooter">
+            <div class="contentFooter">
+                <h1>Company</h1>
+                <p style="font-size: 12px;">PT SUKSES JAYA TRANSPORINDO</p>
+            </div>
+            <div class="contentFooter">
+                <h1>Social</h1>
+                <p style="font-size: 12px;">PT SUKSES JAYA TRANSPORINDO</p>
+            </div>
+            <div class="contentFooter">
+                <h1>Layanan</h1>
+                <p style="font-size: 12px;">PT SUKSES JAYA TRANSPORINDO</p>
+            </div>
         </div>
-        <div class="contentFooter">
-          <h1>Social</h1>
-          <p style="font-size: 12px;">PT SUKSES JAYA TRANSPORINDO</p>
-        </div>
-        <div class="contentFooter">
-          <h1>Layanan</h1>
-          <p style="font-size: 12px;">PT SUKSES JAYA TRANSPORINDO</p> 
-        </div>
-      </div>
-      <hr>
+        <hr>
         <p class="copyright">PT SUKSES JAYA TRANPORINDO</p>
     </div>
-  </footer>
+</footer>
 
 
 </html>

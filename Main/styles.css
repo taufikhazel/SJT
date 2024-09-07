@@ -1040,6 +1040,8 @@ a#tanggal {
 #btnDecision {
   padding-left: 120px;
   padding-top: 30px;
+  display: flex;
+  gap: 10%;
 }
 
 #localGas {
@@ -1231,48 +1233,63 @@ a#tanggal {
 
 /* FOOTER*/
 
-footer {
-  margin: 0px;
+/*FOOTER*/
+
+.col-md-4.col-sm-6.col-xs-12 {
+  margin-top: 15px;
 }
 
 .containerFooter {
+  margin-left: 15px;
+}
+
+.site-footer {
   background-color: #26272b;
-  padding: 10px;
-  margin-top: 17%;
-}
-
-.parentFooter {
-  display: flex;
-  justify-content: space-between;
-  width: 60%;
-}
-
-.contentFooter {
-  padding: 20px;
-  color: white;
+  padding: 20px 0 20px;
   font-size: 15px;
-<<<<<<< HEAD
   line-height: 24px;
   color: #737373;
-  margin-top: 110px;
-=======
->>>>>>> 8e0576c7d0f49309121022dd68b14a23a6147e98
+  margin-top: 100px;
 }
 
-.hr {
-  color: white;
-  margin: 20px;
-  height: 40px;
+.site-footer hr {
+  border-top-color: #bbb;
+  opacity: 0.5;
+  margin-left: -22px;
+  margin-top: 30px;
 }
 
-.copyright {
-  color: white;
-  margin: 20px;
-  font-size: 13px;
-} */
+.site-footer hr.small {
+  margin: 20px 0
+}
 
+.site-footer h6 {
+  color: #fff;
+  font-size: 16px;
+  text-transform: uppercase;
+  margin-top: 5px;
+  letter-spacing: 2px
+}
 
-About Us
+.footer-links {
+  padding-left: 0;
+  list-style: none
+}
+
+.footer-links.inline li {
+  display: inline-block
+}
+
+.site-footer .social-icons {
+  text-align: right
+}
+
+.copyright-text {
+  padding-top: 10px;
+  margin: 0
+}
+
+/*About Us*/
 
 .about-us {
   text-align: center;
