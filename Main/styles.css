@@ -830,6 +830,9 @@ form.registerForm {
 
 /* Modal Register Pembayaran */
 
+.textHeader{
+  cursor: pointer;
+}
 
 .modalPembayaran {
   display: none;
@@ -1066,12 +1069,19 @@ a#tanggal {
 
 #notification {
   margin: 7px;
+  cursor: pointer;
 }
 
 #mobil {
   margin-top: 7px;
+  cursor: pointer;
 }
 
+/* Proses User */
+
+.cardProfile {
+  margin-bottom: 20px;
+}
 
 /*Dropdown For Logout*/
 

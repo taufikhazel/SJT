@@ -31,7 +31,7 @@ foreach ($filteredData as $transaction) {
     $html .= '<td>' . htmlspecialchars($transaction['harga']) . '</td>';
     $html .= '<td>' . htmlspecialchars($namaMobil) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['status']) . '</td>';
-    $html .= '<td><button class="btn btn-primary" id="cekSuksesBtn">Cek</button></td>';
+    $html .= '<td><button class="btn btn-primary" id="cekSuksesBtn" onClick="suksesCek(' . $transaction['idTransaksi'] . ')">Cek</button></td>';
     $html .= '</tr>';
 }
 
