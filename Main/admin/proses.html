@@ -95,9 +95,7 @@
                                 <h2>Notifikasi</h2>
                                 <span class="close">&times;</span>
                             </div>
-                            <div class="modal-body">
-                                <p>Some text in the Modal Body</p>
-                                <p>Some other text...</p>
+                            <div class="modal-body" id="modal-body">
                             </div>
                         </div>
                     </div>
@@ -620,7 +618,36 @@
                 .catch(error => console.error('Error updating rekening data:', error));
         });
 
+        // Modal Notifikasi
+        function openModal() {
+            fetch('../data/transaksi.json')
+                .then(response => response.json())
+                .then(data => {
+                    let content = '';
 
+                    data.forEach(transaction => {
+                        content += "<p>Ada uang masuk sebesar " + transaction.totalBayar + " dari " + transaction.nama + "</p>";
+                    });
+
+                    document.getElementById('modal-body').innerHTML = content;
+
+                    document.getElementById('myModal').style.display = 'block';
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        document.getElementById('notification').addEventListener('click', openModal);
+
+        document.querySelector('.close').onclick = function () {
+            document.getElementById('myModal').style.display = 'none';
+        };
+
+        window.onclick = function (event) {
+            const modal = document.getElementById('myModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        };
 
         // Modal Mobil
 
