@@ -186,45 +186,30 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Get the selectedTransaksi value from sessionStorage
             const selectedTransaksi = parseInt(sessionStorage.getItem('selectedTransaksi'), 10);
-
-
-            // Fetch the transaksi data from PHP or JSON file
             fetch('fetch_dataUserCards.php')
                 .then(response => response.json())
                 .then(data => {
-                    // Filter transactions based on selected user
                     const filteredTransaksi = data.filter(transaksi => transaksi.user === selectedTransaksi);
-
-                    // Reference to the template card and its container
                     const templateCard = document.querySelector('.cardProfile');
                     const container = document.getElementById('dataUser');
-
-                    // Clear existing content
                     container.innerHTML = '';
 
-                    // Generate cards for each filtered transaction
                     filteredTransaksi.forEach(transaksi => {
-                        const cardClone = templateCard.cloneNode(true); // Clone the template
+                        const cardClone = templateCard.cloneNode(true); 
 
-                        // Populate the cloned card with transaction data
                         cardClone.querySelector('.namaUser').textContent = transaksi.nama;
                         cardClone.querySelector('.kodePesanan').textContent = "Kode Pesanan: " + transaksi.idTransaksi;
                         cardClone.querySelector('.statusMobil').textContent = "Status: " + transaksi.status;
 
-                        // Fetch mobil data to get the mobil name
                         fetch('../data/mobil.json')
                             .then(response => response.json())
                             .then(mobilData => {
-                                // Find the matching mobil based on idMobil
                                 const matchingMobil = mobilData.find(mobil => mobil.idMobil === transaksi.mobil);
 
                                 if (matchingMobil) {
-                                    // Set the mobil name if found
                                     cardClone.querySelector('.jenisNamaMobil').textContent = matchingMobil.namaMobil;
                                 } else {
-                                    // Set default text if mobil not found
                                     cardClone.querySelector('.jenisNamaMobil').textContent = 'Mobil not found';
                                 }
                             })
@@ -233,7 +218,6 @@
                                 cardClone.querySelector('.jenisNamaMobil').textContent = 'Error loading mobil';
                             });
 
-                        // Append the populated card to the container
                         container.appendChild(cardClone);
                     });
                 })
@@ -299,7 +283,7 @@
             passwordInput.addEventListener('input', checkFormValidity);
             mobilSelect.addEventListener('change', checkFormValidity);
 
-            fetch('../data/mobil.json') // Updated path
+            fetch('../data/mobil.json') 
                 .then(response => response.json())
                 .then(mobilData => {
                     mobilData.forEach(car => {
@@ -326,7 +310,7 @@
                 const selectedMobil = mobilSelect.value;
 
                 if (username && password && selectedMobil) {
-                    fetch('get_last_user_id.php') // Updated path
+                    fetch('get_last_user_id.php') 
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Network response was not ok: ' + response.statusText);
@@ -343,7 +327,7 @@
                                 mobil: selectedMobil
                             };
 
-                            return fetch('register_user.php', { // Updated path
+                            return fetch('register_user.php', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -359,7 +343,7 @@
                         })
                         .then(data => {
                             if (data.status === 'success') {
-                                return fetch('update_mobil_status.php', { // Updated path
+                                return fetch('update_mobil_status.php', { 
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json'
@@ -563,39 +547,29 @@
 
         // Modal Notifikasi
 
-        // Function to open the modal and display all transactions
         function openModal() {
-            // Fetch the data from transaksi.json
             fetch('../data/transaksi.json')
                 .then(response => response.json())
                 .then(data => {
-                    // Initialize the content
                     let content = '';
 
-                    // Loop through all transactions
                     data.forEach(transaction => {
-                        // Generate the message for each transaction
                         content += "<p>Ada uang masuk sebesar " + transaction.totalBayar + " dari " + transaction.nama + "</p>";
                     });
 
-                    // Insert the generated content into the modal body
                     document.getElementById('modal-body').innerHTML = content;
 
-                    // Display the modal
                     document.getElementById('myModal').style.display = 'block';
                 })
                 .catch(error => console.error('Error fetching data:', error));
         }
 
-        // Trigger modal opening on clicking the notification icon
         document.getElementById('notification').addEventListener('click', openModal);
 
-        // Close the modal when clicking on the 'X' button
         document.querySelector('.close').onclick = function () {
             document.getElementById('myModal').style.display = 'none';
         };
 
-        // Close the modal when clicking outside the modal content
         window.onclick = function (event) {
             const modal = document.getElementById('myModal');
             if (event.target == modal) {

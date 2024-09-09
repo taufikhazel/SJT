@@ -229,12 +229,11 @@
       var spanNotif = document.getElementById("notification");
       var span = document.getElementsByClassName("close")[0];
 
-      // Panggil fungsi untuk memuat dan memeriksa data transaksi saat halaman dimuat
       checkAndUpdateNotificationIcon();
 
       spanNotif.onclick = function () {
         modal.style.display = "block";
-        fetchTransaksiData(); // Panggil fungsi untuk me-load transaksi saat modal dibuka
+        fetchTransaksiData(); 
       };
 
       span.onclick = function () {
@@ -247,27 +246,24 @@
         }
       };
 
-      // Fungsi untuk memuat data transaksi dan memperbarui ikon notifikasi
       function checkAndUpdateNotificationIcon() {
-        // Mengambil idUser dari sessionStorage
         const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
         const idUser = loggedInUser.idUser;
 
-        fetch('getTransaksi.php') // Panggil PHP endpoint
+        fetch('getTransaksi.php') 
           .then(response => {
             if (!response.ok) {
               throw new Error(`Network response was not ok: ${response.statusText}`);
             }
-            return response.json(); // Parsing sebagai JSON
+            return response.json(); 
           })
           .then(data => {
-            // Periksa apakah ada kesalahan yang dikembalikan dari PHP
+
             if (data.error) {
               console.log(data.error);
               return;
             }
 
-            // Periksa apakah data valid dan tidak null
             if (!Array.isArray(data)) {
               console.log("Data transaksi tidak tersedia atau tidak valid.");
               return;
@@ -285,27 +281,24 @@
           .catch(error => console.error('Error fetching data:', error));
       }
 
-      // Fungsi untuk me-load data transaksi saat modal dibuka
       function fetchTransaksiData() {
-        // Mengambil idUser dari sessionStorage
         const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
         const idUser = loggedInUser.idUser;
 
-        fetch('getTransaksi.php') // Panggil PHP endpoint
+        fetch('getTransaksi.php') 
           .then(response => {
             if (!response.ok) {
               throw new Error(`Network response was not ok: ${response.statusText}`);
             }
-            return response.json(); // Parsing sebagai JSON
+            return response.json(); 
           })
           .then(data => {
-            // Periksa apakah ada kesalahan yang dikembalikan dari PHP
+
             if (data.error) {
               console.log(data.error);
               return;
             }
 
-            // Periksa apakah data valid dan tidak null
             if (!Array.isArray(data)) {
               console.log("Data transaksi tidak tersedia atau tidak valid.");
               return;
@@ -322,7 +315,7 @@
           .catch(error => console.error('Error fetching data:', error));
       }
 
-      // Fungsi untuk memperbarui ikon notifikasi
+      // Fungsi ikon notifikasi
       function updateNotificationIcon(isBelumDiprosesFound) {
         const notificationIcon = document.getElementById('notification');
 

@@ -149,13 +149,11 @@
       const nextBtn = document.getElementById("nextBtn");
 
       if (loggedInUser && loggedInUser.username) {
-        // Set textContent of 'nama' field to loggedInUser.username and disable it
         const namaInput = document.getElementById("nama");
         namaInput.value = loggedInUser.username;
-        namaInput.disabled = true; // Disable to prevent editing
+        namaInput.disabled = true; 
       }
 
-      // Function to check if all fields are filled
       function checkFields() {
         const allFilled = Array.from(inputs).every(
           (input) => input.value.trim() !== ""
@@ -184,7 +182,7 @@
               const transaksiData = {
                 idTransaksi: idTransaksi,
                 user: idUser,
-                nama: loggedInUser.username, // Set nama to loggedInUser.username
+                nama: loggedInUser.username,
                 noTelp: document.getElementById("noTelp").value,
                 alamat: document.getElementById("alamat").value,
                 kota: document.getElementById("kota").value,
@@ -223,21 +221,18 @@
             throw new Error(`Network response was not ok: ${response.statusText}`);
           }
 
-          const text = await response.text(); // Ambil sebagai text terlebih dahulu
+          const text = await response.text(); 
 
           if (!text.trim()) {
-            // Jika file kosong, kembalikan ID baru yang dimulai dari 1
             return "1";
           }
 
-          const data = JSON.parse(text); // Parse JSON setelah memeriksa bahwa teks tidak kosong
+          const data = JSON.parse(text); 
 
           if (!Array.isArray(data) || data.length === 0) {
-            // Jika data tidak valid atau array kosong, kembalikan ID baru yang dimulai dari 1
             return "1";
           }
 
-          // Cari ID transaksi tertinggi
           let maxId = data.reduce(
             (max, item) => Math.max(max, parseInt(item.idTransaksi || "0")),
             0
@@ -247,7 +242,7 @@
           return newId.toString();
         } catch (error) {
           console.error("Error fetching transaksi data:", error);
-          return null; // Jika terjadi kesalahan, kembalikan null atau ID default sesuai kebutuhan
+          return null;
         }
       }
     });
@@ -258,12 +253,11 @@
       var spanNotif = document.getElementById("notification");
       var span = document.getElementsByClassName("close")[0];
 
-      // Panggil fungsi untuk memuat dan memeriksa data transaksi saat halaman dimuat
       checkAndUpdateNotificationIcon();
 
       spanNotif.onclick = function () {
         modal.style.display = "block";
-        fetchTransaksiData(); // Panggil fungsi untuk me-load transaksi saat modal dibuka
+        fetchTransaksiData(); 
       };
 
       span.onclick = function () {
@@ -276,27 +270,23 @@
         }
       };
 
-      // Fungsi untuk memuat data transaksi dan memperbarui ikon notifikasi
       function checkAndUpdateNotificationIcon() {
-        // Mengambil idUser dari sessionStorage
         const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
         const idUser = loggedInUser.idUser;
 
-        fetch('getTransaksi.php') // Panggil PHP endpoint
+        fetch('getTransaksi.php')
           .then(response => {
             if (!response.ok) {
               throw new Error(`Network response was not ok: ${response.statusText}`);
             }
-            return response.json(); // Parsing sebagai JSON
+            return response.json();
           })
           .then(data => {
-            // Periksa apakah ada kesalahan yang dikembalikan dari PHP
             if (data.error) {
               console.log(data.error);
               return;
             }
 
-            // Periksa apakah data valid dan tidak null
             if (!Array.isArray(data)) {
               console.log("Data transaksi tidak tersedia atau tidak valid.");
               return;
@@ -313,28 +303,24 @@
           })
           .catch(error => console.error('Error fetching data:', error));
       }
-
-      // Fungsi untuk me-load data transaksi saat modal dibuka
       function fetchTransaksiData() {
-        // Mengambil idUser dari sessionStorage
         const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
         const idUser = loggedInUser.idUser;
 
-        fetch('getTransaksi.php') // Panggil PHP endpoint
+        fetch('getTransaksi.php') 
           .then(response => {
             if (!response.ok) {
               throw new Error(`Network response was not ok: ${response.statusText}`);
             }
-            return response.json(); // Parsing sebagai JSON
+            return response.json(); 
           })
           .then(data => {
-            // Periksa apakah ada kesalahan yang dikembalikan dari PHP
+
             if (data.error) {
               console.log(data.error);
               return;
             }
 
-            // Periksa apakah data valid dan tidak null
             if (!Array.isArray(data)) {
               console.log("Data transaksi tidak tersedia atau tidak valid.");
               return;
@@ -351,7 +337,7 @@
           .catch(error => console.error('Error fetching data:', error));
       }
 
-      // Fungsi untuk memperbarui ikon notifikasi
+      // Fungsi ikon notifikasi
       function updateNotificationIcon(isBelumDiprosesFound) {
         const notificationIcon = document.getElementById('notification');
 

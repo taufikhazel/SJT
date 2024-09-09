@@ -5,7 +5,7 @@ $jsonFilePath = '../data/transaksi.json';
 
 if (file_exists($jsonFilePath)) {
     $jsonData = file_get_contents($jsonFilePath);
-    echo $jsonData; // Return the JSON data
+    echo $jsonData; 
 } else {
     echo json_encode(['error' => 'File not found']); 
 }
