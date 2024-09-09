@@ -16,171 +16,7 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            background: #fcd98d;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        span#notification {
-            color: rgb(0, 0, 0);
-        }
-
-        a {
-            text-decoration: none;
-            color: #000;
-            font-size: 20px;
-        }
-
-        a:hover {
-            text-decoration: underline black;
-            font: bold;
-        }
-
-        .containerWrap {
-            display: flex;
-            flex-direction: row;
-        }
-
-        .container {
-            width: 500px;
-            height: 550px;
-            margin-top: 50px;
-            margin-left: 50px;
-            background: none;
-            border: none;
-        }
-
-        .wrapMobilCard {
-            margin-right: 70px;
-        }
-
-        .cardMobil {
-            background: rgb(255, 255, 255);
-            width: 380px;
-            height: 220px;
-            margin-right: 50px;
-            margin-top: 50px;
-            border-radius: 20px 20px 0px 0px;
-            box-shadow: 6px 5px 12px 0px;
-            display: flex;
-        }
-
-        .mobilImg {
-            background: black;
-            width: 250px;
-            height: 100%;
-            border-radius: 20px 0px 0px 0px;
-        }
-
-        .spesifikasiMobil {
-            display: flex;
-            flex-direction: column;
-            margin-left: 5px;
-            margin-top: 20px;
-            width: 120px;
-        }
-
-        a.infoBensin {
-            text-decoration: none;
-            font-size: 10px;
-            color: rgb(180, 180, 180);
-            margin-left: 0px;
-        }
-
-
-        .border {
-            background: #cfcdcd;
-            height: 5px;
-            width: 358px;
-            margin-left: 8px;
-        }
-
-        .cardInfoMobil {
-            width: 380px;
-            background: rgb(238, 238, 238);
-            height: 250px;
-            border-radius: 0px 0px 20px 20px;
-            box-shadow: 6px 5px 12px 0px;
-        }
-
-        a.kota {
-            font-size: 16px;
-            font-weight: 400;
-            text-decoration: none;
-        }
-
-        .infoMobil {
-            text-align: center;
-            padding-top: 10px
-        }
-
-        .infoJarak {
-            margin-top: 10px;
-            margin-left: 10px;
-        }
-
-        b {
-            font-size: 13px;
-        }
-
-        .textInfoJarak {
-            font-size: 12px;
-        }
-
-        .contentJarak {
-            margin-left: 10px;
-            display: flex;
-            flex-direction: row;
-            gap: 18%;
-        }
-
-        a.tanggalJarak {
-            font-size: 18px;
-            text-decoration: none;
-            font-weight: 700
-        }
-
-        span#arrow {
-            color: #000;
-            font-size: 28px;
-        }
-
-        .hargaJarak {
-            margin-left: 27px;
-            display: flex;
-            flex-direction: row;
-            gap: 51%;
-        }
-
-        a#hariJarak {
-            text-decoration: none;
-            font-size: 18px;
-        }
-
-        a#hargaJarak {
-            text-decoration: none;
-            font-size: 18px;
-        }
-
-        button#btnProses {
-            margin-left: 5px;
-            margin-top: 20px;
-            width: 180px;
-            height: 50px;
-            border-radius: 10px;
-            background: #e4e2e2;
-            color: black;
-            border: none;
-        }
-
-        button#btnProses:hover {
-            background: #a7a7a7;
-        }
-    </style>
+    <link rel="stylesheet" href="proses.css"/>
 </head>
 
 <body>
@@ -256,6 +92,7 @@
                     <div id="myModal" class="modal">
                         <div class="modal-content">
                             <div class="modal-header">
+                                <h2>Notifikasi</h2>
                                 <span class="close">&times;</span>
                             </div>
                             <div class="modal-body">
@@ -352,13 +189,13 @@
                         akan tersebut akan dikenakan sebesar Rp.1,500 per km</p>
                 </div>
                 <div class="contentJarak">
-                    <a href="#" class="tanggalJarak">00-00-0000</a>
+                    <p class="tanggalJarak">00-00-0000</p>
                     <span class="material-symbols-outlined" id="arrow">chevron_right</span>
-                    <a href="#" class="tanggalJarak">00-00-0000</a>
+                    <p class="tanggalJarak">00-00-0000</p>
                 </div>
                 <div class="hargaJarak">
-                    <a href="#" id="hariJarak">x1 hari</a>
-                    <a href="#" id="hargaJarak">Rp 000.000</a>
+                    <p id="hariJarak">x1 hari</p>
+                    <p id="hargaJarak">Rp 000.000</p>
                 </div>
                 <div class="resultBtn" id="resultBtn">
 
@@ -909,25 +746,30 @@
 </body>
 
 <!-- Site footer -->
-<footer>
+<footer class="site-footer">
     <div class="containerFooter">
-        <div class="parentFooter">
-            <div class="contentFooter">
-                <h1>Company</h1>
-                <p style="font-size: 12px;">PT SUKSES JAYA TRANSPORINDO</p>
+        <div class="row" >
+            <div class="company">
+                <h6>Company</h6>
+                <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
             </div>
-            <div class="contentFooter">
-                <h1>Social</h1>
-                <p style="font-size: 12px;">PT SUKSES JAYA TRANSPORINDO</p>
-            </div>
-            <div class="contentFooter">
-                <h1>Layanan</h1>
-                <p style="font-size: 12px;">PT SUKSES JAYA TRANSPORINDO</p>
+            <div class="social">
+                <h6>Social</h6>
+                <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
             </div>
         </div>
+        <div class="Contact" style="margin-top: 20px;">
+            <h6>Legal</h6>
+            <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
+        </div>
         <hr>
-        <p class="copyright">PT SUKSES JAYA TRANPORINDO</p>
-    </div>
+        <div class="footerContainer">
+            <div class="row">
+                <div class="col-md-8 col-sm-6 col-xs-12">
+                    <p class="copyright-text">PT. SUKSES JAYA TRANSPORINDO</p>
+                </div>
+            </div>
+        </div>
 </footer>
 
 

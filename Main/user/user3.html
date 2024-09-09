@@ -59,9 +59,12 @@
             padding-top: 10px;
         }
 
-        .salinRekening {
+        #salinRekening {
             text-align: center;
             margin-top: 5px;
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
         }
 
         .noRekening {
@@ -86,6 +89,7 @@
 
         .uploadIcon {
             width: 40px;
+            cursor: pointer;
         }
 
         .infoUpload {
@@ -270,15 +274,13 @@
             font-size: smaller;
         }
 
-        .salinRekening {
-            color: blue;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-
         .nextBtn:disabled {
             background-color: #ccc;
             cursor: not-allowed;
+        }
+
+        .modal-content {
+            width: 90%;
         }
     </style>
 </head>
@@ -335,7 +337,7 @@
                     <img class="logobank" src="../../src/pngwing.com.png" alt="bank">
                 </div>
             </div>
-            <a class="salinRekening">Salin rekening</a>
+            <a class="salinRekening" id="salinRekening">Salin rekening</a>
             <p class="noRekening" id="noRekening"></p>
             <div class="uploadContainer">
                 <div class="uploadCard">
@@ -412,10 +414,6 @@
     </div>
     <div class="loader" style="display: none;"></div>
     <script>
-        // Logika Modal
-        var modal = document.getElementById("myModal");
-        var spanNotif = document.getElementById("notification");
-        var span = document.getElementsByClassName("close")[0];
 
         document.addEventListener("DOMContentLoaded", function () {
             const transaksiData = JSON.parse(sessionStorage.getItem("transaksiData"));
@@ -474,20 +472,6 @@
                 console.log("No transaction data found in sessionStorage.");
             }
         });
-
-        spanNotif.onclick = function () {
-            modal.style.display = "block";
-        };
-
-        span.onclick = function () {
-            modal.style.display = "none";
-        };
-
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        };
 
         //Logika Button Hi dan Logout
 
@@ -620,6 +604,10 @@
             submitBtn.addEventListener('click', function () {
                 let transaksiData = JSON.parse(sessionStorage.getItem('transaksiData')) || {};
                 transaksiData.status = 'Belum Diproses';
+                const currentDate = new Date();
+                const formattedDate = currentDate.toISOString().split('T')[0];
+                transaksiData.submit = formattedDate;
+                transaksiData.isRead = false;
 
                 const file = fileInput.files[0];
                 if (file) {
@@ -652,163 +640,223 @@
         });
 
         //Logika Notifikasi
-        // Mengambil idUser dari sessionStorage
-        const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
-        const idUser = loggedInUser.idUser;
-        fetch('../data/transaksi.json')
-            .then(response => response.json())
-            .then(data => {
-                const userTransaksi = data.filter(transaksi => transaksi.idUser === idUser);
+        document.addEventListener("DOMContentLoaded", function () {
+            var modal = document.getElementById("myModal");
+            var spanNotif = document.getElementById("notification");
+            var span = document.getElementsByClassName("close")[0];
 
-                if (userTransaksi.length > 0) {
-                    generateModalContent(userTransaksi);
-                } else {
-                    console.log("Tidak ada data yang cocok untuk idUser:", idUser);
+            // Panggil fungsi untuk memuat dan memeriksa data transaksi saat halaman dimuat
+            checkAndUpdateNotificationIcon();
+
+            spanNotif.onclick = function () {
+                modal.style.display = "block";
+                fetchTransaksiData(); // Panggil fungsi untuk me-load transaksi saat modal dibuka
+            };
+
+            span.onclick = function () {
+                modal.style.display = "none";
+            };
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
                 }
-            })
-            .catch(error => console.error('Error fetching data:', error));
-        function generateModalContent(transaksiList) {
-            const isiNotifikasiContainer = document.querySelector('.containerIsiNotifikasi');
-            isiNotifikasiContainer.innerHTML = '';
+            };
 
-            let isBelumDiprosesFound = false;
+            // Fungsi untuk memuat data transaksi dan memperbarui ikon notifikasi
+            function checkAndUpdateNotificationIcon() {
+                // Mengambil idUser dari sessionStorage
+                const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+                const idUser = loggedInUser.idUser;
 
-            transaksiList.forEach(transaksi => {
+                fetch('getTransaksi.php') // Panggil PHP endpoint
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Network response was not ok: ${response.statusText}`);
+                        }
+                        return response.json(); // Parsing sebagai JSON
+                    })
+                    .then(data => {
+                        // Periksa apakah ada kesalahan yang dikembalikan dari PHP
+                        if (data.error) {
+                            console.log(data.error);
+                            return;
+                        }
 
-                if (transaksi.status === "Belum Diproses") {
-                    isBelumDiprosesFound = true;
-                }
-                const newIsiNotifikasiDiv = document.createElement('div');
-                newIsiNotifikasiDiv.classList.add('isiNotifikasi');
+                        // Periksa apakah data valid dan tidak null
+                        if (!Array.isArray(data)) {
+                            console.log("Data transaksi tidak tersedia atau tidak valid.");
+                            return;
+                        }
 
-                const radioButtonDiv = document.createElement('div');
-                radioButtonDiv.classList.add('radioButton');
+                        const userTransaksi = data.filter(transaksi => transaksi.user === idUser);
 
-                if (transaksi.status === "Belum Diproses") {
-                    const radioButton = document.createElement('input');
-                    radioButton.type = 'radio';
-                    radioButton.classList.add('rbtn');
-                    radioButtonDiv.appendChild(radioButton);
-                } else {
-                    const checkCircleSpan = document.createElement('span');
-                    checkCircleSpan.className = 'material-symbols-outlined';
-                    checkCircleSpan.textContent = 'check_circle';
-                    checkCircleSpan.id = "success";
-                    radioButtonDiv.appendChild(checkCircleSpan);
-                }
+                        let isBelumDiprosesFound = false;
+                        if (userTransaksi.length > 0) {
+                            isBelumDiprosesFound = userTransaksi.some(transaksi => transaksi.status === "Belum Diproses");
+                        }
 
-                const textNotifikasiDiv = document.createElement('div');
-                textNotifikasiDiv.classList.add('textNotifikasi');
-
-                const idTransaksiLink = document.createElement('p');
-                idTransaksiLink.href = '#';
-                idTransaksiLink.id = 'idTransaksi';
-                idTransaksiLink.textContent = `Kode Pesanan: ${transaksi.idTransaksi}`;
-
-                const tanggalLink = document.createElement('p');
-                tanggalLink.href = '#';
-                tanggalLink.id = 'tanggal';
-                tanggalLink.textContent = `Tanggal jatuh tempo: ${transaksi.tanggal}`;
-
-                textNotifikasiDiv.appendChild(idTransaksiLink);
-                textNotifikasiDiv.appendChild(document.createElement('br'));
-                textNotifikasiDiv.appendChild(tanggalLink);
-
-                if (transaksi.status === "Belum Diproses") {
-                    const unsuccess = document.createElement('span');
-                    unsuccess.className = "material-symbols-outlined";
-                    unsuccess.id = 'unSuccess';
-                    unsuccess.textContent = 'error';
-                    textNotifikasiDiv.appendChild(unsuccess);
-                }
-
-                newIsiNotifikasiDiv.appendChild(radioButtonDiv);
-                newIsiNotifikasiDiv.appendChild(textNotifikasiDiv);
-
-                isiNotifikasiContainer.appendChild(newIsiNotifikasiDiv);
-            });
-
-            const notificationIcon = document.getElementById('notification');
-
-            if (isBelumDiprosesFound) {
-                notificationIcon.textContent = 'notification_important';
-                notificationIcon.style.color = '#EA3323';
-            } else {
-                notificationIcon.textContent = 'notifications';
-                notificationIcon.style.color = '#000';
+                        updateNotificationIcon(isBelumDiprosesFound);
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
             }
 
-            const modalBody = document.querySelector('.modal-body');
-            modalBody.style.overflowY = 'auto';
-            modalBody.style.maxHeight = '400px';
-        }
+            // Fungsi untuk me-load data transaksi saat modal dibuka
+            function fetchTransaksiData() {
+                // Mengambil idUser dari sessionStorage
+                const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+                const idUser = loggedInUser.idUser;
 
-        // Logika Car Detail 
+                fetch('getTransaksi.php') // Panggil PHP endpoint
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Network response was not ok: ${response.statusText}`);
+                        }
+                        return response.json(); // Parsing sebagai JSON
+                    })
+                    .then(data => {
+                        // Periksa apakah ada kesalahan yang dikembalikan dari PHP
+                        if (data.error) {
+                            console.log(data.error);
+                            return;
+                        }
 
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     const transaksiData = JSON.parse(sessionStorage.getItem('transaksiData'));
+                        // Periksa apakah data valid dan tidak null
+                        if (!Array.isArray(data)) {
+                            console.log("Data transaksi tidak tersedia atau tidak valid.");
+                            return;
+                        }
 
-        //     if (transaksiData && transaksiData.mobil) {
-        //         const idMobil = transaksiData.mobil;
-        //         console.log('ID Mobil from sessionStorage:', idMobil);
+                        const userTransaksi = data.filter(transaksi => transaksi.user === idUser);
 
-        //         fetch('../data/mobil.json')
-        //             .then(response => response.json())
-        //             .then(data => {
-        //                 console.log('Data from mobil.json:', data);
+                        if (userTransaksi.length > 0) {
+                            generateModalContent(userTransaksi);
+                        } else {
+                            console.log("Tidak ada data yang cocok untuk idUser:", idUser);
+                        }
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+            }
 
-        //                 const mobil = data.find(mobil => mobil.idMobil === idMobil);
+            // Fungsi untuk memperbarui ikon notifikasi
+            function updateNotificationIcon(isBelumDiprosesFound) {
+                const notificationIcon = document.getElementById('notification');
 
-        //                 if (mobil) {
-        //                     console.log('Mobil found:', mobil);
+                if (isBelumDiprosesFound) {
+                    notificationIcon.textContent = 'notification_important';
+                    notificationIcon.style.color = '#EA3323';
+                } else {
+                    notificationIcon.textContent = 'notifications';
+                    notificationIcon.style.color = '#000';
+                }
+            }
 
-        //                     document.getElementById('namaMobil').textContent = mobil.namaMobil;
-        //                     document.getElementById('carImg').src = mobil.gambar;
-        //                     const subTotalHarga = mobil.hargaMobil
-        //                     document.getElementById('subTotal').textContent = subTotalHarga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+            function generateModalContent(transaksiList) {
+                const isiNotifikasiContainer = document.querySelector('.containerIsiNotifikasi');
+                isiNotifikasiContainer.innerHTML = '';
 
-        //                     const taxPercentage = 0;
-        //                     const subTotal = mobil.hargaMobil;
-        //                     const taxAmount = subTotal * (taxPercentage / 100);
-        //                     const totalHarga = subTotal + taxAmount;
+                let isBelumDiprosesFound = false;
 
-        //                     document.getElementById('totalHarga').textContent = `${totalHarga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}`;
-        //                     document.getElementById('tax').textContent = `${taxPercentage}%`;
-        //                 } else {
-        //                     console.error('Car not found in mobil.json');
-        //                 }
-        //             })
-        //             .catch(error => console.error('Error fetching mobil.json:', error));
-        //     } else {
-        //         console.error('No valid transaksiData found in sessionStorage');
-        //     }
-        // });
+                transaksiList.forEach(transaksi => {
+                    if (transaksi.status === "Belum Diproses") {
+                        isBelumDiprosesFound = true;
+                    }
 
+                    const newIsiNotifikasiDiv = document.createElement('div');
+                    newIsiNotifikasiDiv.classList.add('isiNotifikasi');
+
+                    const radioButtonDiv = document.createElement('div');
+                    radioButtonDiv.classList.add('radioButton');
+
+                    if (transaksi.status === "Belum Diproses") {
+                        const radioButton = document.createElement('input');
+                        radioButton.type = 'radio';
+                        radioButton.classList.add('rbtn');
+                        radioButtonDiv.appendChild(radioButton);
+                    } else {
+                        const checkCircleSpan = document.createElement('span');
+                        checkCircleSpan.className = 'material-symbols-outlined';
+                        checkCircleSpan.textContent = 'check_circle';
+                        checkCircleSpan.id = "success";
+                        radioButtonDiv.appendChild(checkCircleSpan);
+                    }
+
+                    const textNotifikasiDiv = document.createElement('div');
+                    textNotifikasiDiv.classList.add('textNotifikasi');
+
+                    const idTransaksiLink = document.createElement('p');
+                    idTransaksiLink.href = '#';
+                    idTransaksiLink.id = 'idTransaksi';
+                    idTransaksiLink.textContent = `Kode Pesanan: ${transaksi.idTransaksi}`;
+
+                    const tanggalLink = document.createElement('p');
+                    tanggalLink.href = '#';
+                    tanggalLink.id = 'tanggal';
+                    tanggalLink.textContent = `Tanggal jatuh tempo: ${transaksi.tanggal}`;
+
+                    textNotifikasiDiv.appendChild(idTransaksiLink);
+                    textNotifikasiDiv.appendChild(document.createElement('br'));
+                    textNotifikasiDiv.appendChild(tanggalLink);
+
+                    if (transaksi.status === "Belum Diproses") {
+                        const unsuccess = document.createElement('span');
+                        unsuccess.className = "material-symbols-outlined";
+                        unsuccess.id = 'unSuccess';
+                        unsuccess.textContent = 'error';
+                        textNotifikasiDiv.appendChild(unsuccess);
+                    }
+
+                    newIsiNotifikasiDiv.appendChild(radioButtonDiv);
+                    newIsiNotifikasiDiv.appendChild(textNotifikasiDiv);
+
+                    isiNotifikasiContainer.appendChild(newIsiNotifikasiDiv);
+                });
+
+                const notificationIcon = document.getElementById('notification');
+
+                if (isBelumDiprosesFound) {
+                    notificationIcon.textContent = 'notification_important';
+                    notificationIcon.style.color = '#EA3323';
+                } else {
+                    notificationIcon.textContent = 'notifications';
+                    notificationIcon.style.color = '#000';
+                }
+
+                const modalBody = document.querySelector('.modal-body');
+                modalBody.style.overflowY = 'auto';
+                modalBody.style.maxHeight = '400px';
+            }
+        });
 
     </script>
 </body>
 
 <!-- Site footer -->
-<footer>
+<footer class="site-footer">
     <div class="containerFooter">
-      <div class="parentFooter">
-        <div class="contentFooter">
-          <h1>Company</h1>
-          <p style="font-size: 12px;">PT SUKSES JAYA TRANSPORINDO</p>
+        <div class="row" style="display: flex; gap: 100px;">
+            <div class="company">
+                <h6>Company</h6>
+                <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
+            </div>
+            <div class="social">
+                <h6>Social</h6>
+                <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
+            </div>
         </div>
-        <div class="contentFooter">
-          <h1>Social</h1>
-          <p style="font-size: 12px;">PT SUKSES JAYA TRANSPORINDO</p>
+        <div class="Contact" style="margin-top: 20px;">
+            <h6>Legal</h6>
+            <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
         </div>
-        <div class="contentFooter">
-          <h1>Layanan</h1>
-          <p style="font-size: 12px;">PT SUKSES JAYA TRANSPORINDO</p> 
+        <hr>
+        <div class="footerContainer">
+            <div class="row">
+                <div class="col-md-8 col-sm-6 col-xs-12">
+                    <p class="copyright-text">PT. SUKSES JAYA TRANSPORINDO</p>
+                </div>
+            </div>
         </div>
-      </div>
-      <hr>
-        <p class="copyright">PT SUKSES JAYA TRANPORINDO</p>
-    </div>
-  </footer>
+</footer>
 
 
 </html>

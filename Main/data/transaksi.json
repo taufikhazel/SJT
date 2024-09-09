@@ -1,81 +1,76 @@
 [
     {
         "idTransaksi": 1,
-        "user": "asa",
-        "idUser": "1",
-        "nama": "dada",
-        "noTelp": "13",
-        "bukti": "sad",
-        "alamat": "ad",
-        "kota": "ad",
-        "harga": 400000,
-        "mobil": "adsa",
-        "tanggal": "2024-09-02",
-        "status": "Diproses"
+        "user": 1,
+        "nama": "user",
+        "noTelp": "082125643321",
+        "alamat": "kajasof",
+        "kota": "tangerang",
+        "harga": 200000,
+        "mobil": "1",
+        "tanggal": [
+            "2024-09-10",
+            "2024-09-11"
+        ],
+        "bukti": "uploads\/bukti\/Screenshot 2024-05-12 000017.png",
+        "status": "Belum Diproses",
+        "totalBayar": 400000,
+        "submit": "2024-09-08",
+        "isRead": false
     },
     {
         "idTransaksi": 2,
-        "user": "1",
-        "nama": "gaggafasf",
-        "noTelp": "114124",
-        "alamat": "sfasffas",
-        "kota": "12414",
-        "harga": 12314,
+        "user": 1,
+        "nama": "user",
+        "noTelp": "082125643321",
+        "alamat": "kajasof",
+        "kota": "tangerang",
+        "harga": 200000,
         "mobil": "1",
-        "tanggal": "2024-09-02",
-        "bukti": "uploads\/bukti\/Screenshot 2023-12-31 202231.png",
-        "status": "Sukses"
+        "tanggal": [
+            "2024-09-10",
+            "2024-09-11"
+        ],
+        "bukti": "uploads\/bukti\/Screenshot 2024-05-12 000017.png",
+        "status": "Belum Diproses",
+        "totalBayar": 400000,
+        "submit": "2024-09-08",
+        "isRead": false
     },
     {
         "idTransaksi": 3,
-        "user": "1",
-        "nama": "gaggafasf",
-        "noTelp": "114124",
-        "alamat": "sfasffas",
-        "kota": "12414",
-        "harga": 12314,
+        "user": 1,
+        "nama": "user",
+        "noTelp": "0821212141",
+        "alamat": "dasda",
+        "kota": "asdhoas",
+        "harga": 200000,
         "mobil": "1",
-        "tanggal": "2024-09-02",
-        "bukti": "uploads\/bukti\/Screenshot 2023-12-31 202231.png",
-        "status": "Sukses"
+        "tanggal": [
+            "2024-09-17"
+        ],
+        "bukti": "uploads\/bukti\/Screenshot 2024-09-08 013108.png",
+        "status": "Belum Diproses",
+        "totalBayar": 200000,
+        "submit": "2024-09-08",
+        "isRead": false
     },
     {
         "idTransaksi": 4,
-        "user": "1",
-        "nama": "gaggafasf",
-        "noTelp": "114124",
-        "alamat": "sfasffas",
-        "kota": "12414",
-        "harga": 12314,
+        "user": 1,
+        "nama": "user",
+        "noTelp": "266565656",
+        "alamat": "adonnfonodonoaso",
+        "kota": "jsna",
+        "harga": 200000,
         "mobil": "1",
-        "tanggal": "2024-08-02",
-        "bukti": "uploads\/bukti\/Screenshot 2023-12-31 202231.png",
-        "status": "Reject"
-    },
-    {
-        "idTransaksi": 5,
-        "user": "1",
-        "nama": "gaggafasf",
-        "noTelp": "114124",
-        "alamat": "sfasffas",
-        "kota": "12414",
-        "harga": 12314,
-        "mobil": "1",
-        "tanggal": "2024-08-02",
-        "bukti": "uploads\/bukti\/Screenshot 2023-12-31 202231.png",
-        "status": "Belum Diproses"
-    },
-    {
-        "idTransaksi": 6,
-        "user": "1",
-        "nama": "yugyugiy",
-        "noTelp": "2243",
-        "alamat": "ygygyu",
-        "kota": "jh",
-        "harga": 12314,
-        "mobil": "1",
-        "tanggal": "2024-09-03",
-        "bukti": "uploads\/bukti\/Screenshot 2023-12-31 203728.png",
-        "status": "Diproses"
+        "tanggal": [
+            "2024-09-20"
+        ],
+        "bukti": "uploads\/bukti\/Screenshot 2024-05-14 000303.png",
+        "status": "Belum Diproses",
+        "totalBayar": 200000,
+        "submit": "2024-09-08",
+        "isRead": false
     }
 ]

@@ -15,74 +15,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.bootstrap5.css">
-    <style>
-        body {
-            margin: 0px;
-        }
-
-        .textHeader {
-            text-decoration: none;
-            color: #000;
-            font-size: 20px;
-        }
-
-        .textHeader:hover {
-            text-decoration: underline black;
-            font: bold;
-        }
-
-        .container {
-            background: none;
-            border: none;
-            display: flex;
-            height: 50px;
-        }
-
-        .dashboardBtn {
-            display: flex;
-            flex-direction: row;
-            gap: 50px;
-            justify-content: center;
-        }
-
-        button#pendingBtn {
-            width: 250px;
-            height: 85px;
-        }
-
-        button#prosesBtn {
-            width: 250px;
-            height: 85px;
-        }
-
-        button#suksesBtn {
-            width: 250px;
-            height: 85px;
-        }
-
-        button#rejectBtn {
-            width: 250px;
-            height: 85px;
-        }
-
-        button#userBtn {
-            width: 250px;
-            height: 85px;
-        }
-
-        .dropdown-content {
-            min-width: 105px;
-        }
-
-        .page-content {
-            padding-left: 40px;
-            padding-top: 20px;
-        }
-
-        .dashboardBtn .btn {
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="dashboard.css">
 </head>
 
 <body>
@@ -116,7 +49,8 @@
                 </div>
 
                 <li>
-                    <a class="textHeader" onclick="openModalAdmin()">Buat Admin</a></li>
+                    <a class="textHeader" onclick="openModalAdmin()">Buat Admin</a>
+                </li>
                 <div id="registerModalAdmin" class="modalAdmin">
                     <div class="modal-contentAdmin">
                         <span class="closeAdmin" onclick="closeModalAdmin()">&times;</span>
@@ -155,15 +89,15 @@
                 <li>
                     <span class="material-symbols-outlined" id="notification">
                         notifications
+                        <span id="notificationBadge" class="badge"></span>
                     </span>
                     <div id="myModal" class="modal">
                         <div class="modal-content">
                             <div class="modal-header">
+                                <h2>Notifikasi</h2>
                                 <span class="close">&times;</span>
                             </div>
-                            <div class="modal-body">
-                                <p>Some text in the Modal Body</p>
-                                <p>Some other text...</p>
+                            <div class="modal-body" id="modal-body">
                             </div>
                         </div>
                     </div>
@@ -190,7 +124,8 @@
 
                                 <div class="uploadContainer">
                                     <div class="uploadCard" onclick="document.getElementById('fileInput').click()">
-                                        <img class="uploadIcon" src="../../src/drop icon.png" alt="Upload">
+                                        <img class="uploadIcon" src="../../src/drop icon.png" alt="Upload"
+                                            id="uploadIcon">
                                         <input type="file" id="fileInput" accept=".jpg, .jpeg, .png" required
                                             style="display: none;" />
                                     </div>
@@ -236,12 +171,13 @@
                 <tr>
                     <th>Nama</th>
                     <th>User</th>
-                    <th>Tanggal</th>
+                    <th>Tanggal Submit</th>
                     <th>Kode Pesanan</th>
                     <th>No Telp</th>
                     <th>Bukti</th>
                     <th>Alamat</th>
                     <th>Kota</th>
+                    <th>Tanggal Setoran</th>
                     <th>Harga</th>
                     <th>Mobil</th>
                     <th>Status</th>
@@ -259,12 +195,13 @@
                 <tr>
                     <th>Nama</th>
                     <th>User</th>
-                    <th>Tanggal</th>
+                    <th>Tanggal Submit</th>
                     <th>Kode Pesanan</th>
                     <th>No Telp</th>
                     <th>Bukti</th>
                     <th>Alamat</th>
                     <th>Kota</th>
+                    <th>Tanggal Setoran</th>
                     <th>Harga</th>
                     <th>Mobil</th>
                     <th>Status</th>
@@ -282,15 +219,17 @@
                 <tr>
                     <th>Nama</th>
                     <th>User</th>
-                    <th>Tanggal</th>
+                    <th>Tanggal Submit</th>
                     <th>Kode Pesanan</th>
                     <th>No Telp</th>
                     <th>Bukti</th>
                     <th>Alamat</th>
                     <th>Kota</th>
+                    <th>Tanggal Setoran</th>
                     <th>Harga</th>
                     <th>Mobil</th>
                     <th>Status</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -304,10 +243,11 @@
                 <tr>
                     <th>Nama</th>
                     <th>User</th>
-                    <th>Tanggal</th>
+                    <th>Tanggal Submit</th>
                     <th>No Telp</th>
                     <th>Alamat</th>
                     <th>Kota</th>
+                    <th>Tanggal Setoran</th>
                     <th>Harga</th>
                     <th>Mobil</th>
                     <th>Aksi</th>
@@ -517,29 +457,51 @@
             window.location.href = 'prosesUser.html';
         }
 
+        // Function to open the modal and display all transactions
+        function openModal() {
+            // Fetch the data from transaksi.json
+            fetch('../data/transaksi.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Initialize the content
+                    let content = '';
 
-        //Start Section Modal
-        var modal = document.getElementById("myModal");
-        var spanNotif = document.getElementById("notification");
-        var span = document.getElementsByClassName("close")[0];
+                    // Loop through all transactions
+                    data.forEach(transaction => {
+                        // Generate the message for each transaction
+                        content += "<p>Ada uang masuk sebesar " + transaction.totalBayar + " dari " + transaction.nama + "</p>";
+                    });
 
-        spanNotif.onclick = function () {
-            modal.style.display = "block";
+                    // Insert the generated content into the modal body
+                    document.getElementById('modal-body').innerHTML = content;
+
+                    // Display the modal
+                    document.getElementById('myModal').style.display = 'block';
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Trigger modal opening on clicking the notification icon
+        document.getElementById('notification').addEventListener('click', openModal);
+
+        // Close the modal when clicking on the 'X' button
+        document.querySelector('.close').onclick = function () {
+            document.getElementById('myModal').style.display = 'none';
         };
 
-        span.onclick = function () {
-            modal.style.display = "none";
-        };
-
+        // Close the modal when clicking outside the modal content
         window.onclick = function (event) {
+            const modal = document.getElementById('myModal');
             if (event.target == modal) {
-                modal.style.display = "none";
+                modal.style.display = 'none';
             }
         };
+
 
         // Modal User
         function openModalUser() {
             document.getElementById('registerModalUser').style.display = 'block';
+            loadMobilData();
         }
 
         function closeModalUser() {
@@ -551,6 +513,37 @@
                 closeModalUser();
             }
         }
+
+        function loadMobilData() {
+            const mobilSelect = document.getElementById('mobil');
+
+            // Fetch data mobil dari server dengan menambahkan no-cache header
+            fetch('../data/mobil.json', {
+                headers: {
+                    'Cache-Control': 'no-cache'
+                }
+            })
+                .then(response => response.json())
+                .then(mobilData => {
+                    // Bersihkan opsi yang ada di dropdown mobil
+                    mobilSelect.innerHTML = '';
+
+                    // Tambahkan opsi mobil yang tersedia ke dropdown
+                    mobilData.forEach(car => {
+                        if (car.status === 'Tersedia') {
+                            const option = document.createElement('option');
+                            option.value = car.idMobil;
+                            option.textContent = car.namaMobil;
+                            mobilSelect.appendChild(option);
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading car data:', error.message);
+                    alert('Failed to load car data. Please try again later.');
+                });
+        }
+
 
         document.addEventListener('DOMContentLoaded', function () {
             const mobilSelect = document.getElementById('mobil');
@@ -569,25 +562,6 @@
             usernameInput.addEventListener('input', checkFormValidity);
             passwordInput.addEventListener('input', checkFormValidity);
             mobilSelect.addEventListener('change', checkFormValidity);
-
-            fetch('../data/mobil.json') // Updated path
-                .then(response => response.json())
-                .then(mobilData => {
-                    mobilData.forEach(car => {
-                        if (car.status === 'Tersedia') {
-                            const option = document.createElement('option');
-                            option.value = car.idMobil;
-                            option.textContent = car.namaMobil;
-                            mobilSelect.appendChild(option);
-                        }
-                    });
-                    checkFormValidity();
-                })
-                .catch(error => {
-                    console.error('Error loading car data:', error.message);
-                    console.error('Full error details:', error);
-                    alert('Failed to load car data. Please try again later.');
-                });
 
             registerForm.addEventListener('submit', function (e) {
                 e.preventDefault();
@@ -614,7 +588,7 @@
                                 mobil: selectedMobil
                             };
 
-                            return fetch('register_user.php', { // Updated path
+                            return fetch('register_user.php', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -856,6 +830,7 @@
             const noPolInput = document.getElementById("noPol");
             const fileInput = document.getElementById("fileInput");
             const submitMobilBtn = document.getElementById("submitMobil");
+            const uploadIcon = document.getElementById("uploadIcon");
             const loader = document.getElementById("loader");
 
             function checkFormValidity() {
@@ -873,6 +848,18 @@
 
             [namaMobilInput, hargaMobilInput, noPolInput, fileInput].forEach(input => {
                 input.addEventListener("input", checkFormValidity);
+            });
+
+            fileInput.addEventListener("change", function () {
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        uploadIcon.src = e.target.result;
+                    };
+
+                    reader.readAsDataURL(fileInput.files[0]);
+                }
             });
 
             document.getElementById("registerFormMobil").addEventListener("submit", function (e) {
@@ -897,7 +884,9 @@
                         if (data.success) {
                             document.getElementById("registerFormMobil").reset();
                             submitMobilBtn.disabled = true;
+                            uploadIcon.src = "../../src/drop icon.png";
                             alert(data.message);
+                            location.reload();
                         } else {
                             alert(data.message);
                         }
@@ -956,29 +945,33 @@
             }
         };
     </script>
-    
-<footer>
-    <div class="containerFooter">
-      <div class="parentFooter">
-        <div class="contentFooter">
-          <h1>Company</h1>
-          <p style="font-size: 12px;">PT SUKSES JAYA TRANSPORINDO</p>
-        </div>
-        <div class="contentFooter">
-          <h1>Social</h1>
-          <p style="font-size: 12px;">PT SUKSES JAYA TRANSPORINDO</p>
-        </div>
-        <div class="contentFooter">
-          <h1>Layanan</h1>
-          <p style="font-size: 12px;">PT SUKSES JAYA TRANSPORINDO</p> 
-        </div>
-      </div>
-      <hr class="hr">
-        <p class="copyright">PT SUKSES JAYA TRANPORINDO</p>
-    </div>
-  </footer>
+
 </body>
 
-<!-- Site footer -->
+<footer class="site-footer">
+    <div class="containerFooter">
+        <div class="row" style="display: flex;">
+            <div>
+                <h6>Company</h6>
+                <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
+            </div>
+            <div>
+                <h6>Social</h6>
+                <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
+            </div>
+        </div>
+        <div>
+            <h6>Legal</h6>
+            <p class="text-justify">PT. SUKSES JAYA TRANSPORINDO</p>
+        </div>
+        <hr>
+        <div class="footerContainer">
+            <div class="row">
+                <div>
+                    <p class="copyright-text">PT. SUKSES JAYA TRANSPORINDO</p>
+                </div>
+            </div>
+        </div>
+</footer>
 
 </html>

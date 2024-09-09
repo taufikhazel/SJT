@@ -1,32 +1,14 @@
 [
     {
-        "idUser": "1",
+        "idUser": 1,
         "username": "user",
         "password": "user",
         "mobil": "1"
     },
     {
-        "idUser": "2",
-        "username": "user1",
-        "password": "user1",
-        "mobil": "2"
-    },
-    {
-        "idUser": 3,
-        "username": "asfag",
-        "password": "asffasg",
+        "idUser": 2,
+        "username": "user",
+        "password": "user",
         "mobil": "1"
-    },
-    {
-        "idUser": 4,
-        "username": "geafa",
-        "password": "sada",
-        "mobil": "2"
-    },
-    {
-        "idUser": 5,
-        "username": "y6hhy",
-        "password": "yybh",
-        "mobil": "5"
     }
 ]

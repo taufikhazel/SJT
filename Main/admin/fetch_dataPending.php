@@ -13,7 +13,7 @@ foreach ($dataMobil as $mobil) {
 $groupedData = [];
 foreach ($data as $transaction) {
     if ($transaction['status'] === 'Belum Diproses') {
-        $date = $transaction['tanggal'];
+        $date = $transaction['submit'];
         if (!isset($groupedData[$date])) {
             $groupedData[$date] = [];
         }
@@ -26,7 +26,7 @@ krsort($groupedData);
 $html = '';
 foreach ($groupedData as $date => $transactions) {
     $html .= '<div class="separator">';
-    $html .= '<a href="#" class="tanggalBulan">' . $date . '</a>';
+    $html .= '<p  class="tanggalBulan">' . $date . '</p>';
     $html .= '<div class="cardProfile">';
 
     foreach ($transactions as $transaction) {

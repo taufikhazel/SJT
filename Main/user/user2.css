@@ -1,0 +1,187 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #fcd98d;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .container {
+    width: 800px;
+    margin: 100px auto;
+    border: 1px solid #ccc;
+    padding: 20px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+  }
+
+  input {
+    width: 380px;
+    padding: 14px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    background: rgb(238, 226, 203);
+    border-radius: 7px;
+  }
+
+  a {
+    text-decoration: none;
+    color: #000;
+    font-size: 20px;
+  }
+
+  a:hover {
+    text-decoration: underline black;
+    font: bold;
+  }
+
+  .modal-content{
+    width: 90%;
+  }
+
+@media screen and (max-width:900px) and (min-width : 630px) {
+    .container {
+        width: 415px;
+        margin: 100px auto;
+        border: 1px solid #ccc;
+        padding: 20px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+    }
+
+    .step {
+        font-size: smaller;
+        color: rgb(174, 174, 174);
+        background: none;
+        display: flex;
+        background: none;
+        margin-top: -18px;
+        margin-left: 0px;
+        justify-content: right;
+    }
+
+    .next-btn2 {
+        background: #ffb429;
+        width: 80px;
+        text-align: center;
+        height: 40px;
+        border-radius: 5px;
+        border: none;
+        color: white;
+        margin-left: 82%;
+    }
+
+    .tanggalInput {
+        width: 300px;
+        padding: 14px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        background: rgb(238, 226, 203);
+        border-radius: 7px;
+    }
+}
+
+@media screen and (max-width:629px) and (min-width : 402px) {
+    .container {
+        width: 415px;
+        margin: 100px 110px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+    }
+
+    .step {
+        font-size: smaller;
+        color: rgb(174, 174, 174);
+        background: none;
+        display: flex;
+        background: none;
+        margin-top: -18px;
+        margin-left: 0px;
+        justify-content: right;
+    }
+
+    .next-btn2 {
+        background: #ffb429;
+        width: 80px;
+        text-align: center;
+        height: 40px;
+        border-radius: 5px;
+        border: none;
+        color: white;
+        margin-left: 82%;
+    }
+
+    .tanggalInput {
+        width: 300px;
+        padding: 14px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        background: rgb(238, 226, 203);
+        border-radius: 7px;
+    }
+}
+
+@media screen and (max-width:401px) {
+    .container {
+        width: 415px;
+        margin: 165px 110px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+    }
+
+    .step {
+        font-size: smaller;
+        color: rgb(174, 174, 174);
+        background: none;
+        display: flex;
+        background: none;
+        margin-top: -18px;
+        margin-left: 0px;
+        justify-content: right;
+    }
+
+    .next-btn2 {
+        background: #ffb429;
+        width: 80px;
+        text-align: center;
+        height: 40px;
+        border-radius: 5px;
+        border: none;
+        color: white;
+        margin-left: 82%;
+    }
+
+    .tanggalInput {
+        width: 300px;
+        padding: 14px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        background: rgb(238, 226, 203);
+        border-radius: 7px;
+    }
+
+    .site-footer {
+        background-color: #26272b;
+        padding: 20px 0 20px;
+        font-size: 15px;
+        line-height: 24px;
+        color: #737373;
+        width: 630px;
+        margin-top: 275px;
+    }
+}

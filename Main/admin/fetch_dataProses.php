@@ -18,20 +18,22 @@ $html = '';
 foreach ($filteredData as $transaction) {
     $idMobil = $transaction['mobil'];
     $namaMobil = isset($mobilMap[$idMobil]) ? $mobilMap[$idMobil] : 'Unknown Mobil';
+    $tanggal = is_array($transaction['tanggal']) ? implode(', ', $transaction['tanggal']) : $transaction['tanggal'];
 
     $html .= '<tr>';
     $html .= '<td>' . htmlspecialchars($transaction['nama']) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['user']) . '</td>';
-    $html .= '<td>' . htmlspecialchars($transaction['tanggal']) . '</td>';
+    $html .= '<td>' . htmlspecialchars($transaction['submit']) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['idTransaksi']) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['noTelp']) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['bukti']) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['alamat']) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['kota']) . '</td>';
-    $html .= '<td>' . htmlspecialchars($transaction['harga']) . '</td>';
+    $html .= '<td>' . htmlspecialchars($tanggal) . '</td>';
+    $html .= '<td>' . htmlspecialchars($transaction['totalBayar']) . '</td>';
     $html .= '<td>' . htmlspecialchars($namaMobil) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['status']) . '</td>';
-    $html .= '<td><button class="btn btn-primary" id="cekProsesBtn" onClick="prosesCek(' . $transaction['idTransaksi'] . ')">Cek</button></td>';
+    $html .= '<td><button class="btn btn-primary" id="cekSuksesBtn" onClick="suksesCek(' . $transaction['idTransaksi'] . ')">Cek</button></td>';
     $html .= '</tr>';
 }
 

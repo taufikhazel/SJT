@@ -674,14 +674,6 @@ h3 {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-}
-
 .modal-header {
   color: white;
 }
@@ -768,7 +760,7 @@ form.registerForm {
 
 .modal-contentUser {
   background: white;
-  margin: 15% auto;
+  margin: 7% auto;
   padding: 20px;
   width: 80%;
   max-width: 400px;
@@ -788,6 +780,7 @@ form.registerForm {
   text-decoration: none;
   cursor: pointer;
 }
+
 
 /* Modal Register Admin */
 
@@ -830,7 +823,7 @@ form.registerForm {
 
 /* Modal Register Pembayaran */
 
-.textHeader{
+.textHeader {
   cursor: pointer;
 }
 
@@ -1088,6 +1081,11 @@ a#tanggal {
 .dropdown {
   position: relative;
   display: inline-block;
+  padding-right: 20px;
+}
+
+.dropdown button {
+  width: 100%;
 }
 
 .dropdown-content {
@@ -1259,7 +1257,7 @@ a#tanggal {
   font-size: 15px;
   line-height: 24px;
   color: #737373;
-  margin-top: 100px;
+  margin-top: 110px;
 }
 
 .site-footer hr {
@@ -1400,5 +1398,68 @@ a#tanggal {
 
   .cta-btn {
     margin-right: 405px;
+  }
+}
+
+@media screen and (max-width: 628px) {
+  /* Index.html */
+
+  header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid black;
+    padding: 10px 20px;
+    background-color: #F9D689;
+    width: 630px;
+  }
+
+  .nav-links {
+    list-style-type: none;
+    float: none;
+    margin: auto;
+    display: contents;
+  }
+
+  .hero {
+    display: flex;
+    width: 630px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px 0;
+    background-color: #f5f5f5;
+    overflow: hidden;
+  }
+
+  .why-choose-us {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #f5f5f5;
+    width: 630px;
+  }
+
+  .about-us {
+    text-align: center;
+    padding-left: 30px;
+    background: #f5f5f5;
+    width: 630px;
+  }
+
+  .ourProgram {
+    padding-top: 50px;
+    padding-left: 30px;
+    text-align: center;
+    background: #f5f5f5;
+    width: 630px;
+  }
+
+  .site-footer {
+    background-color: #26272b;
+    padding: 20px 0 20px;
+    font-size: 15px;
+    line-height: 24px;
+    color: #737373;
+    width: 630px;
+    margin-top: 110px;
   }
 }
