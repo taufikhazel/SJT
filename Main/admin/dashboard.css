@@ -143,12 +143,20 @@ button#userBtn {
     /* Initially hidden */
 }
 
+tbody {
+    text-align: center;
+}
+
+thead {
+    text-align: center;
+}
+
 li {
     list-style: none;
     margin: 0px;
 }
 
-.row{
+.row {
     width: 100%;
     display: flex;
 }

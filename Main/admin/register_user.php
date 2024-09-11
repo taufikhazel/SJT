@@ -33,6 +33,9 @@ if ($data) {
         'idUser' => $newIdUser,
         'username' => $data['username'],
         'password' => $data['password'],
+        'noTelp' => $data['noTelp'],
+        'alamat' => $data['alamat'],
+        'kota' => $data['kota'],
         'mobil' => $data['mobil']
     );
     

@@ -26,12 +26,9 @@ foreach ($uniqueUsers as $user => $transaction) {
     $html .= '<tr>';
     $html .= '<td>' . htmlspecialchars($transaction['nama']) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['user']) . '</td>';
-    $html .= '<td>' . htmlspecialchars($transaction['submit']) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['noTelp']) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['alamat']) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['kota']) . '</td>';
-    $html .= '<td>' . htmlspecialchars($tanggal) . '</td>';
-    $html .= '<td>' . htmlspecialchars($transaction['totalBayar']) . '</td>';
     $html .= '<td>' . htmlspecialchars($namaMobil) . '</td>';
     $html .= '<td><button class="btn btn-primary" onclick="userCek(\'' . htmlspecialchars($transaction['user']) . '\')">Cek</button></td>';
     $html .= '</tr>';

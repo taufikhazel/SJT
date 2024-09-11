@@ -80,88 +80,89 @@
       </div>
     </div>
   </div>
-  <div id="loaderPopup" class="popup">
-    <p>Mohon tunggu...</p>
-  </div>
 
   <div id="errorAlert" class="popup" style="background-color: #f8d7da; border-color: #f5c6cb">
     <p id="errorMessage">Error message</p>
-    <button onclick="closeAlert('errorAlert')">OK</button>
   </div>
 
   <div id="successAlert" class="popup" style="background-color: #d4edda; border-color: #c3e6cb">
     <p id="successMessage">Success message</p>
-    <button onclick="closeAlert('successAlert')">OK</button>
   </div>
 
   <script>
-
     history.pushState(null, null, window.location.href);
 
     window.onpopstate = function () {
       history.go(1);
     };
 
-    async function validateLogin() {
+    document.addEventListener("DOMContentLoaded", () => {
+      const usernameInput = document.getElementById("username");
+      const passwordInput = document.getElementById("password");
+
+      usernameInput.addEventListener("keypress", handleEnterKeyPress);
+      passwordInput.addEventListener("keypress", handleEnterKeyPress);
+
+      function handleEnterKeyPress(event) {
+        if (event.key === "Enter") {
+          validateLogin();
+        }
+      }
+    });
+
+    function showAlert(alertId, message) {
+      const alert = document.getElementById(alertId);
+      const messageElement = alert.querySelector("p");
+      messageElement.textContent = message;
+      alert.style.display = "block";
+
+      if (alertId === "errorAlert") {
+        setTimeout(() => {
+          alert.style.display = "none";
+          clearInputFields();
+        }, 1000);
+      } else {
+        clearInputFields();
+      }
+    }
+
+    function clearInputFields() {
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
+    }
+
+    function validateLogin() {
       const username = document.getElementById("username").value.trim();
       const password = document.getElementById("password").value.trim();
-      const loaderPopup = document.getElementById("loaderPopup");
 
       if (!username || !password) {
         showAlert("errorAlert", "Harap Isi Semua Field.");
         return;
       }
 
-      loaderPopup.style.display = "block";
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      fetch("fetch_admin.php")
+        .then(response => response.json())
+        .then(users => {
 
-      try {
-        const response = await fetch("../Main/data/admin.json");
-        const users = await response.json();
-        const user = users.find(
-          (u) => u.username === username && u.password === password
-        );
-
-        loaderPopup.style.display = "none";
-
-        if (user) {
-          sessionStorage.setItem("loggedInAdmin", JSON.stringify(user));
-          showAlert(
-            "successAlert",
-            "Login Sukses! Anda akan dipindahkan ke halaman Admin",
-            () => {
-              window.location.href = "../Main/admin/dashboard.html";
-            }
+          const user = users.find(
+            u => u.username === username && u.password === password
           );
-        } else {
-          showAlert(
-            "errorAlert",
-            "Username atau Password Anda Salah! Silahkan Isi Lagi."
-          );
-        }
-      } catch (error) {
-        loaderPopup.style.display = "none";
-        showAlert("errorAlert", "Ada error, Harap Hubungi Pemilik!");
-        console.error("Error fetching user data:", error);
-      }
+
+          if (user) {
+            sessionStorage.setItem("loggedInAdmin", JSON.stringify(user));
+            showAlert("successAlert", "Login Sukses! Anda akan dipindahkan ke halaman Admin dalam 3 detik.");
+            countdownRedirect(3, "admin/dashboard.html");
+          } else {
+            showAlert("errorAlert", "Username atau Password Anda Salah! Silahkan Isi Lagi.");
+          }
+        })
+        .catch(error => {
+          showAlert("errorAlert", "Ada error saat mengambil data pengguna.");
+          console.error("Error fetching admin data:", error);
+        });
     }
 
-    function showAlert(alertId, message, callback) {
-      const alert = document.getElementById(alertId);
-      const messageElement = alert.querySelector("p");
-      messageElement.textContent = message;
-      alert.style.display = "block";
-
-      if (callback) {
-        alert.querySelector("button").onclick = () => {
-          closeAlert(alertId);
-          callback();
-        };
-      } else {
-        alert.querySelector("button").onclick = () => closeAlert(alertId);
-      }
-    }
 
     function closeAlert(alertId) {
       document.getElementById(alertId).style.display = "none";
@@ -172,6 +173,22 @@
       usernameInput.value = "";
       passwordInput.value = "";
     }
+
+    function countdownRedirect(seconds, url) {
+      const successMessageElement = document.getElementById("successMessage");
+      let countdown = seconds;
+
+      const interval = setInterval(() => {
+        successMessageElement.textContent = `Login Sukses! Anda akan dipindahkan ke halaman Admin dalam ${countdown} detik.`;
+        if (countdown === 0) {
+          clearInterval(interval);
+          closeAlert("successAlert");
+          window.location.href = url;
+        }
+        countdown--;
+      }, 1000);
+    }
+
 
     const loginButton = document.getElementById("btn-login");
 

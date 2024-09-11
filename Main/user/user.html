@@ -152,6 +152,18 @@
         const namaInput = document.getElementById("nama");
         namaInput.value = loggedInUser.username;
         namaInput.disabled = true; 
+
+        const noTelpInput = document.getElementById("noTelp");
+        noTelpInput.value = loggedInUser.noTelp;
+        noTelpInput.disabled = true; 
+
+        const alamatInput = document.getElementById("alamat");
+        alamatInput.value = loggedInUser.alamat;
+        alamatInput.disabled = true; 
+
+        const kotaInput = document.getElementById("kota");
+        kotaInput.value = loggedInUser.kota;
+        kotaInput.disabled = true; 
       }
 
       function checkFields() {
@@ -183,9 +195,9 @@
                 idTransaksi: idTransaksi,
                 user: idUser,
                 nama: loggedInUser.username,
-                noTelp: document.getElementById("noTelp").value,
-                alamat: document.getElementById("alamat").value,
-                kota: document.getElementById("kota").value,
+                noTelp: loggedInUser.noTelp,
+                alamat: loggedInUser.alamat,
+                kota: loggedInUser.kota,
                 harga: mobilData.hargaMobil,
                 mobil: mobil,
                 tanggal: "",

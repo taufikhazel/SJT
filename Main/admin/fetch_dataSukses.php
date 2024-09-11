@@ -26,7 +26,7 @@ foreach ($filteredData as $transaction) {
     $html .= '<td>' . htmlspecialchars($transaction['submit']) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['idTransaksi']) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['noTelp']) . '</td>';
-    $html .= '<td>' . htmlspecialchars($transaction['bukti']) . '</td>';
+    $html .= '<td><a href="#" data-bs-toggle="modal" data-bs-target="#buktiModal" onclick="showImageModal(\'' . htmlspecialchars($transaction['bukti']) . '\')">' . htmlspecialchars($transaction['bukti']) . '</a></td>';
     $html .= '<td>' . htmlspecialchars($transaction['alamat']) . '</td>';
     $html .= '<td>' . htmlspecialchars($transaction['kota']) . '</td>';
     $html .= '<td>' . htmlspecialchars($tanggal) . '</td>';

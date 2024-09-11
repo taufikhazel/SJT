@@ -10,5 +10,14 @@
         "username": "user",
         "password": "user",
         "mobil": "1"
+    },
+    {
+        "idUser": 3,
+        "username": "hazel",
+        "password": "hazel",
+        "noTelp": "214214",
+        "alamat": "asdasjdo",
+        "kota": "sadsa",
+        "mobil": "2"
     }
 ]

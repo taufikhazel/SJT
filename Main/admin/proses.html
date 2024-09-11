@@ -252,10 +252,14 @@
                                     document.querySelector('.kodePesanan').textContent = "Kode Pesanan: " + transaksi.idTransaksi;
                                     document.querySelector('.statusMobil').textContent = "Status: " + transaksi.status;
 
-                                    if (transaksi.status === "Belum Diproses") {
+                                    if (transaksi.status === "Belum Diproses"  ) {
                                         btnAccept.style.display = 'block';
                                         btnReject.style.display = 'block';
-                                    } else {
+                                    } else if(transaksi.status === "Reject"){
+                                        btnReject.style.display = 'none';
+                                        btnAccept.style.display = 'block';
+                                    }
+                                    else{
                                         hideButtons();  
                                     }
                                 } else {
