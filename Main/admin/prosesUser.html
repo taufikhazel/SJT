@@ -554,8 +554,14 @@
                     let content = '';
 
                     data.forEach(transaction => {
-                        content += "<p>Ada uang masuk sebesar " + transaction.totalBayar + " dari " + transaction.nama + "</p>";
+                        if (transaction.status === "Accept") {
+                            content += "<p>Ada uang masuk sebesar " + transaction.totalBayar + " dari " + transaction.nama + "</p>";
+                        }
                     });
+
+                    if (content === '') {
+                        content = "<p>Tidak ada transaksi dengan status 'Accept'.</p>";
+                    }
 
                     document.getElementById('modal-body').innerHTML = content;
 

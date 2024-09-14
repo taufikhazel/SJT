@@ -61,10 +61,10 @@
       <div class="isi-tanggal">
         <h3 class="tanggal-txt">Tanggal</h3>
         <div id="tanggalInputsContainer">
-          <input type="date" placeholder="isi Tanggal" class="tanggalInput" />
+          <input type="date" id="tanggalDari" placeholder="Dari Tanggal" class="tanggalInput" />
+          <p>Sampai dengan</p>
+          <input type="date" id="tanggalSampai" placeholder="Sampai Tanggal" class="tanggalInput" />
         </div>
-        <button type="button" id="addDateBtn">Add Another Date</button>
-        <button type="button" id="removeDateBtn">Remove Last Date</button>
         <div class="next2">
           <button class="next-btn2" id="nextBtn">Next</button>
         </div>
@@ -131,97 +131,49 @@
 
     window.onload = updateButtonText;
 
-
     document.getElementById("nextBtn").disabled = true;
 
-    const nextBtn = document.getElementById("nextBtn");
-    const addDateBtn = document.getElementById("addDateBtn");
-    const removeDateBtn = document.getElementById("removeDateBtn");
-    const tanggalInputsContainer = document.getElementById("tanggalInputsContainer");
-
-    function updateNextButtonState() {
-      const inputs = document.querySelectorAll(".tanggalInput");
-      const allFilled = Array.from(inputs).every((input) => input.value.trim() !== "");
-      nextBtn.disabled = !allFilled;
+    function checkDatesInput() {
+      const tanggalDari = document.getElementById('tanggalDari').value;
+      const tanggalSampai = document.getElementById('tanggalSampai').value;
+      document.getElementById('nextBtn').disabled = !(tanggalDari && tanggalSampai);
     }
 
-    function addDateInput() {
-      const newDateInput = document.createElement("input");
-      newDateInput.type = "date";
-      newDateInput.placeholder = "isi Tanggal";
-      newDateInput.classList.add("tanggalInput");
-      newDateInput.addEventListener("input", updateNextButtonState);
-      tanggalInputsContainer.appendChild(newDateInput);
-      updateNextButtonState();
-    }
+    document.getElementById('tanggalDari').addEventListener('change', checkDatesInput);
+    document.getElementById('tanggalSampai').addEventListener('change', checkDatesInput);
 
-    function removeDateInput() {
-      const dateInputs = document.querySelectorAll(".tanggalInput");
-      if (dateInputs.length > 1) {
-        tanggalInputsContainer.removeChild(dateInputs[dateInputs.length - 1]);
-      }
-      updateNextButtonState();
-    }
 
-    addDateBtn.addEventListener("click", addDateInput);
-    removeDateBtn.addEventListener("click", removeDateInput);
+    document.getElementById('nextBtn').addEventListener('click', function () {
+      const tanggalDari = document.getElementById('tanggalDari').value;
+      const tanggalSampai = document.getElementById('tanggalSampai').value;
 
-    document.querySelectorAll(".tanggalInput").forEach((input) => {
-      input.addEventListener("input", updateNextButtonState);
-    });
+      if (tanggalDari && tanggalSampai) {
+        const date1 = new Date(tanggalDari);
+        const date2 = new Date(tanggalSampai);
 
-    nextBtn.addEventListener("click", async function () {
-      if (sessionStorage) {
-        let transaksiData = JSON.parse(sessionStorage.getItem("transaksiData")) || {};
-        let tanggalValues = [];
-        document.querySelectorAll(".tanggalInput").forEach((input) => {
-          if (input.value.trim()) {
-            tanggalValues.push(input.value.trim());
-          }
-        });
-        transaksiData.tanggal = tanggalValues;
-        sessionStorage.setItem("transaksiData", JSON.stringify(transaksiData));
-        window.location.href = "user3.html";
+        if (date2 >= date1) {
+          const timeDiff = date2.getTime() - date1.getTime();
+          const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
+
+          let transaksiData = JSON.parse(sessionStorage.getItem('transaksiData'));
+
+          transaksiData.tanggal = `${tanggalDari} - ${tanggalSampai}`;
+          transaksiData.banyakHari = daysDiff;
+
+          sessionStorage.setItem('transaksiData', JSON.stringify(transaksiData));
+
+          alert('Tanggal dan jumlah hari berhasil disimpan!');
+          window.location.href = ("user3.html");
+
+        } else {
+          alert('Tanggal kedua harus lebih besar atau sama dengan tanggal pertama.');
+        }
       } else {
-        alert("Gagal menghasilkan ID Transaksi baru. Silakan coba lagi.");
+        alert('Harap pilih kedua tanggal.');
       }
     });
 
-    updateNextButtonState();
 
-    // document.getElementById("nextBtn").disabled = true;
-    // const inputs = document.querySelectorAll(".isi-tanggal input");
-    // const nextBtn = document.getElementById("nextBtn");
-
-    // inputs.forEach((input) => {
-    //   input.addEventListener("input", checkFields);
-    // });
-
-    // function checkFields() {
-    //   const allFilled = Array.from(inputs).every(
-    //     (input) => input.value.trim() !== ""
-    //   );
-    //   nextBtn.disabled = !allFilled;
-    // }
-
-    // nextBtn.addEventListener("click", async function () {
-    //   if (sessionStorage) {
-    //     let transaksiData =
-    //       JSON.parse(sessionStorage.getItem("transaksiData")) || {};
-    //     let tanggalValue = "";
-    //     inputs.forEach((input) => {
-    //       tanggalValue += input.value.trim();
-    //     });
-    //     transaksiData.tanggal = tanggalValue;
-    //     sessionStorage.setItem(
-    //       "transaksiData",
-    //       JSON.stringify(transaksiData)
-    //     );
-    //     window.location.href = "user3.html";
-    //   } else {
-    //     alert("Gagal menghasilkan ID Transaksi baru. Silakan coba lagi.");
-    //   }
-    // });
 
     //Logika Notifikasi
     document.addEventListener("DOMContentLoaded", function () {
@@ -233,7 +185,7 @@
 
       spanNotif.onclick = function () {
         modal.style.display = "block";
-        fetchTransaksiData(); 
+        fetchTransaksiData();
       };
 
       span.onclick = function () {
@@ -250,12 +202,12 @@
         const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
         const idUser = loggedInUser.idUser;
 
-        fetch('getTransaksi.php') 
+        fetch('getTransaksi.php')
           .then(response => {
             if (!response.ok) {
               throw new Error(`Network response was not ok: ${response.statusText}`);
             }
-            return response.json(); 
+            return response.json();
           })
           .then(data => {
 
@@ -285,12 +237,12 @@
         const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
         const idUser = loggedInUser.idUser;
 
-        fetch('getTransaksi.php') 
+        fetch('getTransaksi.php')
           .then(response => {
             if (!response.ok) {
               throw new Error(`Network response was not ok: ${response.statusText}`);
             }
-            return response.json(); 
+            return response.json();
           })
           .then(data => {
 

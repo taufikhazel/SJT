@@ -386,6 +386,11 @@
         window.onload = function () {
             showPage('pendingPage', 'pendingBtn');
             updateButtonText();
+            window.addEventListener('popstate', function (event) {
+                document.getElementById('confirmationPopup').style.display = 'block';
+                history.pushState(null, null, location.href); 
+            });
+            history.pushState(null, null, location.href);
         };
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -394,6 +399,7 @@
             fetch('fetch_dataPending.php')
                 .then(response => response.text())
                 .then(data => {
+                    updateButtonText();
                     pendingPage.innerHTML = data;
                     pendingPage.style.display = 'block';
                 })
@@ -408,6 +414,7 @@
 
         document.addEventListener("DOMContentLoaded", function () {
             function fetchProsesData() {
+                updateButtonText();
                 fetch('fetch_dataProses.php')
                     .then(response => response.text())
                     .then(html => {
@@ -443,6 +450,7 @@
 
         document.addEventListener("DOMContentLoaded", function () {
             function fetchSuksesData() {
+                updateButtonText();
                 fetch('fetch_dataSukses.php')
                     .then(response => response.text())
                     .then(html => {
@@ -478,6 +486,7 @@
 
         document.addEventListener("DOMContentLoaded", function () {
             function fetchRejectData() {
+                updateButtonText();
                 fetch('fetch_dataReject.php')
                     .then(response => response.text())
                     .then(html => {
@@ -512,6 +521,7 @@
 
         document.addEventListener("DOMContentLoaded", function () {
             function fetchUserData() {
+                updateButtonText();
                 fetch('fetch_dataUser.php')
                     .then(response => response.text())
                     .then(html => {
@@ -528,15 +538,39 @@
             window.location.href = 'prosesUser.html';
         }
 
+
+        document.addEventListener("DOMContentLoaded", function () {
+            updateButtonText();
+            fetch('update_transactions.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        console.log(data.message);
+                    } else {
+                        console.error(data.message);
+                    }
+                })
+                .catch(error => console.error('Error updating transactions:', error));
+        });
+
+        document.getElementById('notification').addEventListener('click', openModal);
+
         function openModal() {
+            updateButtonText();
             fetch('../data/transaksi.json')
                 .then(response => response.json())
                 .then(data => {
                     let content = '';
 
                     data.forEach(transaction => {
-                        content += "<p>Ada uang masuk sebesar " + transaction.totalBayar + " dari " + transaction.nama + "</p>";
+                        if (transaction.status === "Accept") {
+                            content += "<p>Ada uang masuk sebesar " + transaction.totalBayar + " dari " + transaction.nama + "</p>";
+                        }
                     });
+
+                    if (content === '') {
+                        content = "<p>Tidak ada transaksi dengan status 'Accept'.</p>";
+                    }
 
                     document.getElementById('modal-body').innerHTML = content;
 
@@ -544,8 +578,6 @@
                 })
                 .catch(error => console.error('Error fetching data:', error));
         }
-
-        document.getElementById('notification').addEventListener('click', openModal);
 
         document.querySelector('.close').onclick = function () {
             document.getElementById('myModal').style.display = 'none';
@@ -575,8 +607,8 @@
         }
 
         function loadMobilData() {
+            updateButtonText();
             const mobilSelect = document.getElementById('mobil');
-
             fetch('../data/mobil.json', {
                 headers: {
                     'Cache-Control': 'no-cache'
@@ -603,6 +635,7 @@
 
 
         document.addEventListener('DOMContentLoaded', function () {
+            updateButtonText();
             const mobilSelect = document.getElementById('mobil');
             const registerForm = document.getElementById('registerFormUser');
             const registUserBtn = document.getElementById('registUserBtn');
@@ -636,12 +669,12 @@
                 const password = passwordInput.value;
                 const noTelp = noTelpInput.value;
                 const alamat = alamatInput.value;
-                const kota = kotaInput.value; 
+                const kota = kotaInput.value;
                 const selectedMobil = mobilSelect.value;
-        
+
 
                 if (username && password && selectedMobil) {
-                    fetch('get_last_user_id.php') // Updated path
+                    fetch('get_last_user_id.php')
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Network response was not ok: ' + response.statusText);
@@ -733,6 +766,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
+            updateButtonText();
             const registerForm = document.getElementById('registerFormAdmin');
             const usernameInput = document.getElementById('usernameAdmin');
             const passwordInput = document.getElementById('passwordAdmin');
@@ -819,6 +853,7 @@
         }
 
         function fetchRekeningData() {
+            updateButtonText();
             fetch('getRekening.php')
                 .then(response => response.json())
                 .then(data => {
@@ -883,6 +918,7 @@
         // Modal Mobil
 
         function openModalMobil() {
+            updateButtonText();
             document.getElementById('registerModalMobil').style.display = 'block';
         }
 
@@ -986,6 +1022,7 @@
             const dropdownMenu = document.getElementById("dropdownMenu");
             dropdownMenu.classList.toggle("show");
         });
+
 
         document
             .getElementById("btnLogout")

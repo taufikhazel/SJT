@@ -108,12 +108,14 @@
   </div>
 
   <script>
-    history.pushState(null, null, window.location.href);
-
-    window.onpopstate = function () {
-      history.go(1);
-    };
-
+    window.onload = function () {
+      sessionStorage.clear();
+      const user = sessionStorage.getItem("loggedInUser");
+      if (!user) {
+        history.replaceState(null, null, location.href);
+      }
+      
+    }
     document.addEventListener("DOMContentLoaded", () => {
       const usernameInput = document.getElementById("username");
       const passwordInput = document.getElementById("password");

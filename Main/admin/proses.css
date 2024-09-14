@@ -10,6 +10,10 @@ span#notification {
     color: rgb(0, 0, 0);
 }
 
+#buktiPembayaran {
+    color: blue;
+}
+
 a {
     text-decoration: none;
     color: #000;
