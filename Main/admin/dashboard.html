@@ -388,7 +388,7 @@
             updateButtonText();
             window.addEventListener('popstate', function (event) {
                 document.getElementById('confirmationPopup').style.display = 'block';
-                history.pushState(null, null, location.href); 
+                history.pushState(null, null, location.href);
             });
             history.pushState(null, null, location.href);
         };
@@ -399,12 +399,17 @@
             fetch('fetch_dataPending.php')
                 .then(response => response.text())
                 .then(data => {
-                    updateButtonText();
-                    pendingPage.innerHTML = data;
-                    pendingPage.style.display = 'block';
+                    if (data.trim() === "") {
+                        pendingPage.innerHTML = "Belum ada Data Pending";
+                    } else {
+                        pendingPage.innerHTML = data;
+                        updateButtonText();
+                        pendingPage.style.display = 'block';
+                    }
                 })
                 .catch(error => console.error('Error fetching data:', error));
         });
+
 
         function saveDataAndRedirect(idTransaksi) {
             sessionStorage.setItem('selectedTransaksi', idTransaksi);
@@ -517,8 +522,6 @@
             fetchRejectData();
         });
 
-
-
         document.addEventListener("DOMContentLoaded", function () {
             function fetchUserData() {
                 updateButtonText();
@@ -538,7 +541,7 @@
             window.location.href = 'prosesUser.html';
         }
 
-
+        // Logika Modal Notifikasi
         document.addEventListener("DOMContentLoaded", function () {
             updateButtonText();
             fetch('update_transactions.php')
@@ -590,7 +593,7 @@
             }
         };
 
-
+        // Logika Modal User
         function openModalUser() {
             document.getElementById('registerModalUser').style.display = 'block';
             loadMobilData();
@@ -749,7 +752,7 @@
         });
 
 
-        // Modal Admin
+        // Logika Modal Admin
 
         function openModalAdmin() {
             document.getElementById('registerModalAdmin').style.display = 'block';

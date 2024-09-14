@@ -56,7 +56,7 @@ a:hover {
 
 .mobilImg {
     background: black;
-    width: 250px;
+    width: 100%;
     height: 100%;
     border-radius: 20px 0px 0px 0px;
 }

@@ -133,15 +133,21 @@
 
     document.getElementById("nextBtn").disabled = true;
 
+    //Logika Tanggal
+
     function checkDatesInput() {
       const tanggalDari = document.getElementById('tanggalDari').value;
       const tanggalSampai = document.getElementById('tanggalSampai').value;
+
+      if (tanggalDari) {
+        document.getElementById('tanggalSampai').setAttribute('min', tanggalDari);
+      }
+
       document.getElementById('nextBtn').disabled = !(tanggalDari && tanggalSampai);
     }
 
     document.getElementById('tanggalDari').addEventListener('change', checkDatesInput);
     document.getElementById('tanggalSampai').addEventListener('change', checkDatesInput);
-
 
     document.getElementById('nextBtn').addEventListener('click', function () {
       const tanggalDari = document.getElementById('tanggalDari').value;

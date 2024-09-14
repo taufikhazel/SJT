@@ -40,6 +40,15 @@
                             <label for="password">Password</label>
                             <input type="password" id="passwordUser" name="password" required>
 
+                            <label for="noTelp">No Telp</label>
+                            <input type="number" id="noTelpUser" name="noTelp" required>
+
+                            <label for="alamat">Alamat</label>
+                            <input type="text" id="alamatUser" name="alamat" required>
+
+                            <label for="kota">Kota</label>
+                            <input type="text" id="kotaUser" name="kota" required>
+
                             <label for="mobil">Mobil</label>
                             <select id="mobil" name="mobil">
                             </select>
@@ -196,7 +205,7 @@
                     container.innerHTML = '';
 
                     filteredTransaksi.forEach(transaksi => {
-                        const cardClone = templateCard.cloneNode(true); 
+                        const cardClone = templateCard.cloneNode(true);
 
                         cardClone.querySelector('.namaUser').textContent = transaksi.nama;
                         cardClone.querySelector('.kodePesanan').textContent = "Kode Pesanan: " + transaksi.idTransaksi;
@@ -218,6 +227,9 @@
                                 cardClone.querySelector('.jenisNamaMobil').textContent = 'Error loading mobil';
                             });
 
+                        cardClone.addEventListener('click', function () {
+                            dataCek(transaksi.idTransaksi);
+                        });
                         container.appendChild(cardClone);
                     });
                 })
@@ -226,6 +238,10 @@
                 });
         });
 
+        function dataCek(idTransaksi) {
+            sessionStorage.setItem('selectedTransaksi', idTransaksi);
+            window.location.href = 'proses.html';
+        }
 
 
         var modal = document.getElementById("myModal");
@@ -250,9 +266,10 @@
             updateButtonText();
         };
 
-        // Modal User
+        // Logika Modal User
         function openModalUser() {
             document.getElementById('registerModalUser').style.display = 'block';
+            loadMobilData();
         }
 
         function closeModalUser() {
@@ -265,27 +282,18 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
+        function loadMobilData() {
+            updateButtonText();
             const mobilSelect = document.getElementById('mobil');
-            const registerForm = document.getElementById('registerFormUser');
-            const registUserBtn = document.getElementById('registUserBtn');
-            const usernameInput = document.getElementById('usernameUser');
-            const passwordInput = document.getElementById('passwordUser');
-
-            function checkFormValidity() {
-                const isFormValid = usernameInput.value.trim() !== '' &&
-                    passwordInput.value.trim() !== '' &&
-                    mobilSelect.value !== '';
-                registUserBtn.disabled = !isFormValid;
-            }
-
-            usernameInput.addEventListener('input', checkFormValidity);
-            passwordInput.addEventListener('input', checkFormValidity);
-            mobilSelect.addEventListener('change', checkFormValidity);
-
-            fetch('../data/mobil.json') 
+            fetch('../data/mobil.json', {
+                headers: {
+                    'Cache-Control': 'no-cache'
+                }
+            })
                 .then(response => response.json())
                 .then(mobilData => {
+                    mobilSelect.innerHTML = '';
+
                     mobilData.forEach(car => {
                         if (car.status === 'Tersedia') {
                             const option = document.createElement('option');
@@ -294,23 +302,55 @@
                             mobilSelect.appendChild(option);
                         }
                     });
-                    checkFormValidity();
                 })
                 .catch(error => {
                     console.error('Error loading car data:', error.message);
-                    console.error('Full error details:', error);
                     alert('Failed to load car data. Please try again later.');
                 });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            updateButtonText();
+            const mobilSelect = document.getElementById('mobil');
+            const registerForm = document.getElementById('registerFormUser');
+            const registUserBtn = document.getElementById('registUserBtn');
+            const usernameInput = document.getElementById('usernameUser');
+            const passwordInput = document.getElementById('passwordUser');
+            const noTelpInput = document.getElementById('noTelpUser');
+            const alamatInput = document.getElementById('alamatUser');
+            const kotaInput = document.getElementById('kotaUser');
+
+            function checkFormValidity() {
+                const isFormValid = usernameInput.value.trim() !== '' &&
+                    passwordInput.value.trim() !== '' &&
+                    mobilSelect.value !== '' &&
+                    noTelpInput.value.trim() !== '' &&
+                    alamatInput.value.trim() !== '' &&
+                    kotaInput.value.trim() !== '';
+                registUserBtn.disabled = !isFormValid;
+            }
+
+            usernameInput.addEventListener('input', checkFormValidity);
+            passwordInput.addEventListener('input', checkFormValidity);
+            mobilSelect.addEventListener('change', checkFormValidity);
+            noTelpInput.addEventListener('input', checkFormValidity);
+            alamatInput.addEventListener('input', checkFormValidity);
+            kotaInput.addEventListener('input', checkFormValidity);
 
             registerForm.addEventListener('submit', function (e) {
                 e.preventDefault();
 
                 const username = usernameInput.value;
                 const password = passwordInput.value;
+                const noTelp = noTelpInput.value;
+                const alamat = alamatInput.value;
+                const kota = kotaInput.value;
                 const selectedMobil = mobilSelect.value;
 
+
                 if (username && password && selectedMobil) {
-                    fetch('get_last_user_id.php') 
+                    fetch('get_last_user_id.php')
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Network response was not ok: ' + response.statusText);
@@ -324,6 +364,9 @@
                                 idUser: newIdUser,
                                 username: username,
                                 password: password,
+                                noTelp: noTelp,
+                                alamat: alamat,
+                                kota: kota,
                                 mobil: selectedMobil
                             };
 
@@ -343,7 +386,7 @@
                         })
                         .then(data => {
                             if (data.status === 'success') {
-                                return fetch('update_mobil_status.php', { 
+                                return fetch('update_mobil_status.php', { // Updated path
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json'
@@ -382,7 +425,7 @@
         });
 
 
-        // Modal Admin
+        // Logika Modal Admin
 
         function openModalAdmin() {
             document.getElementById('registerModalAdmin').style.display = 'block';
@@ -399,6 +442,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
+            updateButtonText();
             const registerForm = document.getElementById('registerFormAdmin');
             const usernameInput = document.getElementById('usernameAdmin');
             const passwordInput = document.getElementById('passwordAdmin');
@@ -471,7 +515,7 @@
             });
         });
 
-        // Modal Pembayaran
+        // Logika Modal Pembayaran
 
         function openModalPembayaran() {
             const modal = document.getElementById("registerModalPembayaran");
@@ -485,6 +529,7 @@
         }
 
         function fetchRekeningData() {
+            updateButtonText();
             fetch('getRekening.php')
                 .then(response => response.json())
                 .then(data => {
@@ -544,10 +589,25 @@
                 .catch(error => console.error('Error updating rekening data:', error));
         });
 
-
         // Modal Notifikasi
+        document.addEventListener("DOMContentLoaded", function () {
+            updateButtonText();
+            fetch('update_transactions.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        console.log(data.message);
+                    } else {
+                        console.error(data.message);
+                    }
+                })
+                .catch(error => console.error('Error updating transactions:', error));
+        });
+
+        document.getElementById('notification').addEventListener('click', openModal);
 
         function openModal() {
+            updateButtonText();
             fetch('../data/transaksi.json')
                 .then(response => response.json())
                 .then(data => {
@@ -570,8 +630,6 @@
                 .catch(error => console.error('Error fetching data:', error));
         }
 
-        document.getElementById('notification').addEventListener('click', openModal);
-
         document.querySelector('.close').onclick = function () {
             document.getElementById('myModal').style.display = 'none';
         };
@@ -586,6 +644,7 @@
         // Modal Mobil
 
         function openModalMobil() {
+            updateButtonText();
             document.getElementById('registerModalMobil').style.display = 'block';
         }
 
@@ -606,7 +665,7 @@
             const noPolInput = document.getElementById("noPol");
             const fileInput = document.getElementById("fileInput");
             const submitMobilBtn = document.getElementById("submitMobil");
-            const loader = document.getElementById("loader");
+            const uploadIcon = document.getElementById("uploadIcon");
 
             function checkFormValidity() {
                 if (
@@ -625,10 +684,20 @@
                 input.addEventListener("input", checkFormValidity);
             });
 
+            fileInput.addEventListener("change", function () {
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        uploadIcon.src = e.target.result;
+                    };
+
+                    reader.readAsDataURL(fileInput.files[0]);
+                }
+            });
+
             document.getElementById("registerFormMobil").addEventListener("submit", function (e) {
                 e.preventDefault();
-
-                loader.style.display = "block";
 
                 const formData = new FormData();
                 formData.append("namaMobil", namaMobilInput.value);
@@ -642,19 +711,19 @@
                 })
                     .then(response => response.json())
                     .then(data => {
-                        loader.style.display = "none";
 
                         if (data.success) {
                             document.getElementById("registerFormMobil").reset();
                             submitMobilBtn.disabled = true;
+                            uploadIcon.src = "../../src/drop icon.png";
                             alert(data.message);
+                            location.reload();
                         } else {
                             alert(data.message);
                         }
                     })
                     .catch(error => {
                         console.error("Error:", error);
-                        loader.style.display = "none";
                         alert("Terjadi kesalahan saat mengirim data.");
                     });
             });

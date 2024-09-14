@@ -40,6 +40,15 @@
                             <label for="password">Password</label>
                             <input type="password" id="passwordUser" name="password" required>
 
+                            <label for="noTelp">No Telp</label>
+                            <input type="number" id="noTelpUser" name="noTelp" required>
+
+                            <label for="alamat">Alamat</label>
+                            <input type="text" id="alamatUser" name="alamat" required>
+
+                            <label for="kota">Kota</label>
+                            <input type="text" id="kotaUser" name="kota" required>
+
                             <label for="mobil">Mobil</label>
                             <select id="mobil" name="mobil">
                             </select>
@@ -152,7 +161,7 @@
         <div class="container">
             <strong style="width: 200px;">Tampilan Data User</strong>
             <div class="separator">
-                <p href="#" class="tanggalBulan">tanggal/bulan/tahun</p>
+                <p class="tanggalBulan"></p>
                 <div class="cardProfile">
                     <div class="leftContent">
                         <div class="isiContentLeft">
@@ -173,14 +182,10 @@
             <div class="cardMobil">
                 <div class="mobilImg">
                 </div>
-                <div class="spesifikasiMobil">
-                    <span class="material-symbols-outlined" id="localGas">local_gas_station</span>
-                    <a href="#" class="infoBensin">jenis bensin</a>
-                </div>
             </div>
             <div class="cardInfoMobil">
                 <div class="infoMobil">
-                    <a href="#" class="kota">KOTA</a>
+                    <p class="kota">KOTA</p>
                 </div>
                 <div class="border"></div>
                 <div class="infoJarak">
@@ -195,8 +200,8 @@
                     <p class="tanggalJarak">00-00-0000</p>
                 </div>
                 <div class="hargaJarak">
-                    <p id="hariJarak">x1 hari</p>
-                    <p id="hargaJarak">Rp 000.000</p>
+                    <p id="hariJarak"></p>
+                    <p id="hargaJarak"></p>
                 </div>
                 <div class="resultBtn" id="resultBtn">
 
@@ -257,14 +262,13 @@
                 return;
             }
 
-            // Deklarasikan variabel transaksi di sini sehingga dapat diakses di seluruh kode
             let transaksi;
 
             fetch(`fetch_halamanProses.php?idTransaksi=${idTransaksi}`)
                 .then(response => response.json())
                 .then(transactions => {
                     if (transactions.length > 0) {
-                        transaksi = transactions[0]; // Assign nilai ke variabel yang dideklarasikan di luar
+                        transaksi = transactions[0];
 
                         fetch('../data/mobil.json')
                             .then(response => response.json())
@@ -272,11 +276,13 @@
                                 const matchingMobil = mobilData.find(mobil => mobil.idMobil === transaksi.mobil);
 
                                 if (matchingMobil) {
+                                    // Update User Information
                                     document.querySelector('.namaUser').textContent = transaksi.nama;
                                     document.querySelector('.jenisNamaMobil').textContent = matchingMobil.namaMobil;
                                     document.querySelector('.kodePesanan').textContent = "Kode Pesanan: " + transaksi.idTransaksi;
                                     document.querySelector('.statusMobil').textContent = "Status: " + transaksi.status;
 
+                                    // Set Bukti Pembayaran Link
                                     const buktiPembayaranLink = document.getElementById('buktiPembayaran');
                                     if (transaksi.bukti) {
                                         buktiPembayaranLink.textContent = 'Lihat Bukti Pembayaran';
@@ -289,6 +295,20 @@
                                         buktiPembayaranLink.removeAttribute('data-bs-toggle');
                                         buktiPembayaranLink.removeAttribute('data-bs-target');
                                     }
+
+                                    // Set Mobil Image
+                                    const mobilImg = document.querySelector('.mobilImg');
+                                    const carImage = document.createElement('img');
+                                    carImage.src = matchingMobil.gambar;
+                                    carImage.alt = matchingMobil.namaMobil;
+                                    carImage.style.width = '380px';
+                                    carImage.style.height = '220px';
+                                    mobilImg.appendChild(carImage);
+
+                                    // Set Hari Jarak and Harga Jarak
+                                    document.getElementById('hariJarak').textContent = `${transaksi.banyakHari} Hari`;
+                                    document.getElementById('hargaJarak').textContent = `Rp. ${transaksi.totalBayar.toLocaleString()}`;
+
 
                                     if (transaksi.status === "Belum Diproses") {
                                         btnAccept.style.display = 'block';
@@ -312,7 +332,7 @@
             document.addEventListener('click', function (event) {
                 if (event.target.matches('[data-bs-target="#buktiPembayaranModal"]')) {
                     const buktiPembayaranImage = document.getElementById('buktiPembayaranImage');
-                    buktiPembayaranImage.src = "../" + transaksi.bukti;  // Menggunakan variabel transaksi yang dideklarasikan di luar
+                    buktiPembayaranImage.src = "../" + transaksi.bukti;
                 }
             });
 
@@ -352,7 +372,6 @@
         });
 
 
-
         var modal = document.getElementById("myModal");
         var spanNotif = document.getElementById("notification");
         var span = document.getElementsByClassName("close")[0];
@@ -375,9 +394,10 @@
             updateButtonText();
         };
 
-        // Modal User
+        // Logika Modal User
         function openModalUser() {
             document.getElementById('registerModalUser').style.display = 'block';
+            loadMobilData();
         }
 
         function closeModalUser() {
@@ -390,27 +410,18 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
+        function loadMobilData() {
+            updateButtonText();
             const mobilSelect = document.getElementById('mobil');
-            const registerForm = document.getElementById('registerFormUser');
-            const registUserBtn = document.getElementById('registUserBtn');
-            const usernameInput = document.getElementById('usernameUser');
-            const passwordInput = document.getElementById('passwordUser');
-
-            function checkFormValidity() {
-                const isFormValid = usernameInput.value.trim() !== '' &&
-                    passwordInput.value.trim() !== '' &&
-                    mobilSelect.value !== '';
-                registUserBtn.disabled = !isFormValid;
-            }
-
-            usernameInput.addEventListener('input', checkFormValidity);
-            passwordInput.addEventListener('input', checkFormValidity);
-            mobilSelect.addEventListener('change', checkFormValidity);
-
-            fetch('../data/mobil.json')
+            fetch('../data/mobil.json', {
+                headers: {
+                    'Cache-Control': 'no-cache'
+                }
+            })
                 .then(response => response.json())
                 .then(mobilData => {
+                    mobilSelect.innerHTML = '';
+
                     mobilData.forEach(car => {
                         if (car.status === 'Tersedia') {
                             const option = document.createElement('option');
@@ -419,20 +430,52 @@
                             mobilSelect.appendChild(option);
                         }
                     });
-                    checkFormValidity();
                 })
                 .catch(error => {
                     console.error('Error loading car data:', error.message);
-                    console.error('Full error details:', error);
                     alert('Failed to load car data. Please try again later.');
                 });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            updateButtonText();
+            const mobilSelect = document.getElementById('mobil');
+            const registerForm = document.getElementById('registerFormUser');
+            const registUserBtn = document.getElementById('registUserBtn');
+            const usernameInput = document.getElementById('usernameUser');
+            const passwordInput = document.getElementById('passwordUser');
+            const noTelpInput = document.getElementById('noTelpUser');
+            const alamatInput = document.getElementById('alamatUser');
+            const kotaInput = document.getElementById('kotaUser');
+
+            function checkFormValidity() {
+                const isFormValid = usernameInput.value.trim() !== '' &&
+                    passwordInput.value.trim() !== '' &&
+                    mobilSelect.value !== '' &&
+                    noTelpInput.value.trim() !== '' &&
+                    alamatInput.value.trim() !== '' &&
+                    kotaInput.value.trim() !== '';
+                registUserBtn.disabled = !isFormValid;
+            }
+
+            usernameInput.addEventListener('input', checkFormValidity);
+            passwordInput.addEventListener('input', checkFormValidity);
+            mobilSelect.addEventListener('change', checkFormValidity);
+            noTelpInput.addEventListener('input', checkFormValidity);
+            alamatInput.addEventListener('input', checkFormValidity);
+            kotaInput.addEventListener('input', checkFormValidity);
 
             registerForm.addEventListener('submit', function (e) {
                 e.preventDefault();
 
                 const username = usernameInput.value;
                 const password = passwordInput.value;
+                const noTelp = noTelpInput.value;
+                const alamat = alamatInput.value;
+                const kota = kotaInput.value;
                 const selectedMobil = mobilSelect.value;
+
 
                 if (username && password && selectedMobil) {
                     fetch('get_last_user_id.php')
@@ -449,6 +492,9 @@
                                 idUser: newIdUser,
                                 username: username,
                                 password: password,
+                                noTelp: noTelp,
+                                alamat: alamat,
+                                kota: kota,
                                 mobil: selectedMobil
                             };
 
@@ -468,7 +514,7 @@
                         })
                         .then(data => {
                             if (data.status === 'success') {
-                                return fetch('update_mobil_status.php', {
+                                return fetch('update_mobil_status.php', { // Updated path
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json'
@@ -507,7 +553,7 @@
         });
 
 
-        // Modal Admin
+        // Logika Modal Admin
 
         function openModalAdmin() {
             document.getElementById('registerModalAdmin').style.display = 'block';
@@ -524,6 +570,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
+            updateButtonText();
             const registerForm = document.getElementById('registerFormAdmin');
             const usernameInput = document.getElementById('usernameAdmin');
             const passwordInput = document.getElementById('passwordAdmin');
@@ -596,7 +643,7 @@
             });
         });
 
-        // Modal Pembayaran
+        // Logika Modal Pembayaran
 
         function openModalPembayaran() {
             const modal = document.getElementById("registerModalPembayaran");
@@ -610,6 +657,7 @@
         }
 
         function fetchRekeningData() {
+            updateButtonText();
             fetch('getRekening.php')
                 .then(response => response.json())
                 .then(data => {
@@ -670,7 +718,24 @@
         });
 
         // Modal Notifikasi
+        document.addEventListener("DOMContentLoaded", function () {
+            updateButtonText();
+            fetch('update_transactions.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        console.log(data.message);
+                    } else {
+                        console.error(data.message);
+                    }
+                })
+                .catch(error => console.error('Error updating transactions:', error));
+        });
+
+        document.getElementById('notification').addEventListener('click', openModal);
+
         function openModal() {
+            updateButtonText();
             fetch('../data/transaksi.json')
                 .then(response => response.json())
                 .then(data => {
@@ -693,9 +758,6 @@
                 .catch(error => console.error('Error fetching data:', error));
         }
 
-
-        document.getElementById('notification').addEventListener('click', openModal);
-
         document.querySelector('.close').onclick = function () {
             document.getElementById('myModal').style.display = 'none';
         };
@@ -710,6 +772,7 @@
         // Modal Mobil
 
         function openModalMobil() {
+            updateButtonText();
             document.getElementById('registerModalMobil').style.display = 'block';
         }
 
@@ -730,7 +793,7 @@
             const noPolInput = document.getElementById("noPol");
             const fileInput = document.getElementById("fileInput");
             const submitMobilBtn = document.getElementById("submitMobil");
-            const loader = document.getElementById("loader");
+            const uploadIcon = document.getElementById("uploadIcon");
 
             function checkFormValidity() {
                 if (
@@ -749,10 +812,20 @@
                 input.addEventListener("input", checkFormValidity);
             });
 
+            fileInput.addEventListener("change", function () {
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        uploadIcon.src = e.target.result;
+                    };
+
+                    reader.readAsDataURL(fileInput.files[0]);
+                }
+            });
+
             document.getElementById("registerFormMobil").addEventListener("submit", function (e) {
                 e.preventDefault();
-
-                loader.style.display = "block";
 
                 const formData = new FormData();
                 formData.append("namaMobil", namaMobilInput.value);
@@ -766,19 +839,19 @@
                 })
                     .then(response => response.json())
                     .then(data => {
-                        loader.style.display = "none";
 
                         if (data.success) {
                             document.getElementById("registerFormMobil").reset();
                             submitMobilBtn.disabled = true;
+                            uploadIcon.src = "../../src/drop icon.png";
                             alert(data.message);
+                            location.reload();
                         } else {
                             alert(data.message);
                         }
                     })
                     .catch(error => {
                         console.error("Error:", error);
-                        loader.style.display = "none";
                         alert("Terjadi kesalahan saat mengirim data.");
                     });
             });

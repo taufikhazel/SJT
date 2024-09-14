@@ -330,7 +330,7 @@
             <p class="step">Step 3 of 4</p>
             <div class="rekening">
                 <div class="radiobtn">
-                    <input type="radio" class="rekening" name="rekening" value="rekening" />
+                    <input type="radio" class="rekening" name="rekening" value="rekening" disabled/>
                 </div>
                 <div class="contentRekening">
                     <label for="rekening">PT. SUKSES JAYA TRANSPORINDO</label>
@@ -421,10 +421,9 @@
             if (transaksiData) {
                 document.getElementById("nama").textContent = transaksiData.nama;
 
-                const tanggalArray = transaksiData.tanggal || [];
-                const multiplier = tanggalArray.length > 0 ? tanggalArray.length : 1;
+                const banyakHari = transaksiData.banyakHari || [];
 
-                const adjustedHarga = transaksiData.harga * multiplier;
+                const adjustedHarga = transaksiData.harga * banyakHari;
                 document.getElementById("harga").textContent = adjustedHarga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
 
                 if (transaksiData.mobil) {
@@ -444,11 +443,11 @@
                                 document.getElementById('namaMobil').textContent = mobil.namaMobil;
                                 document.getElementById('carImg').src = mobil.gambar;
 
-                                const rentalDaysText = `${multiplier} Hari Perentalan`;
+                                const rentalDaysText = `${banyakHari} Hari Perentalan`;
                                 document.getElementById('subTotal').textContent = `${mobil.hargaMobil.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} (${rentalDaysText})`;
 
                                 const subTotalHarga = mobil.hargaMobil;
-                                const totalHarga = subTotalHarga * multiplier;
+                                const totalHarga = subTotalHarga * banyakHari;
                                 const taxPercentage = 0;
                                 const taxAmount = totalHarga * (taxPercentage / 100);
 
