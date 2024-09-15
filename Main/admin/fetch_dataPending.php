@@ -1,6 +1,7 @@
 <?php
-$jsonData = file_get_contents('../data/transaksi.json');
-$mobilData = file_get_contents('../data/mobil.json');
+$jsonData = file_exists('../data/transaksi.json') ? file_get_contents('../data/transaksi.json') : '';
+$mobilData = file_exists('../data/mobil.json') ? file_get_contents('../data/mobil.json') : '';
+
 
 $data = json_decode($jsonData, true);
 $dataMobil = json_decode($mobilData, true);
