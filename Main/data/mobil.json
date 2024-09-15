@@ -22,5 +22,13 @@
         "gambar": "..\/uploads\/mobil\/Screenshot 2024-09-05 035104.png",
         "noPol": "B 5555 KTL",
         "status": "Tersedia"
+    },
+    {
+        "idMobil": "4",
+        "namaMobil": "jdjaojdos",
+        "hargaMobil": 31421,
+        "gambar": "..\/uploads\/mobil\/Screenshot 2024-09-08 070412.png",
+        "noPol": "saksalk",
+        "status": "Tersedia"
     }
 ]

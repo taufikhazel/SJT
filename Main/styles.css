@@ -1197,7 +1197,8 @@ a#tanggal {
   padding: 16px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  max-width: 250px;
+  max-width: 400px;
+  max-height: 500px;
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.3s, transform 0.3s;
@@ -1411,7 +1412,7 @@ a#tanggal {
     border-bottom: 3px solid black;
     padding: 10px 20px;
     background-color: #F9D689;
-    width: 630px;
+    width: 100%;
   }
 
   .nav-links {

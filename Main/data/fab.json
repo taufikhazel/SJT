@@ -1,0 +1,41 @@
+{
+  "message": "Berhasil mendapatkan Data",
+  "datas": {
+    "FAB": [
+      {
+        "id": 1,
+        "question": [
+          {
+            "_id": "Prod-66a862e811be1b153aa6ca1d",
+            "name_product": "Nasi Goreng Kebuli",
+            "image_product": [
+              "https://staging-backend.superdigitalapps.my.id/public/img_products/Nasi_Goreng_Kebuli_1722311400020.jpg"
+            ],
+            "quantity": 55
+          }
+        ],
+        "total_harga": 1100000,
+        "pembeli": {
+          "_id": "66a99dedff2c293e8496be33",
+          "namaSekolah": "TK Alexia"
+        },
+        "pengirimanId": "66e3ba027576d348352c2071",
+        "seller": {
+          "_id": "6666889630b2f454ab8301cd",
+          "role": "vendor"
+        }
+      }
+    ],
+    "contact": [
+      {
+        "id": 1,
+        "question": [
+          {
+            "_id": "Prod-66a862e811be1b153aa6ca1d",
+            "name_product": "Nasi Goreng Kebuli"
+          }
+        ]
+      }
+    ]
+  }
+}

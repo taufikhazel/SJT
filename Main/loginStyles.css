@@ -22,7 +22,6 @@ a:hover {
         display: flex;
         justify-content: center;
         margin-top: 240px;
-        padding-left: 50%;
     }
 
     .site-footer {
@@ -32,7 +31,39 @@ a:hover {
         line-height: 24px;
         color: #737373;
         width: 630px;
-        margin-top: 425px;
+    }
+}
+
+@media screen and (max-width:426px) {
+
+    header nav {
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 3px solid black;
+        padding: 10px 20px;
+        background-color: #F9D689;
+        width: 100%;
+    }
+
+    .nav-links li {
+        margin: auto;
+        align-content: center;
+        text-align: center;
+    }
+
+    .logo {
+        padding: 0;
+        margin: auto;
+    }
+
+    .site-footer {
+        background-color: #26272b;
+        padding: 20px 0 20px;
+        font-size: 15px;
+        line-height: 24px;
+        color: #737373;
+        width: 100%;
     }
 }
 
@@ -40,8 +71,7 @@ a:hover {
     .wrapper {
         display: flex;
         justify-content: center;
-        margin-top: 360px;
-        padding-left: 65%;
+        margin-top: 50px;
     }
 
     .site-footer {
@@ -50,8 +80,7 @@ a:hover {
         font-size: 15px;
         line-height: 24px;
         color: #737373;
-        width: 630px;
-        margin-top: 480px;
+        width: 100%;
     }
 }
 
@@ -59,8 +88,7 @@ a:hover {
     .wrapper {
         display: flex;
         justify-content: center;
-        margin-top: 425px;
-        padding-left: 90%;
+        margin-top: 50px;
     }
 
     .site-footer {
@@ -69,8 +97,44 @@ a:hover {
         font-size: 15px;
         line-height: 24px;
         color: #737373;
-        width: 630px;
-        margin-top: 670px;
+        width: 100%;
     }
 
+    .row {
+        display: flex;
+        gap: 0px !important;
+    }
+
+    .login-card {
+        background-image: linear-gradient(to bottom right, rgb(255, 175, 27), rgb(255, 157, 45));
+        width: 280px;
+        height: 340px;
+        border-radius: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .btn-1 {
+        background: #ffffff;
+        height: 35px;
+        width: 200px;
+        border: solid white 2px;
+        border-radius: 10px;
+        font-size: smaller;
+        cursor: pointer;
+        transition-duration: 0.5s;
+    }
+    .btn-2 {
+        background: #ffffff;
+        height: 35px;
+        width: 200px;
+        border: solid white 2px;
+        border-radius: 10px;
+        font-size: smaller;
+        cursor: pointer;
+        transition-duration: 0.5s;
+    }
 }

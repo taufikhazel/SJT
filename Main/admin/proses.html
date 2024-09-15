@@ -276,13 +276,11 @@
                                 const matchingMobil = mobilData.find(mobil => mobil.idMobil === transaksi.mobil);
 
                                 if (matchingMobil) {
-                                    // Update User Information
                                     document.querySelector('.namaUser').textContent = transaksi.nama;
                                     document.querySelector('.jenisNamaMobil').textContent = matchingMobil.namaMobil;
                                     document.querySelector('.kodePesanan').textContent = "Kode Pesanan: " + transaksi.idTransaksi;
                                     document.querySelector('.statusMobil').textContent = "Status: " + transaksi.status;
 
-                                    // Set Bukti Pembayaran Link
                                     const buktiPembayaranLink = document.getElementById('buktiPembayaran');
                                     if (transaksi.bukti) {
                                         buktiPembayaranLink.textContent = 'Lihat Bukti Pembayaran';
