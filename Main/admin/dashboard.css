@@ -167,6 +167,6 @@ li {
     font-size: 15px;
     line-height: 24px;
     color: #737373;
-    height: max-content;
-    margin-top: 170px;
+    margin-top: 150px;
+    width: 100%;
 }

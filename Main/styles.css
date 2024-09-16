@@ -85,6 +85,125 @@ header nav {
   /* Menjaga proporsi gambar */
 }
 
+div#popover {
+  width: 400px;
+  height: 500px;
+}
+.py-60 {
+  padding: 10px 0;
+}
+
+@media only screen and (max-width: 768px) {
+  .py-60 {
+    padding: 52px 0;
+  }
+}
+
+section {
+  background: #F3F3F3;
+}
+
+h2 {
+  font-family: 'Roboto-Light', sans-serif;
+  font-size: 32px;
+  color: #000000;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+
+.text-control-1 h2 {
+  margin-bottom: 20px;
+}
+
+
+.q-mark {
+  font-family: 'Roboto-Bold', sans-serif;
+  color: #D40119;
+  padding: 18px 0 18px 18px;
+}
+
+.question {
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  color: #5C5C5C;
+  line-height: 1.5;
+  padding: 20px;
+  margin-bottom: 0;
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px; /* Adjust size as needed */
+  display: inline-block;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.material-icons.drop {
+  padding: 20px;
+  font-size: 2rem;
+  color: #D40119;
+  transition: transform .5s ease-in-out;
+}
+
+.answer {
+  font-size: 16px;
+  color: #5C5C5C;
+  padding: 16px;
+  padding-left: 52px;
+  padding-bottom: 32px;
+  background-color: white;
+  overflow: hidden;
+}
+
+.accordion {
+  background-color: #ffffff;
+  color: #444;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 20px;
+  text-align: left;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+  box-shadow: 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12), 0 1px 3px 0 rgba(0,0,0,0.20);
+  border-radius: 4px;
+}
+
+
+
+.question-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color .25s ease-in-out;
+}
+
+.answer-wrapper {
+  display: none;
+}
+
+.icon-expand {
+  transform: rotateX(180deg);
+  transition: transform .75s ease-in-out;
+}
+
+.active, .accordion:hover .question-wrapper {
+  background-color: #EBEBEB;
+}
+
+.active p {
+  color: #3D3D3D;
+}
+
+
 
 .hero-content h1 {
   font-size: 2.5em;
@@ -1203,6 +1322,12 @@ a#tanggal {
   transition: opacity 0.3s, transform 0.3s;
   z-index: 102;
   display: none;
+  overflow-y: auto;
+}
+
+#fabContentList {
+  max-height: 400px; /* Batasi tinggi maksimal */
+  overflow-y: auto; /* Tambahkan scroll jika konten melebihi max-height */
 }
 
 .popover.show {
@@ -1237,9 +1362,6 @@ a#tanggal {
   display: block;
   opacity: 1;
 }
-
-
-/* FOOTER*/
 
 /*FOOTER*/
 

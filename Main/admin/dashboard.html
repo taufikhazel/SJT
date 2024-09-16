@@ -16,7 +16,7 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.bootstrap5.css">
-    
+
     <link rel="stylesheet" href="dashboard.css">
 </head>
 
@@ -540,6 +540,7 @@
         }
 
         // Logika Modal Notifikasi
+        
         document.addEventListener("DOMContentLoaded", function () {
             updateButtonText();
             fetch('update_transactions.php')
@@ -557,27 +558,31 @@
         document.getElementById('notification').addEventListener('click', openModal);
 
         function openModal() {
-            updateButtonText();
+            document.getElementById('modal-body').innerHTML = "<p>Loading...</p>";
+            document.getElementById('myModal').style.display = 'block';
+
             fetch('../data/transaksi.json')
                 .then(response => response.json())
                 .then(data => {
                     let content = '';
-
-                    data.forEach(transaction => {
-                        if (transaction.status === "Accept") {
-                            content += "<p>Ada uang masuk sebesar " + transaction.totalBayar + " dari " + transaction.nama + "</p>";
+                    if (Array.isArray(data) && data.length > 0) {
+                        data.forEach(transaction => {
+                            if (transaction.status === "Accept") {
+                                content += "<p>Ada uang masuk sebesar " + transaction.totalBayar + " dari " + transaction.nama + "</p>";
+                            }
+                        });
+                        if (content === '') {
+                            content = "<p>Tidak ada transaksi dengan status 'Accept'.</p>";
                         }
-                    });
-
-                    if (content === '') {
-                        content = "<p>Tidak ada transaksi dengan status 'Accept'.</p>";
+                    } else {
+                        content = "<p>Data transaksi masih kosong.</p>";
                     }
-
                     document.getElementById('modal-body').innerHTML = content;
-
-                    document.getElementById('myModal').style.display = 'block';
                 })
-                .catch(error => console.error('Error fetching data:', error));
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    document.getElementById('modal-body').innerHTML = "<p>Error loading data.</p>";
+                });
         }
 
         document.querySelector('.close').onclick = function () {
@@ -590,6 +595,7 @@
                 modal.style.display = 'none';
             }
         };
+
 
         // Logika Modal User
         function openModalUser() {
@@ -635,7 +641,7 @@
 
 
         document.addEventListener('DOMContentLoaded', function () {
-           
+
             const mobilSelect = document.getElementById('mobil');
             const registerForm = document.getElementById('registerFormUser');
             const registUserBtn = document.getElementById('registUserBtn');
@@ -766,7 +772,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            
+
             const registerForm = document.getElementById('registerFormAdmin');
             const usernameInput = document.getElementById('usernameAdmin');
             const passwordInput = document.getElementById('passwordAdmin');
@@ -853,7 +859,7 @@
         }
 
         function fetchRekeningData() {
-            
+
             fetch('getRekening.php')
                 .then(response => response.json())
                 .then(data => {
@@ -918,7 +924,7 @@
         // Modal Mobil
 
         function openModalMobil() {
-            
+
             document.getElementById('registerModalMobil').style.display = 'block';
         }
 
@@ -1051,8 +1057,6 @@
         };
     </script>
 
-</body>
-
 <footer class="site-footer">
     <div class="containerFooter">
         <div class="row" style="display: flex;">
@@ -1078,5 +1082,8 @@
             </div>
         </div>
 </footer>
+</body>
+
+
 
 </html>
